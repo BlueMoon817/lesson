@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5강 3번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+        3) 세 개의 자연수 A,B,C가 주어질 때 AxBxC 를 계산한 결과에 0부터 9까지 각각의 숫자가 몇번씩 쓰였는지를 구하는 프로그램을 작성하시오.
+           예를 들어 A=150, B=266, C=427이라면
+           A x B x C = 150 x 266 x 427 = 17037300 이 되고,
+           계산한 결과 17037300 에는 0이 3번, 1이 1번, 3이 2번, 7이 2번 쓰였다.
+        */
+
+       var userNumA, userNumB, userNumC;
+       // 숫자가 아니면 리턴
+        while(1){
+            userNumA = prompt("A에 들어갈 숫자를 입력해주세요");
+            if(isNaN(parseInt(userNumA))){
+                console.log("A에 들어갈 숫자를 다시 입력해주세요");
+                continue;
+            } 
+            break;
+        }
+        while(1){
+            userNumB = prompt("B에 들어갈 숫자를 입력해주세요");
+            if(isNaN(parseInt(userNumB))){
+            console.log("B에 들어갈 숫자를 다시 입력해주세요");
+            continue;
+            }
+            break;
+        }
+        while(1){
+            userNumC = prompt("C에 들어갈 숫자를 입력해주세요");
+            if(isNaN(parseInt(userNumC))){
+            console.log("C에 들어갈 숫자를 다시 입력해주세요");
+            continue;
+            }
+            break;
+        }
+
+       // 정수로 바꿔서 변수에 저장하기
+       var NumA = parseInt(userNumA), 
+           NumB = parseInt(userNumB), 
+           NumC = parseInt(userNumC), 
+           resultArr=[],
+           resultNum, 
+           resultStr,
+           resultArr; 
+        // 입력받은 값을 곱하여 변수에 담기
+        resultNum = NumA * NumB * NumC;
+        // console.log(resultNum);
+        // 배열로 바꾸기
+        resultStr = resultNum.toString();
+        resultArr= resultStr.split("");
+        // 각자리 숫자 세기..
+        var count=0,num0=0,num1=0,num2=0,num3=0,num4=0,num5=0,num6=0,num7=0,num8=0,num9=0, outStr="";
+        var str0="",str1="",str2="",str3="",str4="",str5="",str6="",str7="",str8="",str9="";
+        while(1){
+            if(count<resultArr.length){
+                    if(parseInt(resultArr[count])===0){
+                        num0+=1;
+                        str0 =`0이 ${num0}번, `
+                    }else if(parseInt(resultArr[count])===1){
+                        num1+=1;
+                        str1 =`1이 ${num1}번, `
+                    }else if(parseInt(resultArr[count])===2){
+                        num2+=1;
+                        str2 =`2이 ${num2}번, `
+                    }else if(parseInt(resultArr[count])===3){
+                        num3+=1;
+                        str3 =`3이 ${num3}번, `
+                    }else if(parseInt(resultArr[count])===4){
+                        num4+=1;
+                        str4 =`4이 ${num4}번, `
+                    }else if(parseInt(resultArr[count])===5){
+                        num5+=1;
+                        str5 =`5이 ${num5}번, `
+                    }else if(parseInt(resultArr[count])===6){
+                        num6+=1;
+                        str6 =`6이 ${num6}번, `
+                    }else if(parseInt(resultArr[count])===7){
+                        num7+=1;
+                        str7 =`7이 ${num7}번, `
+                    }else if(parseInt(resultArr[count])===8){
+                        num8+=1;
+                        str8 =`8이 ${num8}번, `
+                    }else if(parseInt(resultArr[count])===9){
+                        num9+=1;
+                        str9 =`9이 ${num9}번, `
+                    }
+                    count+=1;
+            }else{
+                outStr = (str0+str1+str2+str3+str4+str5+str6+str7+str8+str9);
+                var lastStr =`계산한 결과 ${resultNum} 에는 ${outStr}쓰였습니다.`;
+                var output = lastStr.replace(", 쓰였습니다.", " 쓰였습니다.");
+                console.log(output);
+                break;   
+            }
+        }
+
+    </script>
+</body>
+</html>

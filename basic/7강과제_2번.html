@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <script>
+    /*
+    연습 2)
+    바다속에는 A라는 물고기와 B라는 물고기가 한 지역에 같이 사는데, A가 B를 잡아먹는다.
+    단, A개체는 자신보다 작은 B개체만 잡아먹을 수 있다.
+    사용자로부터 입력을 2번 받는데, 첫 입력은 A개체들의 크기이고 두번째 입력은 B개체들의 크기다.
+
+    A = "8 1 7 3 1";
+    B = "3 6 1";
+
+    A가 B를 잡아먹을 수 있는 경우의 수를 출력하세요.
+    위 샘플에서는 7가지.
+    */
+
+    let userNumA, userNumB, count=0; 
+    while(1){
+      userNumA = prompt('A에 대한 숫자를 입력해 주세요');
+      if(isNaN(parseInt(userNumA)) || (parseInt(userNumA) < 0)){
+        console.log('A에 대한 숫자를 다시 입력해주세요.');
+        continue;
+      }
+      userNumB = prompt('B에 대한 숫자를 입력해 주세요');
+      if(isNaN(parseInt(userNumB)) || (parseInt(userNumB) < 0)){
+        console.log('B에 대한 숫자를 다시 입력해주세요.');
+        continue; 
+      }
+      break;
+    }
+   let arrA = userNumA.split('');
+   console.log(arrA);
+   let arrB = userNumB.split('');
+   console.log(arrB);
+   
+   for(let i = 0; i<userNumA.length; i+=1){
+    for(let z= 0; z<userNumB.length; z+=1){
+      if(parseInt(arrA[i])>parseInt(arrB[z])){
+        count+=1;
+      }
+    }
+   }
+   console.log(`A가 B를 잡아먹을 수 있는 경우의 수는 ${count} 번 입니다.`);
+
+  </script>
+
+
+</body>
+</html>

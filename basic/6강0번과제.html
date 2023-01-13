@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6번 0번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+        문제 0번)
+        kg을 인자로 받아서 lb를 리턴하는 함수를 만드세요.
+        그 함수를 이용해서, 사용자로부터 kg을 입력받아 lb로 변환해주는 단위환산 프로그램을 만드세요
+        */
+        let userValue;
+        while (1){
+            userValue = parseInt(prompt("파운드로 변환할 kg 수치를 입력해주세요."));
+            if(isNaN(userValue)){
+                console.log("파운드로 변환할 kg 수치를 다시 입력해주세요.");
+                continue;
+            }
+            break;
+        }
+        function converter ( num ){
+            lbNum = userValue / 0.453592;
+            return console.log(`${userValue} kg은 ${lbNum} lb 입니다.`);
+        }
+        converter(userValue);
+    </script>
+</body>
+</html>

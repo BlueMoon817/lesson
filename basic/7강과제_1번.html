@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    /*
+    연습 1)
+    사용자로부터 양의 정수(= 자연수)를 하나 입력받아서 다음과 같이 출력하세요.
+    ex) k=4
+
+            *
+           * *
+          * * *
+         * * * *
+    */
+   let userNum;
+
+   while(1){
+    userNum = parseInt(prompt("양의정수를 입력해 주세요"));
+    if(isNaN(userNum) || (userNum < 1)){
+      console.log("양의정수를 다시 입력해 주세요");
+      continue;
+    }
+    break;
+   }
+   
+   for(let i=1; i<userNum; i+=1){
+    let star='';
+    for(let z=userNum-2; z>=i-1; z-=1){
+      star+=' ';
+    }
+    star+='*';
+    for(let z = 1; z<i; z+=1){
+      star+=" *";
+    }
+    console.log(star);
+   }
+
+  </script>
+</body>
+</html>

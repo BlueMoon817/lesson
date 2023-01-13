@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5강 1번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+        1) 사용자로부터 시각과 분이 각각 따로따로 입력받은 뒤에, 주어진 시간으로부터 45분 전의 시간을 출력하세요.
+        시간은 24시간 형식입니다.
+        올바른 범위(0시 0분~ 24시0분)을 벗어나는 시간이 입력되면 오류메시지를 출력하고 입력을 다시 받습니다.
+        ex) 14, 15가 주어진 경우 출력은 "13:30"
+        */
+        var hour, minute;
+        while(true){
+            hour = prompt("시각을 입력해주세요.");
+            // 시각이 0보다 작거나, 23보다 크거나 숫자가 아닐 때 재입력
+            if(parseInt(hour)>23 || parseInt(hour)<0 || isNaN(parseInt(hour))){
+                console.log("시각을 다시 입력해주세요");
+                continue;
+            }
+            break;
+        }
+        while(true){
+            minute = prompt("분을 입력해주세요.");
+            // 분이 60이상이거나, 0보다 작거나, 숫자가아니거나, 시각이 0인데 분이 45 보다 작을 때 재입력 
+            if(parseInt(minute)>59 || parseInt(minute)<0 || isNaN(parseInt(minute)) || (parseInt(hour)==0 && parseInt(minute)<45)){
+                console.log("분을 다시 입력해주세요");
+                continue;
+            }
+            break;
+        }
+        var min = parseInt(minute), resultMin;
+        var h = parseInt(hour), resultHour;
+
+        // 시간 연산
+        if(min>=45){
+            // 입력된 분이 45보다 크거나 같으면 -45, 시각은 그대로
+            resultMin = min-45;
+            resultHour = h
+        }else if(min < 45){
+            // 입력된 분이 45보다 작으면 45에서 모자란만큼 60에서 빼기, 시각은 -1 연산
+           var num = 45 - min;
+            resultMin = 60 - num;
+            resultHour = h - 1
+        }
+        // 한자리일 때 앞에 0 붙여서 두 자리 수 맞추기
+        if(resultMin <10 ){
+            resultMin = "0" + resultMin;
+        }
+        if(resultHour <10){
+            resultHour = "0" + resultHour;
+        }
+        // 결과 출력
+        console.log(`${resultHour}:${resultMin}`);
+    </script>
+</body>
+</html>

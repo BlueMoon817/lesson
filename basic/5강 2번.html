@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5강 2번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+         2) 카페에서 손님에게 메뉴를 주문받는 프로그램을 작성하세요. 카페의 메뉴판은 다음과 같습니다.
+            아메리카노 2500원
+            카페라떼   4000원
+            카페모카   4500원
+            녹차라떼   4000원
+            와플       2000원
+            아이스티   3000원
+            모든 메뉴는 "아이스"가 가능하고, 그 경우 500원이 추가됩니다. 
+            사용자가 "주문 끝"이라고 입력할때까지 반복해서 입력받고, 총 금액을 출력하세요.
+        */
+    var result=0;
+    var menu;
+    while(true){
+        menu = prompt("메뉴를 입력해주세요");
+        if (menu === "주문 끝"){
+            console.log(`주문하신 금액은 ${result}원 입니다.`);
+            break;
+        }
+        if (menu.substr(0,3) === "아이스"){
+            result += 500;
+        }
+        if( menu.slice(-5) === "아메리카노"){
+            result += 2500;
+            console.log(`현재 금액은 ${result}원 입니다.`);
+            continue;
+        }else if(menu.slice(-4) === "카페라떼"){
+            result += 4000;
+            console.log(`현재 금액은 ${result}원 입니다.`);
+            continue;
+        }else if(menu.slice(-4) === "카페모카"){
+            result += 4500;
+            console.log(`현재 금액은 ${result}원 입니다.`);
+            continue;
+        }else if(menu.slice(-4) === "녹차라떼"){
+            result += 4000;
+            console.log(`현재 금액은 ${result}원 입니다.`);
+            continue;
+        }else if(menu === "와플"){
+            result += 2000;
+            console.log(`현재 금액은 ${result}원 입니다.`);
+            continue;
+        }else if(menu === "아이스티"){
+            result += 3000;
+            console.log(`현재 금액은 ${result}원 입니다.`);
+            continue;
+        }
+    }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>보너스문제</title>
+</head>
+<body>
+    <script>
+        /*
+        [보너스 문제]
+        - 배열 사용금지
+        사용자가 0을 입력할때까지 반복해서 정수를 입력받고,
+        사용자가 0을 입력하면 그때까지 입력된 모든 수의 총합/평균/최소값/최대값을 출력하세요.
+        */
+
+        // 0을 입력할 때까지 정수 입력받아서 문자열로 변수에 저장하기
+        var userNum, userStr="", sum=0, average=0, max=0, min, count = 0;
+
+        while(1){
+            userNum=prompt("정수를 입력해주세요");
+            if(isNaN(parseInt(userNum))){
+                console.log("정수를 다시 입력해주세요");
+                continue;
+            }else if(isNaN(parseInt(userNum)) === false && parseInt(userNum) !== 0){
+                
+                // 총합
+                sum += ( parseInt(userNum) );
+                // 최대값 : 들어오는 정수를 max와 비교하여 max보다 크면 max에 넣기
+                if( max < parseInt(userNum)){
+                    max = parseInt(userNum);
+                }
+                // 최소값 : 일단 처음 수를 저장 후 다음에 들어오는 정수들과 비교하여 작은값을 저장 
+                if(min === undefined){
+                    min = (parseInt(userNum));
+                }else if(min > parseInt(userNum)){
+                    min = parseInt(userNum);
+                }
+                // 평균을 구하기 위한 입력 횟수 구하기.
+                count+=1;
+                continue;
+            }else if((parseInt(userNum)) === 0){
+                // 평균 (총합 / 유효한 입력횟수)
+                average = (sum/count);
+                console.log(`입력된 모든 수의 총합은 ${sum}이고, 평균은 ${average}이고, 최소값은 ${min}이고, 최대값은 ${max}입니다.`);
+                break;
+            }
+        }
+
+        
+
+    </script>
+</body>
+</html>

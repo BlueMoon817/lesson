@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6번 3번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+        문제 3번)
+        사용자로부터 양의 정수를 하나 입력받아 다음과 같이 출력하는 프로그램을 작성하세요.
+        ex) 입력이 4인 경우
+             *
+            * *
+           *   *
+          *     * 
+        */
+        let userNum,count=0,spaceSide="",spaceC="",star,center;
+        while(1){
+            userNum = parseInt(prompt("1 이상의 숫자를 입력해주세요"));
+            if(isNaN(userNum) || (userNum < 1) || (parseInt(userNum) != userNum)){
+                console.log("숫자를 다시 입력해주세요");
+                continue;
+            }
+            break;
+        }
+        // 양 옆 공백
+        for(let z=1; z<userNum; z+=1){
+            spaceSide += " ";
+        }
+        // 가운데 공백
+        for(let z=1; z<=(userNum*2-1); z+=1){
+            spaceC += " ";
+        }
+        for(let i = 1; i<userNum; i+=1){
+            // 별모양 출력
+            if(star===undefined) star = "*";
+            else {
+                center = spaceC.slice(-count);
+                star= `*${center}*`;
+            }
+            spaceSide = spaceSide.slice(-(userNum-i));
+            // 모두 더하기
+            console.log(`${spaceSide}${star}${spaceSide}`);
+            count=(2*i-1);
+        }
+    </script>
+</body>
+</html>

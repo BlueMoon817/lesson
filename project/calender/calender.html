@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>달력</title>
+  <style>
+    *{margin:0;padding:0;}
+    body{width:100%;height:100vh;display:flex;display:-webkit-flex;justify-content:center;}
+    button{cursor:pointer;}
+    .wrap{width:200px;height:40px;position:relative;margin-top:300px;}
+    .btn_setdate{width:100%;height:40px;}
+    .calender{position:absolute;left:0;top:100%;padding:10px;width:300px;border:1px solid #000;}
+    .cal_head{display:flex;display:-webkit-flex;width:100%;justify-content:space-between;align-items:center;}
+    .cal_head>button{width:50px;height:25px;}
+    .curr_date{font-weight:bold;}
+    .num_month{margin-left:10px;}
+    .calender{display:none;}
+    .calender.is_active{display:block;}
+    .curr_date{cursor:pointer;}
+    table{margin-top:20px;width:100%;border-style:none;}
+    table th, table td{height:21px;line-height:21px;text-align:center;}
+    table tbody button{display:block;outline:none;border:none;padding:0;margin:0;width:100%;height:100%;background-color:transparent;}
+    table tbody td.is_disabled button{cursor:default;color:#ccc;}
+    table tbody td.is_active button{background:rgba(0,0,0,0.4);color:#fff;border-radius:5px;}
+    .date_sun{color:red;}
+    .date_sat{color:blue;}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="btn_area">
+      <button type="button" class="btn_setdate">Click!</button>
+    </div>
+    <div class="calender">
+      <div class="cal_head">
+        <button type="button" class="nav_prev">이전</button>
+        <div class="curr_date"><span class="num_year"></span>.<span class="num_month"></span></div>
+        <button type="button" class="nav_next">다음</button>
+      </div>
+      <table>
+        <thead>
+          <tr class="is_active">
+            <th scope="row" style="color:red;">일</th>
+            <th scope="row">월</th>
+            <th scope="row">화</th>
+            <th scope="row">수</th>
+            <th scope="row">목</th>
+            <th scope="row">금</th>
+            <th scope="row" style="color:blue;">토</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>  
+
+  <script>
+
+    /*    달력 구현할기능
+        1) click 버튼 클릭하면 현재 날짜의 달력 띄우기
+        2) click 버튼 다시 클릭하면 이번달 달력으로 초기화 + 달력 없애기
+        3) 토, 일은 각 파란색, 빨간색으로 그리기
+        4) 오늘 날짜 표시하기(회색배경)
+        5) 다른 날짜 클릭하면 클릭한 날짜를 표시
+        6) 오늘 이전 날짜들은 disable 처리 
+        7) 이전버튼 클릭하면 -1월 달력 그리기 
+        8) 다음버튼 클릭하면 +1월 달력 그리기 + 다음달의 오늘 날짜 표시
+        9) 달력의 연도 월 부분 클릭하면 날짜 입력 창 띄우기 -> 입력한 날짜로 달력 다시 그리기
+    */
+
+    let numYear = document.querySelector('.num_year');
+    let numMonth = document.querySelector('.num_month');
+    let currDate = document.querySelector('.curr_date');
+    let btn_click = document.querySelector('.btn_setdate');
+    let cal_wrap = document.querySelector('.calender');
+    let tbody = document.querySelector('tbody');
+    let btnPrev = document.querySelector('.nav_prev');
+    let btnNext = document.querySelector('.nav_next');
+    let todayDate = new Date();
+    let td, tr, dayCount=1, monthCount, startDay, space, selectYear, selectMonth;
+
+    // 날짜 길이 구하는 함수 
+    function dateLength(year, month){
+      // 윤달
+      if(((year%400===0)||((year%4===0)&&(year%100!==0)))&&(month===02)){
+        monthCount=29; 
+      }else if(month===02){ // 윤달이 아닌 2월
+        monthCount=28;
+      }else if(month===01 ||month===03 || month===05 ||month===07 ||month===08||month===10||month===12){
+        monthCount=31;
+      }else if(month===04||month===06||month===09||month===11){
+        monthCount=30;
+      }
+    }
+
+    //tr(주간) 필요한 개수만큼 생성하는 함수
+    function makeTr(year, month){
+      dateLength(year, month);
+      for(let z=0; z<=Math.floor((monthCount+space)/7); z+=1){
+        tr = document.createElement('tr');
+        tbody.appendChild(tr);
+      }
+      tr=document.querySelectorAll('tbody tr');
+    }
+    // 선택 불가날짜(현재날짜의 이전날짜)함수
+    function disable(year,month){
+      for(let w=0;w<=monthCount+space;w+=1){
+        let newDate = new Date(year,month);
+        //month
+        if(newDate.getTime()<todayDate.getTime()){
+          td[w].classList.add('is_disabled');
+        }
+        //day
+        if((w+1<todayDate.getDate())&&(month===todayDate.getMonth()+1)&& year===todayDate.getFullYear()){
+          td[w+1+space].classList.add('is_disabled');}
+
+        //현재날짜 or 선택날짜 표시
+        if(td[w].classList.contains('is_disabled')===false){
+          td[todayDate.getDate()+space].classList.add('is_active');
+          td.forEach(function(ev){
+            ev.addEventListener('click',function(){
+              td[w].classList.remove('is_active');
+              this.classList.add('is_active');
+            });
+          });
+        }
+      }
+    }
+    // 날짜넣기함수
+    function inDate(year,month){
+      makeTr(year, month);
+      for(let z=0; z<=tr.length; z+=1){
+        for(let i=0; i<=6; i+=1){
+          if(dayCount<=monthCount){
+            // 첫번째주
+            if(z===0){
+              if(space>=i){
+                tr[0].innerHTML+=`<td><button type="button"></button></td>`;
+              }else{
+                if(i===0){
+                  tr[z].innerHTML+=`<td><button type="button" class="date_sun">${dayCount}</button></td>`;
+                }else if(i===6){
+                  tr[z].innerHTML+=`<td><button type="button" class="date_sat">${dayCount}</button></td>`;
+                }else{
+                  tr[z].innerHTML+=`<td><button type="button">${dayCount}</button></td>`;
+                }
+                dayCount+=1;
+              }
+            }else{
+              if(i===0){
+                tr[z].innerHTML+=`<td><button type="button" class="date_sun">${dayCount}</button></td>`;
+              }else if(i===6){
+                tr[z].innerHTML+=`<td><button type="button" class="date_sat">${dayCount}</button></td>`;
+              }else{
+                tr[z].innerHTML+=`<td><button type="button" >${dayCount}</button></td>`;
+              }
+              dayCount+=1;
+            }
+          }
+        }
+      }
+      td = document.querySelectorAll('tbody td');
+      disable(year,month);
+    }
+    //마크업 초기화 함수
+    function init(){
+      dayCount=1;
+      for(let x=0;x<=6;x+=1){
+        tbody.innerHTML=``;
+      }
+    }
+    //달력 그리기
+    function drawCalender(year, month){
+      //첫주 공백
+      startDay = new Date(year,month-1,1);
+      space = startDay.getDay()-1;
+      inDate(year, month);
+    }
+    // 직접 입력 후 출력
+    function moveDate(){
+     let inputDate = prompt('년-월을 입력해주세요');
+      while(1){
+        numYear.innerText = parseInt(inputDate.substr(0,4));
+        numMonth.innerText = ("0"+inputDate.substr(5,inputDate.length-5)).slice(-2);
+        if((numYear.innerText).length<4 || isNaN(numYear.innerText) || isNaN(parseInt(numMonth.innerText)) || (inputDate.indexOf('-')===-1) || parseInt(numMonth.innerText)>12 || parseInt(numMonth.innerText)<1){
+          inputDate = prompt('년/월을 입력해주세요');
+          continue;
+        }else{
+          // 마크업초기화
+          init();
+          selectYear = parseInt(numYear.innerText);
+          selectMonth = parseInt(numMonth.innerText);
+          drawCalender(selectYear,selectMonth);
+          break;
+        }
+      }
+    }
+
+    //날짜 클릭시 원하는 연, 월 입력 -> 반영
+    currDate.addEventListener('click',function(){
+      moveDate();
+    });
+
+    //버튼 클릭하면 달력 띄우기
+    btn_click.addEventListener('click',function(){
+      //마크업 초기화
+      init();
+      numYear.innerText =todayDate.getFullYear();
+      numMonth.innerText = ("0"+(todayDate.getMonth()+1)).slice(-2);
+      selectYear = parseInt(numYear.innerText);
+      selectMonth = parseInt(numMonth.innerText);
+
+      if(cal_wrap.classList.contains('is_active')){
+        cal_wrap.classList.remove('is_active');
+      }else{
+        cal_wrap.classList.add('is_active');
+        drawCalender(selectYear,selectMonth);
+      }
+    });   
+
+    // 이전버튼
+    btnPrev.addEventListener('click',function(){
+      //마크업 초기화
+      init();
+      // 전달 출력
+      if(selectMonth>=2&&selectMonth<=12){
+        numMonth.innerText=("0"+(selectMonth-1)).slice(-2);
+        selectMonth=parseInt(numMonth.innerText);
+        drawCalender(selectYear,selectMonth);
+      }else if(selectMonth===1){  
+        numYear.innerText=selectYear-1;
+        selectYear=parseInt(numYear.innerText);
+        numMonth.innerText=12;
+        selectMonth=parseInt(numMonth.innerText);
+        drawCalender(selectYear,selectMonth);
+      }
+    });
+    // 다음버튼
+    btnNext.addEventListener('click',function(){
+      //마크업 초기화
+      init();
+      // 다음달 출력
+      if(selectMonth>=1&&selectMonth<=11){
+        numMonth.innerText=("0"+(selectMonth+1)).slice(-2);
+        selectMonth=parseInt(numMonth.innerText);
+        drawCalender(selectYear,selectMonth);
+      }else if(selectMonth===12){ 
+        numYear.innerText=selectYear+1;
+        selectYear=parseInt(numYear.innerText);
+        numMonth.innerText='01';
+        selectMonth=parseInt(numMonth.innerText);
+        drawCalender(selectYear,selectMonth);
+      }
+    });
+    
+
+  </script>
+</body>
+</html>

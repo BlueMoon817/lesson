@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048</title>
+    <style>
+        *{margin:0;padding:0;}
+        body{width:100%;height:100vh;display:flex;display:-webkit-flex;justify-content:center;align-items:center;}
+        .container{position:relative;width:450px;height:450px;background:rgb(248, 210, 210);border:10px solid rgb(211, 122, 122);border-radius:10px;box-sizing:border-box;}
+        .v_line{position:absolute;top:-10px; width:10px;height:450px;background:rgb(211, 122, 122);}
+        .v_line1{left:100px;}
+        .v_line2{left:210px;}
+        .v_line3{left:320px;}
+        .h_line{position:absolute;left:-10px; width:450px;height:10px;background:rgb(211, 122, 122);}
+        .h_line1{top:100px;}
+        .h_line2{top:210px;}
+        .h_line3{top:320px;}
+        table{position:absolute;left:0px;top:0px;width:430px;height:430px;z-index:10;border-collapse:collapse;}
+        table tbody{position:absolute;left:0;top:0;width:430px;height:430px;}
+        tbody tr{width:430px;height:110px;padding-bottom:10px;box-sizing:border-box}
+        table td{width:100px;height:100px;background:transparent;color:#000;padding-right:10px;padding-bottom:10px;font-size:40px;text-align:center;line-height:100px;font-weight:bold;}
+        table td:last-child{padding-right:0;}
+        .button_area{position:absolute;left:50%; top:100px;transform:translateX(-50%);margin-left:185px;}
+        .replay{appearance:none;border:0;background:rgb(252, 235, 164);padding:5px;border-radius:5px;cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div class="button_area">
+        <button class="replay">New Game</button>
+    </div>
+    <div class="container">
+        <span class="v_line v_line1"></span>
+        <span class="v_line v_line2"></span>
+        <span class="v_line v_line3"></span>
+        <span class="h_line h_line1"></span>
+        <span class="h_line h_line2"></span>
+        <span class="h_line h_line3"></span>
+        <table>
+            <tbody></tbody>
+        </table>
+    </div>
+    <script>
+        let tbody=document.querySelector('tbody');
+        let td=document.querySelectorAll('td');
+        let num;
+        let op;
+        let board=
+            [
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0]
+            ];
+        //초기 셋팅
+        function init(){
+            let count=0;
+            while(1){
+                op=(Math.floor((Math.random()*10)+1));
+                y=(Math.floor((Math.random()*10)));
+                x=(Math.floor((Math.random()*10)));
+                if((y===0||y===1||y===2||y===3)&&(x===0||x===1||x===2||x===3)){
+                    if(op%2===0){
+                        num=2;
+                    }else if(op%2===1){
+                        num=4
+                    }
+                    if (board[y][x]===0) {
+                        count+=1;
+                        board[y][x]=num;
+                        if(count===2){
+                            count=0;
+                            break;
+                        }else{
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        //숫자 한개 넣는 함수
+        function makeNum(){
+            let count=0;
+            while(1){
+                op=(Math.floor((Math.random()*10)+1));
+                y=(Math.floor((Math.random()*10)));
+                x=(Math.floor((Math.random()*10)));
+                if((y===0||y===1||y===2||y===3)&&(x===0||x===1||x===2||x===3)){
+                    if(op%2===0){
+                        num=2;
+                    }else if(op%2===1){
+                        num=4
+                    }
+                    if (board[y][x]===0) {
+                        count+=1;
+                        board[y][x]=num;
+                        if(count===1){
+                            count=0;
+                            break;
+                        }else{
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+        init();
+        let render=()=>{
+            let html='';
+            for(let y=0;y<4;y+=1){
+                html+=`<tr>`;
+                for(let x=0;x<4;x+=1){
+                    if(board[y][x]===0) html+=`<td data-='${y}' data-x='${x}'></td>`;
+                    if(board[y][x]===2) html+=`<td data-='${y}' data-x='${x}'>2</td>`;
+                    if(board[y][x]===4) html+=`<td data-='${y}' data-x='${x}'>4</td>`;
+                    if(board[y][x]===8) html+=`<td data-='${y}' data-x='${x}'>8</td>`;
+                    if(board[y][x]===16) html+=`<td data-='${y}' data-x='${x}'>16</td>`;
+                    if(board[y][x]===32) html+=`<td data-='${y}' data-x='${x}'>32</td>`;
+                    if(board[y][x]===64) html+=`<td data-='${y}' data-x='${x}'>64</td>`;
+                    if(board[y][x]===128) html+=`<td data-='${y}' data-x='${x}'>128</td>`;
+                    if(board[y][x]===256) html+=`<td data-='${y}' data-x='${x}'>256</td>`;
+                    if(board[y][x]===512) html+=`<td data-='${y}' data-x='${x}'>512</td>`;
+                    if(board[y][x]===1024) html+=`<td data-='${y}' data-x='${x}'>1024</td>`;
+                    if(board[y][x]===2048) html+=`<td data-='${y}' data-x='${x}'>2048</td>`;
+                }
+                html+=`</tr>`;
+            }
+            tbody.innerHTML=html;
+        }
+        //처음 게임판그리기
+        render();
+     
+        let control=0;
+        //방향키 이벤트 함수
+        let leftKey=()=>{
+            // // 안움직일 조건.
+            for(let y=0;y<4;y+=1){
+                if(board[y][3]===0&&board[y][2]===0&&board[y][1]!==board[y][0]&&board[y][0]!==0){
+                    control+=1;
+                }else if((board[y][3]!==0&&board[y][2]!==0&&board[y][1]!==0&&board[y][0]!==0)&&((board[y][3]!==board[y][2])&&(board[y][1]!==board[y][0]))&&((board[y][2]!==board[y][1]))){
+                    control+=1;
+                }else if(board[y][3]===0&&board[y][2]===0&&board[y][1]===0&&board[y][0]===0){
+                    control+=1;
+                }else if(board[y][3]===0&&board[y][2]===0&&board[y][1]===0&&board[y][0]!==0){
+                    control+=1;
+                }else if((board[y][3]===0&&board[y][2]!==0&&board[y][1]!==0&&board[y][0]!==0)&&((board[y][2]!==board[y][1])&&(board[y][1]!==board[y][0]))){
+                    control+=1;
+                }
+            }
+            if(control>=4){
+                control=0;
+                return false;
+            }else if(control<4){
+                control=0;
+                // 공백을 먼저 없애주기
+                for(let y=0;y<4;y+=1){
+                    for(let x=0;x<4;x+=1){
+                        if(board[y][x]===0&&x+1<4){
+                            if((board[y][x+1]!==0)){
+                                board[y][x]=board[y][x+1];
+                                if(board[y][x+2]!==0&&board[y][x+2]!==undefined){
+                                    board[y][x+1]=board[y][x+2];
+                                    if(board[y][x+3]!==0&&board[y][x+3]!==undefined){
+                                        board[y][x+2]=board[y][x+3];
+                                        board[y][x+3]=0;
+                                    }else{
+                                        board[y][x+2]=0;
+                                    }
+                                }else if(board[y][x+2]===0){
+                                    if((board[y][x+3]!==0)&&board[y][x+3]!==undefined){
+                                        board[y][x+1]=board[y][x+3];
+                                        board[y][x+2]=0;
+                                        board[y][x+3]=0;
+                                    }else{
+                                        board[y][x+1]=0;
+                                    }
+                                }
+                            }else if(board[y][x+1]===0){
+                                if(board[y][x+2]!==0&&board[y][x+2]!==undefined){
+                                    board[y][x]=board[y][x+2];
+                                    if(board[y][x+3]!==0&&board[y][x+3]!==undefined){
+                                        board[y][x+1]=board[y][x+3];
+                                        board[y][x+2]=0;
+                                        board[y][x+3]=0;
+                                    }else{
+                                        board[y][x+1]=0;
+                                        board[y][x+2]=0;
+                                    }
+                                }
+                                else if(board[y][x+2]===0){
+                                    if(board[y][x+3]!==undefined){
+                                        board[y][x]=board[y][x+3];
+                                        board[y][x+1]=0;
+                                        board[y][x+2]=0;
+                                        board[y][x+3]=0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                //같은 숫자 더해주기
+                for(let y=0;y<4;y+=1){
+                    for(let x=0;x<4;x+=1){
+                        if(board[y][x]===board[y][x+1]){
+                            if(x+3<4){
+                                board[y][x]=board[y][x]+board[y][x+1];
+                                if(board[y][x+2]===board[y][x+3]){
+                                    board[y][x+1]=board[y][x+2]+board[y][x+3];
+                                    board[y][x+2]=0;
+                                    board[y][x+3]=0;
+                                }else{
+                                    board[y][x+1]=board[y][x+2];
+                                    board[y][x+2]=board[y][x+3];
+                                    board[y][x+3]=0;
+                                }   
+                            }else if(x+2<4){
+                                board[y][x]=board[y][x]+board[y][x+1];
+                                board[y][x+1]=board[y][x+2];
+                                board[y][x+2]=0;
+                            }else{
+                                board[y][x]=board[y][x]+board[y][x+1];
+                                board[y][x+1]=0;        
+                            }
+                        }
+                    }
+                }
+                //새로운 숫자 생성
+                makeNum();
+            }
+        
+        }
+       
+        let rightKey=()=>{    
+            // 안움직일 조건.
+            for(let y=0;y<4;y+=1){
+                if(board[y][0]===0&&board[y][1]===0&&board[y][2]!==board[y][3]&&board[y][3]!==0){
+                    control+=1;
+                }else if((board[y][0]!==0&&board[y][1]!==0&&board[y][2]!==0&&board[y][3]!==0)&&((board[y][0]!==board[y][1])&&(board[y][2]!==board[y][3]))&&((board[y][1]!==board[y][2]))){
+                    control+=1;
+                }else if(board[y][0]===0&&board[y][1]===0&&board[y][2]===0&&board[y][3]===0){
+                    control+=1;
+                }else if(board[y][0]===0&&board[y][1]===0&&board[y][2]===0&&board[y][3]!==0){
+                    control+=1;
+                }else if((board[y][0]===0&&board[y][1]!==0&&board[y][2]!==0&&board[y][3]!==0)&&((board[y][1]!==board[y][2])&&(board[y][2]!==board[y][3]))){
+                    control+=1;
+                }
+            }
+            // // 조건에 따른 함수 실행 여부
+            if(control>=4){
+                control=0;
+                return false;
+            }else if(control<4){
+                control=0;
+                // 공백을 먼저 없애주기
+                for(let y=0;y<4;y+=1){
+                    for(let x=0;x<4;x+=1){
+                        if(board[y][x]===0&&x-1>=0){
+                            if((board[y][x-1]!==0)){
+                                board[y][x]=board[y][x-1];
+                                if(x-3>=0&&(board[y][x-2]!==0)){
+                                    board[y][x-1]=board[y][x-2];
+                                    board[y][x-2]=board[y][x-3];
+                                    board[y][x-3]=0;
+                                }else if(x-2>=0&&(board[y][x-2]!==0)){
+                                    board[y][x-1]=board[y][x-2];
+                                    board[y][x-2]=0;
+                                }else{
+                                    board[y][x]=board[y][x-1];
+                                    board[y][x-1]=0;
+                                }
+                                if(x-3>=0&&(board[y][x-2]===0)){
+                                    if((board[y][x-3]!==0)){
+                                        board[y][x-1]=board[y][x-3];
+                                        board[y][x-2]=0;
+                                        board[y][x-3]=0;
+                                    }else if((board[y][x-3]===0)){
+                                        board[y][x-1]=0;
+                                        board[y][x-2]=0;
+                                        board[y][x-3]=0;
+                                    }
+                                }
+                            }else if(board[y][x-1]===0){
+                                if(x-3>=0&&(board[y][x-2]!==0)){
+                                    board[y][x]=board[y][x-2];
+                                    board[y][x-1]=board[y][x-3];
+                                    board[y][x-2]=0;
+                                    board[y][x-3]=0;
+                                }else if(x-2>=0&&(board[y][x-2]!==0)){
+                                    board[y][x]=board[y][x-2];
+                                    board[y][x-1]=0;
+                                    board[y][x-2]=0;
+                                }
+                            }
+                        }
+                    }
+                }
+                // 같은 숫자 더해주기
+                for(let y=0;y<4;y+=1){
+                    for(let x=3;x>=0;x-=1){
+                        if(board[y][x]===board[y][x-1]){
+                            if(x-3>=0){
+                                board[y][x]=board[y][x]+board[y][x-1];
+                                if(board[y][x-2]===board[y][x-3]){
+                                    board[y][x-1]=board[y][x-2]+board[y][x-3];
+                                    board[y][x-2]=0;
+                                    board[y][x-3]=0;
+                                }else{
+                                    board[y][x-1]=board[y][x-2];
+                                    board[y][x-2]=board[y][x-3];
+                                    board[y][x-3]=0;
+                                }   
+                            }else if(x-2>=0){
+                                board[y][x]=board[y][x]+board[y][x-1];
+                                board[y][x-1]=board[y][x-2];
+                                board[y][x-2]=0;
+                            }else{
+                                board[y][x]=board[y][x]+board[y][x-1];
+                                board[y][x-1]=0;        
+                            }
+                        }
+                    }
+                }
+                // 새로운 숫자 생성
+                makeNum();
+            }
+            // 새로운방법
+            // if(control>=4){
+            //     control=0;
+            //     return false;
+            // }else if(control<4){
+            //     control=0;
+
+            //     for(let y=0;y<4;y+=1){
+            //         for(let x=0;x<4;x+=1){
+            //             if((board[y][x]===0)&&(x-1>=0)){
+            //                 if(board[y][x-1]!==0){
+            //                     if((board[y][x-1]===board[y][x-2])&&(x-2>=0)){
+            //                         board[y][x]=board[y][x-1]+board[y][x-2];
+            //                         board[y][x-1]=board[y][x-2];
+            //                         if(board[y][x-3]!==undefined&&board[y][x-3]!==0){
+            //                             board[y][x-2]=board[y][x-3];
+            //                             board[y][x-3]=0
+            //                         }else{
+            //                             board[y][x-2]=0;
+            //                         }
+            //                     }else if((board[y][x-1]!==board[y][x-2])&&(x-2>=0)){
+            //                         board[y][x]=board[y][x-1];
+            //                         if(board[y][x-3]!==undefined&&board[y][x-3]!==0){
+            //                             if(board[y][x-2]===board[y][x-3]){
+            //                                 board[y][x-1]=board[y][x-2]+board[y][x-3];
+            //                                 board[y][x-2]=0;
+            //                                 board[y][x-3]=0;
+            //                             }else if(board[y][x-2]!==board[y][x-3]){
+            //                                 board[y][x-1]=board[y][x-2];
+            //                                 board[y][x-2]=board[y][x-3];
+            //                                 board[y][x-3]=0;
+            //                             }
+            //                         }else{
+            //                             board[y][x-1]=board[y][x-2];
+            //                             board[y][x-2]=0;
+            //                         }
+            //                     }
+            //                 }else if(board[y][x-1]===0){
+            //                     if((board[y][x-2]!==0)){
+            //                         if(board[y][x-3]!==undefined&&board[y][x-3]!==0){
+            //                             if(board[y][x-2]===board[y][x-3]){
+            //                                 board[y][x]=board[y][x-2]+board[y][x-3];
+            //                                 board[y][x-1]=0;
+            //                                 board[y][x-2]=0;
+            //                                 board[y][x-3]=0;
+            //                             }else{
+            //                                 board[y][x]=board[y][x-2];
+            //                                 board[y][x-1]=board[y][x-3];
+            //                                 board[y][x-2]=0;
+            //                                 board[y][x-3]=0;
+            //                             }
+            //                         }else{
+            //                             board[y][x]=board[y][x-2];
+            //                             board[y][x-1]=0;
+            //                             board[y][x-2]=0;
+            //                         }
+            //                     }else if(board[y][x-2]===0){
+            //                         if((board[y][x-3]!==0)&&(board[y][x-3]!==undefined)){
+            //                             board[y][x]=board[y][x-3];
+            //                             board[y][x-1]=0;
+            //                             board[y][x-2]=0;
+            //                             board[y][x-3]=0;
+            //                         }
+            //                     }
+            //                 }
+            //             }else if((x-3>=0)&&(board[y][x]!==0)&&(board[y][x-1]!==0)&&(board[y][x-2]!==0)&&(board[y][x-3]!==0)){
+
+            //                 if(board[y][x]===board[y][x-1]&&board[y][x-2]===board[y][x-3]){
+            //                     board[y][x]=board[y][x]+board[y][x-1];
+            //                     board[y][x-1]=board[y][x-1]+board[y][x-2];
+            //                     board[y][x-2]=0;
+            //                     board[y][x-3]=0;
+            //                 }else if(board[y][x]!==board[y][x-1]&&board[y][x-1]===board[y][x-2]){
+            //                     board[y][x-1]=board[y][x-1]+board[y][x-2];
+            //                     board[y][x-2]=board[y][x-3];
+            //                     board[y][x-3]=0;
+            //                 }else if(board[y][x]===board[y][x-1]&&board[y][x-2]!==board[y][x-3]){
+            //                     board[y][x]=board[y][x]+board[y][x-1];
+            //                     board[y][x-1]=board[y][x-2];
+            //                     board[y][x-2]=board[y][x-3];
+            //                     board[y][x-3]=0;
+            //                 }else if(board[y][x]!==board[y][x-1]&&board[y][x-2]===board[y][x-3]){
+            //                     board[y][x-2]=board[y][x-2]=board[y][x-3];
+            //                     board[y][x-3]=0;
+            //                 }
+            //             }
+            //         }
+            //     }
+                // 같은 숫자 더해주기
+                // for(let y=0;y<4;y+=1){
+                //     for(let x=3;x>=0;x-=1){
+                //         if(board[y][x]===board[y][x-1]){
+                //             if(x-3>=0){
+                //                 board[y][x]=board[y][x]+board[y][x-1];
+                //                 if(board[y][x-2]===board[y][x-3]){
+                //                     board[y][x-1]=board[y][x-2]+board[y][x-3];
+                //                     board[y][x-2]=0;
+                //                     board[y][x-3]=0;
+                //                 }else{
+                //                     board[y][x-1]=board[y][x-2];
+                //                     board[y][x-2]=board[y][x-3];
+                //                     board[y][x-3]=0;
+                //                 }   
+                //             }else if(x-2>=0){
+                //                 board[y][x]=board[y][x]+board[y][x-1];
+                //                 board[y][x-1]=board[y][x-2];
+                //                 board[y][x-2]=0;
+                //             }else{
+                //                 board[y][x]=board[y][x]+board[y][x-1];
+                //                 board[y][x-1]=0;        
+                //             }
+                //         }
+                //     }
+                // }
+                // 새로운 숫자 생성
+                // makeNum();
+            // }
+        }
+        let topKey=()=>{
+            
+        }
+        let bottomKey=()=>{
+            
+        }
+
+
+        window.addEventListener('keydown',function(ev){
+
+            if(ev.keyCode===37){
+                leftKey();
+                render();
+            }else if(ev.keyCode===38){
+                makeNum();
+                topKey();
+                render();
+            }
+            else if(ev.keyCode===39){
+                rightKey();
+                render();
+            }
+            else if(ev.keyCode===40){
+                makeNum();
+                bottomKey();
+                render();
+            }
+        });
+        let replay=document.querySelector('.replay');
+        replay.addEventListener('click',function(){ 
+            for(let y=0;y<4;y+=1){
+                for(let x=0;x<4;x+=1){
+                   board[y][x]=0;
+                }
+            }
+            init();
+            render();
+        });
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소코반</title>
+    <style>
+        *{margin:0;padding:0;}
+        body{height:100vh;display:flex;display:-webkit-flex;justify-content:center;align-items:center;background:rgb(218, 245, 242);overflow:hidden;}
+        .container{display:flex;display:-webkit-flex;justify-content:center;margin-top:20px;}
+        h2{text-align:center;border:2px dashed #fc0;font-size:17px;line-height:25px;color:#777;}
+        td{width:50px;height:50px;}
+        td.wall {background:url(img/wall.jpg) no-repeat;background-size:cover}
+        td.goal{position:relative;}
+        td.goal:not(.box)::before{content:'';position:absolute;background:rgb(242, 121, 121);left:50%;top:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;display:block;}
+        td.box.goal{background:url(img/box2.jpg) no-repeat;background-size:cover;}
+        td.box.goal::before{display:none;}
+        td.player{background:url(img/cat.png) no-repeat;background-size:cover;}
+        td.box{position:relative;background:url(img/box1.jpg) no-repeat;background-size:cover;}
+        .btn_area{margin-top:40px;width:100%;text-align:center}
+        .replay{outline:none;background:rgb(245, 213, 213);border:0;padding:5px 10px;border-radius:20px;color:#2d2d2d;font-weight:bold;cursor:pointer;font-size:13px;}
+        .next_stage{text-decoration:none;color:#777;font-size:13px;font-weight:bold;background:#ddd;padding:5px 10px;border-radius:20px;cursor:unset}
+        .next_stage.is_active{background:rgb(245, 213, 213);cursor:pointer;color:#2d2d2d;}
+    </style>
+
+</head>
+<body>
+    <div class="wrap">
+      <h2>&lt; Stage<span class="grade">1</span> &gt;</h2>
+        <div class="container">
+        </div>
+        <div class="btn_area">
+            <button class="replay">다시하기</button>
+            <a class="next_stage" href="#">다음단계</a>
+        </div>  
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        class Game {
+            constructor() {
+             // 초기화
+                this.stages = [
+               // 1스테이지를 추상화한 객체
+               {
+                 // 게임판의 모양
+                 // 벽=0  길=1   상자=2   목표지점=3   케릭터의시작점=4, 빈공간=5  목표랑,골이 같은 위치에서 시작 =6
+                map: [
+                   [0, 0, 0, 0, 0],
+                   [0, 4, 1, 1, 0],
+                   [0, 1, 2, 1, 0],
+                   [0, 0, 0, 1, 0],
+                   [0, 3, 2, 1, 0],
+                   [0, 1, 1, 3, 0],
+                   [0, 0, 0, 0, 0]
+                ],
+               },
+               // 2스테이지를 추상화한 객체
+               {
+                 map: [
+                   [5, 5, 0, 0, 0, 0, 0, 5],
+                   [0, 0, 0, 1, 1, 1, 0, 5],
+                   [0, 3, 4, 1, 2, 1, 0, 5],
+                   [0, 0, 0, 1, 2, 1, 0, 5],
+                   [0, 3, 0, 0, 2, 3, 0, 5],
+                   [0, 1, 0, 1, 3, 1, 0, 0],
+                   [0, 2, 1, 6, 2, 2, 3, 0],
+                   [0, 1, 1, 1, 3, 1, 1, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 0],
+                 ],
+               },
+               {
+                map: [
+                   [0, 0, 0, 0, 0, 0, 0, 0],
+                   [0, 1, 1, 0, 1, 1, 4, 0],
+                   [0, 1, 1, 1, 2, 0, 1, 0],
+                   [0, 3, 2, 2, 1, 3, 1, 0],
+                   [0, 1, 0, 3, 0, 2, 0, 0],
+                   [0, 1, 1, 3, 1, 1, 0, 0],
+                   [0, 0, 0, 0, 0, 0, 0, 5],
+                ]
+               }
+             ];
+             // 1스테이지 게임판을 그린다.
+             this.currentStage = 1;
+             this.drawStage( this.stages[this.currentStage] );
+             // 사용자의 키보드 입력을 받는다.
+             $(document).on("keydown", (ev) => {
+               // 케릭터의 현재 위치를 얻는다.
+               let playerCell=document.querySelector('.player')
+               let playerX = parseInt(playerCell.getAttribute('data-x'));
+               let playerY = parseInt(playerCell.getAttribute('data-y'));
+               // 플레이어가 입력한 조작에 따라 이동 가능 조건 판별
+               if( ev.keyCode==37 ) {
+                 // 플레이어가 왼쪽으로 이동할 수 있는 조건은?
+                 // 1) 왼쪽이 비어있는 길이거나
+                 // 2) 왼쪽이 비어있는 목표지점이거나
+                 // 3) 왼쪽이 상자인데 그 상자의 왼쪽이 비어있거나 목표지점이거나
+                 if( 
+                   ( $(`td.cell_${playerX-1}_${playerY}`).hasClass('way') && !$(`td.cell_${playerX-1}_${playerY}`).hasClass('box') ) ||
+                   ( $(`td.cell_${playerX-1}_${playerY}`).hasClass('box') && !$(`td.cell_${playerX-2}_${playerY}`).hasClass('wall') && !$(`td.cell_${playerX-2}_${playerY}`).hasClass('box') )
+                 ) {
+                   // 케릭터를 왼쪽으로 한칸 옮긴다.
+                   $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                   $(`td.cell_${playerX-1}_${playerY}`).addClass('player');
+                   // 근데 왼쪽에 상자가 있으면? 상자도 왼쪽으로 옮긴다.
+                   if( $(`td.cell_${playerX-1}_${playerY}`).hasClass('box') ) {
+                     $(`td.cell_${playerX-1}_${playerY}`).removeClass('box');
+                     $(`td.cell_${playerX-2}_${playerY}`).addClass('box');
+                   }
+                 }
+               }
+               if( ev.keyCode==38 ) {
+                 if( 
+                   ( $(`td.cell_${playerX}_${playerY-1}`).hasClass('way') && !$(`td.cell_${playerX}_${playerY-1}`).hasClass('box') ) ||
+                   ( $(`td.cell_${playerX}_${playerY-1}`).hasClass('box') && !$(`td.cell_${playerX}_${playerY-2}`).hasClass('wall') && 
+                   !$(`td.cell_${playerX}_${playerY-2}`).hasClass('box') )
+                 ) {
+                   // 케릭터를 위쪽으로 한칸 옮긴다.
+                   $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                   $(`td.cell_${playerX}_${playerY-1}`).addClass('player');
+                   // 근데 위쪽에 상자가 있으면? 상자도 위쪽으로 옮긴다.
+                   if( $(`td.cell_${playerX}_${playerY-1}`).hasClass('box') ) {
+                     $(`td.cell_${playerX}_${playerY-1}`).removeClass('box');
+                     $(`td.cell_${playerX}_${playerY-2}`).addClass('box');
+                   }
+                 }
+               }
+               if( ev.keyCode==39 ) {
+                 if( 
+                   ( $(`td.cell_${playerX+1}_${playerY}`).hasClass('way') && !$(`td.cell_${playerX+1}_${playerY}`).hasClass('box') ) ||
+                   ( $(`td.cell_${playerX+1}_${playerY}`).hasClass('box') && !$(`td.cell_${playerX+2}_${playerY}`).hasClass('wall') && !$(`td.cell_${playerX+2}_${playerY}`).hasClass('box') )
+                 ) {
+                   // 케릭터를 오른쪽으로 한칸 옮긴다.
+                   $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                   $(`td.cell_${playerX+1}_${playerY}`).addClass('player');
+                   // 근데 오른쪽에 상자가 있으면? 상자도 오른쪽으로 옮긴다.
+                   if( $(`td.cell_${playerX+1}_${playerY}`).hasClass('box') ) {
+                     $(`td.cell_${playerX+1}_${playerY}`).removeClass('box');
+                     $(`td.cell_${playerX+2}_${playerY}`).addClass('box');
+                   }
+                 }
+               }
+               if( ev.keyCode==40 ) {
+                 if( 
+                   ( $(`td.cell_${playerX}_${playerY+1}`).hasClass('way') && !$(`td.cell_${playerX}_${playerY+1}`).hasClass('box') ) ||
+                   ( $(`td.cell_${playerX}_${playerY+1}`).hasClass('box') && !$(`td.cell_${playerX}_${playerY+2}`).hasClass('wall') && !$(`td.cell_${playerX}_${playerY+2}`).hasClass('box') )
+                 ) {
+                   // 케릭터를 위쪽으로 한칸 옮긴다.
+                   $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                   $(`td.cell_${playerX}_${playerY+1}`).addClass('player');
+                   // 근데 위쪽에 상자가 있으면? 상자도 위쪽으로 옮긴다.
+                   if( $(`td.cell_${playerX}_${playerY+1}`).hasClass('box') ) {
+                     $(`td.cell_${playerX}_${playerY+1}`).removeClass('box');
+                     $(`td.cell_${playerX}_${playerY+2}`).addClass('box');
+                   }
+                 }
+               }
+               // 모든 상자들이 목표지점에 들어있으면 이 스테이지는 해결한 것으로 간주하고 다음 스테이지로 넘어간다.
+               let count = 0;
+               let btnReplay=document.querySelector('.replay');
+               for(let i=0; i<$("td.box").length; i+=1) {
+                 if( !$("td.box").eq(i).hasClass('goal') ) count += 1;
+               }
+               if( count == 0 ) {
+                 console.log( "다음 스테이지로!" );
+               }
+               // A키를 누르면 게임을 초기화한다.
+               btnReplay.addEventListener('click',()=>{
+                 this.drawStage( this.stages[this.currentStage] );
+               });
+             });
+           }
+       
+           // 게임판을 그리는 함수
+           drawStage( stage ) {
+             // 기존 게임판을 지운다.
+             $('.container').html('');
+             // 게임판을 나타낼 HTML을 조립한다.
+             let html = '';
+             html += `<table cellpadding='0' cellspacing='0'>`;
+             for(let y=0; y<stage.map.length; y+=1) {
+               html += `<tr>`;
+               for(let x=0; x<stage.map[y].length; x+=1) {
+                 if( stage.map[y][x] == 0 ) html += `<td class='wall cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                 if( stage.map[y][x] == 1 ) html += `<td class='way cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                 if( stage.map[y][x] == 2 ) html += `<td class='way box cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                 if( stage.map[y][x] == 3 ) html += `<td class='way goal cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                 if( stage.map[y][x] == 4 ) html += `<td class='way player cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                 if( stage.map[y][x] == 5 ) html += `<td class='space'></td>`;
+                 if( stage.map[y][x] == 6 ) html += `<td class='box goal cell_${x}_${y} data-x='${x}' data-y='${y}'></td>`;
+               }
+               html += `</tr>`;
+             }
+             html += `</table>`;
+             $(".container").html(html);
+           }
+         }
+         new Game();
+    </script>
+</body>
+</html>

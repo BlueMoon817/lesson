@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048</title>
+    <style>
+        *{margin:0;padding:0;}
+        body{width:100%;height:100vh;display:flex;display:-webkit-flex;justify-content:center;align-items:center;}
+        .container{position:relative;width:450px;height:450px;background:rgb(248, 210, 210);border:10px solid rgb(211, 122, 122);box-sizing:border-box;padding:10px;border-radius:10px;margin-top:20px;}
+        .v_line{position:absolute;top:-10px; width:10px;height:450px;background:rgb(211, 122, 122);}
+        .v_line1{left:100px;}
+        .v_line2{left:210px;}
+        .v_line3{left:320px;}
+        .h_line{position:absolute;left:-10px; width:450px;height:10px;background:rgb(211, 122, 122);}
+        .h_line1{top:100px;}
+        .h_line2{top:210px;}
+        .h_line3{top:320px;}
+        table{position:absolute;left:-10px;top:-10px;width:450px;height:450px;border:10px solid rgb(211, 122, 122,0);}
+        table tbody{position:absolute;left:0px;top:0px;width:440px;height:440px;border-collapse:collapse;}
+        tbody tr{width:100%;height:110px;padding-bottom:10px;box-sizing:border-box}
+        table td{width:100px;height:100px;background:transparent;color:#000;padding-right:10px;padding-bottom:10px;font-size:40px;text-align:center;line-height:100px;font-weight:bold;}
+        table td:last-child{padding-right:0;}
+        .button_area{text-align:right;padding-right:10px;}
+        .replay{display:inline-block;appearance:none;border:0;background:rgb(252, 235, 164);padding:10px;border-radius:5px;cursor:pointer;font-weight:bold;}
+        .game_over{position:absolute;left:-10px;top:-10px;background:rgba(255,255,255);color:#000;text-align:center;width:450px;height:450px;
+            line-height:460px;font-size:40px;z-index:100;font-weight:bold;}
+        .game_clear{position:absolute;left:-10px;top:-10px;background:rgb(29, 129, 96,0.7);color:#fff;text-align:center;width:450px;height:450px;
+            line-height:460px;font-size:40px;z-index:100;font-weight:bold;}
+        table td>span{display:block;width:100%;height:100%;}
+        .color_white{background-color:#fff;color:#777;}
+        .color_orange1{background-color:rgb(240, 205, 145);color:#fff;}
+        .color_orange2{background-color:rgb(237, 156, 15);color:#fff;}
+        .color_red1{background-color:rgb(238, 151, 103);color:#fff;}
+        .color_red2{background-color:rgb(225, 119, 103);color:#fff;}
+        .color_red3{background-color:rgb(244, 82, 57);color:#fff;}
+        .color_yellow{background-color:#fc0;color:#fff;}
+        .color_green{background-color:rgb(44, 136, 110);color:#fff;}
+        td>span.is_act{animation:scale .3s linear;}
+        @keyframes scale{
+            0%{transform:scale(1.15)}
+            50%{transform:scale(1.05)}
+            100%{transform:scale(1)}
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="button_area">
+            <button class="replay">Replay</button>
+        </div>
+        <div class="container">
+            <span class="v_line v_line1"></span>
+            <span class="v_line v_line2"></span>
+            <span class="v_line v_line3"></span>
+            <span class="h_line h_line1"></span>
+            <span class="h_line h_line2"></span>
+            <span class="h_line h_line3"></span>
+            <table>
+                <tbody></tbody>
+            </table>
+            <div class="game_over" style="opacity:0;">GameOver</div>
+            <div class="game_clear" style="opacity:0;">GameClear</div>
+        </div>
+    </div>  
+    <script>
+        (function(){
+            let tbody=document.querySelector('tbody');
+            let td=document.querySelectorAll('td');
+            let num,op,count=0,control1=0,control2=0,control3=0,control4=0,newX,newY;
+            let board=
+                [
+                    [0,0,0,0],
+                    [0,0,0,0],
+                    [0,0,0,0],
+                    [0,0,0,0]
+                ];
+            function setRandom(){
+                op=Math.floor((Math.random()*10)+1);
+                newX=Math.floor(Math.random()*10)%4;
+                newY=Math.floor(Math.random()*10)%4;
+                if(op%2===0){
+                    num=2;
+                }else if(op%2===1){
+                    num=4;
+                }
+                if(board[newY][newX]===0){
+                    count+=1;
+                    board[newY][newX]=num;
+                }
+            }
+            // 안움직일 조건.
+            function stopL(){
+                for(let y=0;y<4;y+=1){
+                    if((board[y][3]===0)&&(board[y][2]===0)&&(board[y][1]!==0)&&(board[y][0]!==0)&&(board[y][1]!==board[y][0])){control1+=1;}
+                    else if((board[y][3]===0)&&(board[y][2]===0)&&(board[y][1]===0)&&(board[y][0]!==0)){control1+=1;}
+                    else if((board[y][3]===0)&&(board[y][2]===0)&&(board[y][1]===0)&&(board[y][0]===0)){control1+=1;}
+                    else if((board[y][3]===0&&board[y][2]!==0&&board[y][1]!==0&&board[y][0]!==0)&&((board[y][2]!==board[y][1])&&(board[y][1]!==board[y][0]))){control1+=1;}
+                    else if((board[y][3]!==0&&board[y][2]!==0&&board[y][1]!==0&&board[y][0]!==0)&&((board[y][3]!==board[y][2])&&(board[y][2]!==board[y][1])&&(board[y][1]!==board[y][0]))){control1+=1;}
+                }
+            }
+            function stopR(){
+                for(let y=0;y<4;y+=1){
+                    if((board[y][0]===0)&&(board[y][1]===0)&&(board[y][2]!==0)&&(board[y][3]!==0)&&(board[y][2]!==board[y][3])){control2+=1;}
+                    else if((board[y][0]===0)&&(board[y][1]===0)&&(board[y][2]===0)&&(board[y][3]!==0)){control2+=1;}
+                    else if((board[y][0]===0)&&(board[y][1]===0)&&(board[y][2]===0)&&(board[y][3]===0)){control2+=1;}
+                    else if((board[y][0]===0&&board[y][1]!==0&&board[y][2]!==0&&board[y][3]!==0)&&((board[y][1]!==board[y][2])&&(board[y][2]!==board[y][3]))){control2+=1;}
+                    else if((board[y][0]!==0&&board[y][1]!==0&&board[y][2]!==0&&board[y][3]!==0)&&(((board[y][0]!==board[y][1])&&(board[y][1]!==board[y][2])&&(board[y][2]!==board[y][3])))){control2+=1;}
+                }
+            }
+            function stopT(){
+                for(let x=0;x<4;x+=1){
+                    if((board[3][x]===0)&&(board[2][x]===0)&&(board[1][x]!==0)&&(board[0][x]!==0)&&(board[1][x]!==board[0][x])){control3+=1;}
+                    else if((board[3][x]===0)&&(board[2][x]===0)&&(board[1][x]===0)&&(board[0][x]!==0)){control3+=1;}
+                    else if((board[3][x]===0)&&(board[2][x]===0)&&(board[1][x]===0)&&(board[0][x]===0)){control3+=1;}
+                    else if((board[3][x]===0&&board[2][x]!==0&&board[1][x]!==0&&board[0][x]!==0)&&((board[2][x]!==board[1][x])&&(board[1][x]!==board[0][x]))){control3+=1;}
+                    else if((board[3][x]!==0&&board[2][x]!==0&&board[1][x]!==0&&board[0][x]!==0)&&(((board[3][x]!==board[2][x])&&(board[1][x]!==board[0][x])&&(board[2][x]!==board[1][x])))){control3+=1;}
+                }
+            }
+            function stopB(){
+                for(let x=0;x<4;x+=1){
+                    if((board[0][x]===0)&&(board[1][x]===0)&&(board[2][x]!==0)&&(board[3][x]!==0)&&(board[2][x]!==board[3][x])){control4+=1;}
+                    else if((board[0][x]===0)&&(board[1][x]===0)&&(board[2][x]===0)&&(board[3][x]!==0)){control4+=1;}
+                    else if((board[0][x]===0)&&(board[1][x]===0)&&(board[2][x]===0)&&(board[3][x]===0)){control4+=1;}
+                    else if((board[0][x]===0&&board[1][x]!==0&&board[2][x]!==0&&board[3][x]!==0)&&((board[1][x]!==board[2][x])&&(board[2][x]!==board[3][x]))){control4+=1;}
+                    else if((board[0][x]!==0&&board[1][x]!==0&&board[2][x]!==0&&board[3][x]!==0)&&(((board[0][x]!==board[1][x])&&(board[2][x]!==board[3][x])&&(board[1][x]!==board[2][x])))){control4+=1;}
+                }
+            }
+            //게임오버
+            let gameOver=document.querySelector('.game_over');
+            function gameOverFunc(){
+                stopL();
+                stopR();
+                stopT();
+                stopB();
+                if(control1>=4&&control2>=4&&control3>=4&&control4>=4){
+                    gameOver.style.opacity=0.7;
+                }
+                control1=0;
+                control2=0;
+                control3=0;
+                control4=0;
+            }
+            //초기 셋팅
+            function init(){
+                while(1){
+                    setRandom();
+                    if(count===2){
+                        count=0;
+                        break;
+                    }else{
+                        continue;
+                    }
+                }
+            }
+            let isMaking,emp=0;
+            //빈셀 있는지 확인
+            function emptyCell(){
+                emp=0;
+                for(let y=0;y<4;y+=1){
+                    for(let x=0;x<4;x+=1){
+                        if(board[y][x]===0){emp+=1;}
+                    }
+                }
+                emp===0? isMaking=true : isMaking=false; 
+            }
+            // 숫자 1개 추가 , 게임종료
+            function makeNum(){
+                emptyCell();
+                while(1){
+                    if(isMaking){
+                        break;
+                    }else if(!isMaking){
+                        setRandom();
+                        emptyCell();
+                        if(isMaking){
+                            gameOverFunc();
+                        }
+                        if(count===1){
+                            count=0;
+                            break;
+                        }else{
+                            continue;
+                        }
+                    }
+                }
+            }
+            init();
+            let gameClear=document.querySelector('.game_clear');
+            let render=()=>{
+                let html='';
+                for(let y=0;y<4;y+=1){
+                    html+=`<tr>`;
+                    for(let x=0;x<4;x+=1){
+                        if(newY===y&&newX===x&&board[newY][newX]===2){html+=`<td><span class="color_white is_act">2</span></td>`;
+                        }else if(board[y][x]===2 && !(newY===y&&newX===x)){html+=`<td><span class="color_white">2</span></td>`;}
+                        if(newY===y&&newX===x&&board[newY][newX]===4){html+=`<td><span class="color_orange1 is_act">4</span></td>`;
+                        }else if(board[y][x]===4 && !(newY===y&&newX===x)){ html+=`<td><span class="color_orange1">4</span></td>`;}
+                        if(board[y][x]===0) html+=`<td></td>`;
+                        if(board[y][x]===8) html+=`<td><span class="color_orange2">8</span></td>`;
+                        if(board[y][x]===16) html+=`<td><span class="color_red1">16</span></td>`;
+                        if(board[y][x]===32) html+=`<td><span class="color_red2">32</span></td>`;
+                        if(board[y][x]===64) html+=`<td ><span class="color_red3">64</span></td>`;
+                        if(board[y][x]===128) html+=`<td><span class="color_yellow">128</span></td>`;
+                        if(board[y][x]===256) html+=`<td><span class="color_yellow">256</span></td>`;
+                        if(board[y][x]===512) html+=`<td><span class="color_yellow">512</span></td>`;
+                        if(board[y][x]===1024) html+=`<td><span class="color_yellow">1024</span></td>`;
+                        if(board[y][x]===2048) 
+                        {
+                            html+=`<td><span class="color_green is_act">2048</span></td>`
+                            gameClear.style.opacity=1;
+                        };
+                    }
+                    html+=`</tr>`;
+                }
+                tbody.innerHTML=html;
+            }
+            //처음 게임판그리기
+            render();
+            //방향키 이벤트 함수
+            let leftKey=()=>{
+                stopL();
+                if(control1>=4){
+                    control1=0;
+                    return false;
+                }else if(control1<4){
+                    control1=0;
+                    //공백없애기
+                    for(let y=0;y<4;y+=1){
+                        for(let p=0;p<3;p+=1){
+                            for(let x=0;x<3;x+=1){
+                                if(board[y][x]===0){
+                                    board[y][x]=board[y][x+1];
+                                    board[y][x+1]=0;
+                                }
+                            }
+                        }
+                    }
+                    // 숫자 더하기
+                    for(let y=0;y<4;y+=1){
+                        if(board[y][0]===board[y][1]){
+                            board[y][0]=board[y][0]+board[y][1];
+                            if(board[y][2]===board[y][3]){
+                                board[y][1]=board[y][2]+board[y][3];
+                                board[y][2]=0;
+                                board[y][3]=0;
+                            }else{
+                                board[y][1]=board[y][2];
+                                board[y][2]=board[y][3];
+                                board[y][3]=0;
+                            }
+                        }else if(board[y][0]!==board[y][1]){
+                            if(board[y][1]===board[y][2]){
+                                board[y][1]=board[y][1]+board[y][2];
+                                board[y][2]=board[y][3];
+                                board[y][3]=0;
+                            }else if(board[y][1]!==board[y][2]){
+                                if(board[y][2]===board[y][3]){
+                                    board[y][2]=board[y][2]+board[y][3];
+                                    board[y][3]=0;
+                                }
+                            }
+                        }
+                    }
+                    makeNum();
+                }
+            }
+            let rightKey=()=>{  
+                stopR();
+                if(control2>=4){
+                    control2=0;
+                    return false;
+                }else if(control2<4){
+                    control2=0;
+                    //공백없애기
+                    for(let y=0;y<4;y+=1){
+                        for(let p=0;p<3;p+=1){
+                            for(let x=3;x>0;x-=1){
+                                if(board[y][x]===0){
+                                    board[y][x]=board[y][x-1];
+                                    board[y][x-1]=0;
+                                }
+                            }
+                        }
+                    }
+                    // 숫자 더하기
+                    for(let y=0;y<4;y+=1){
+                        if(board[y][3]===board[y][2]){
+                            board[y][3]=board[y][3]+board[y][2];
+                            if(board[y][1]===board[y][0]){
+                                board[y][2]=board[y][1]+board[y][0];
+                                board[y][1]=0;
+                                board[y][0]=0;
+                            }else{
+                                board[y][2]=board[y][1];
+                                board[y][1]=board[y][0];
+                                board[y][0]=0;
+                            }
+                        }else if(board[y][3]!==board[y][2]){
+                            if(board[y][2]===board[y][1]){
+                                board[y][2]=board[y][2]+board[y][1];
+                                board[y][1]=board[y][0];
+                                board[y][0]=0;
+                            }else if(board[y][2]!==board[y][1]){
+                                if(board[y][1]===board[y][0]){
+                                    board[y][1]=board[y][1]+board[y][0];
+                                    board[y][0]=0;
+                                }
+                            }
+                        }
+                    }
+                    makeNum();
+                }
+            }
+            let topKey=()=>{
+                stopT();
+                if(control3>=4){
+                    control3=0;
+                    return false;
+                }else if(control3<4){
+                    control3=0;
+                    //공백없애기
+                    for(let x=0;x<4;x+=1){
+                        for(let p=0;p<3;p+=1){
+                            for(let y=0;y<3;y+=1){
+                                if(board[y][x]===0){
+                                    board[y][x]=board[y+1][x];
+                                    board[y+1][x]=0;
+                                }
+                            }
+                        }
+                    }
+
+                    // 숫자 더하기
+                    for(let x=0;x<4;x+=1){
+                        if(board[0][x]===board[1][x]){
+                            board[0][x]=board[0][x]+board[1][x];
+                            if(board[2][x]===board[3][x]){
+                                board[1][x]=board[2][x]+board[3][x];
+                                board[2][x]=0;
+                                board[3][x]=0;
+                            }else{
+                                board[1][x]=board[2][x];
+                                board[2][x]=board[3][x];
+                                board[3][x]=0;
+                            }
+                        }else if(board[0][x]!==board[1][x]){
+                            if(board[1][x]===board[2][x]){
+                                board[1][x]=board[1][x]+board[2][x];
+                                board[2][x]=board[3][x];
+                                board[3][x]=0;
+                            }else if(board[1][x]!==board[2][x]){
+                                if(board[2][x]===board[3][x]){
+                                    board[2][x]=board[2][x]+board[3][x];
+                                    board[3][x]=0;
+                                }
+                            }
+                        }
+                    }
+                    makeNum();
+                }
+            }
+            let bottomKey=()=>{
+                stopB();
+                if(control4>=4){
+                    control4=0;
+                    return false;
+                }else if(control4<4){
+                    control4=0;
+                    //공백없애기
+                    for(let x=0;x<4;x+=1){
+                        for(let p=0;p<3;p+=1){
+                            for(let y=3;y>0;y-=1){
+                                if(board[y][x]===0){
+                                    board[y][x]=board[y-1][x];
+                                    board[y-1][x]=0;
+                                }
+                            }
+                        }
+                    }
+                    // 숫자 더하기
+                    for(let x=0;x<4;x+=1){
+                        if(board[3][x]===board[2][x]){
+                            board[3][x]=board[3][x]+board[2][x];
+                            if(board[1][x]===board[0][x]){
+                                board[2][x]=board[1][x]+board[0][x];
+                                board[1][x]=0;
+                                board[0][x]=0;
+                            }else{
+                                board[2][x]=board[1][x];
+                                board[1][x]=board[0][x];
+                                board[0][x]=0;
+                            }
+                        }else if(board[3][x]!==board[2][x]){
+                            if(board[2][x]===board[1][x]){
+                                board[2][x]=board[2][x]+board[1][x];
+                                board[1][x]=board[0][x];
+                                board[0][x]=0;
+                            }else if(board[2][x]!==board[1][x]){
+                                if(board[1][x]===board[0][x]){
+                                    board[1][x]=board[1][x]+board[0][x];
+                                    board[0][x]=0;
+                                }
+                            }
+                        }
+                    }
+                    makeNum();
+                }
+            }
+            window.addEventListener('keydown',function(ev){
+                if(ev.keyCode===37){
+                    leftKey();
+                    render();
+                }else if(ev.keyCode===38){
+                    topKey();
+                    render();
+                }
+                else if(ev.keyCode===39){
+                    rightKey();
+                    render();
+                }
+                else if(ev.keyCode===40){
+                    bottomKey();
+                    render();
+                }
+            });
+            let replay=document.querySelector('.replay');
+            replay.addEventListener('click',function(){ 
+                gameOver.style.opacity=0;
+                gameClear.style.opacity=0;
+                for(let y=0;y<4;y+=1){
+                    for(let x=0;x<4;x+=1){
+                       board[y][x]=0;
+                    }
+                }
+                init();
+                render();
+            });
+        })();
+    </script>
+</body>
+</html>

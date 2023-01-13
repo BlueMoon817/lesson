@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>캘린더</title>
+    <style>
+        /* 달력 style */
+        *{margin:0;padding:0;}
+        body{width:100%;height:100vh;display:flex;display:-webkit-flex;justify-content:center;font-size:11px;}
+        ul{list-style:none;}
+        li{position:relative; line-height:16px;box-sizing: border-box; padding-right: 10px;}
+        .user_time{position: absolute;right: 0;top: 0;width: 10px;height: 10px;background:rgb(69, 137, 201);border-radius: 50%;}
+        .all_time{position: absolute;right: 0;top: 0;width: 10px;height: 10px;background:rgb(239, 142, 142);border-radius: 50%;}
+        button{cursor:pointer;}
+        .wrap{width:1000px;height:100vh;position:relative;}
+        .calender{padding:10px;border:1px solid #000;background-color:rgb(220, 231, 248);}
+        .cal_head{display:flex;display:-webkit-flex;width:100%;justify-content:space-between;align-items:center;}
+        .cal_head>button{width:50px;height:25px;}
+        .curr_date{font-weight:bold;font-size:22px;cursor:pointer;}
+        .num_month{margin-left:10px;}
+        table{margin-top:20px;width:100%;border-collapse: collapse;}
+        table thead{height:50px;}
+        table th, table td{width:calc(100%/7);text-align:left;border: 1px solid #444444;}
+        table th{background:#000;color:#fff;text-align:center;}
+        table td{min-height:100px;height:100px;position:relative;box-sizing:border-box;padding:30px 5px 5px 5px;}
+        table tbody button{outline:none;border:none;padding:5px;margin:0;position:absolute;right:5px;top:5px;background-color:#fff;width:20px;height:20px;border-radius:50%;}
+        table tbody button::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:1px; height:10px;background:#444444;}
+        table tbody button::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:10px; height:1px;background:#444444;}
+        table tbody .date_count{line-height:1;position:absolute;left:5px;top:5px;}
+        .date_sun{color:red;}
+        .date_sat{color:blue;}
+    
+        /* 일정입력창 */
+        .modal_wrap{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);transform:-webkit-translate(-50%,-50%);padding:15px;background:#fff;height:200px;width:300px;box-sizing:border-box;border:1px solid #2d2d2d;}
+        .modal_wrap.is_active{display:block;}
+        .modal_con{width:100%;height:100%;}
+        .guide_desc{display:block;font-weight:bold;font-size:14px;}
+        .tit_todo{width:100%;}
+        .tit_todo::after{content:'';display:block;clear:both;}
+        .tit_todo input{float:left;border:0;border-bottom:1px solid #000;width:calc(100% - 30px);outline:none;height:25px;}
+        .tit_todo .btn_save{width:30px;float:right;font-size:9px;height:24px;}
+        .input_bx{margin-top:20px;}
+        .input_bx>div{margin-top:10px;}
+        .input_bx .all_day{display:flex;display:-webkit-flex;justify-content:space-between;}
+        .input_bx .all_day.is_active .btn_all_day{background:rgb(248, 181, 168);}
+        .input_bx .all_day.is_active .btn_all_day::before{left:auto;right:0;background:rgb(239, 142, 142);transition:.3s;}
+        .btn_all_day{position:relative;width:35px;height:20px;border-radius:10px;background:#ddd;outline:none;border:0;}
+        .btn_all_day::before{content:'';position:absolute;left:0;top:0;width:20px;height:20px;background:#777;border-radius:50%;}
+        .start_day .day_val, .end_day .day_val{cursor:pointer;}
+        .items{display:block;color:rgb(21, 87, 55);font-weight:bold;font-size:14px;}
+        .btn_close{width:15px;height:15px;position:absolute;right:10px;top:10px;transform:rotate(-45deg); -webkit-transform:rotate(-45deg);background:transparent;border:0;}
+        .btn_close::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%); -webkit-transform: translate(-50%,-50%);width:2px;height:10px;background:#777;}
+        .btn_close::after{
+          content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);transform:-webkit-translate(-50%,-50%);width:10px;height:2px;background:#777;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="calender">
+          <div class="cal_head">
+            <button type="button" class="nav_prev">이전</button>
+            <div class="curr_date"><span class="num_year"></span>.<span class="num_month"></span></div>
+            <button type="button" class="nav_next">다음</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th scope="row" style="color:red;">일</th>
+                <th scope="row">월</th>
+                <th scope="row">화</th>
+                <th scope="row">수</th>
+                <th scope="row">목</th>
+                <th scope="row">금</th>
+                <th scope="row" style="color:blue;">토</th>
+              </tr>
+            </thead>
+            <tbody class="cal_body"></tbody>
+          </table>
+        </div>
+    </div>  
+    <div class="modal_wrap">
+      <button class="btn_close"></button>
+      <div class="modal_con">
+        <div class="tit_todo">
+          <label for="input_todo" class="guide_desc">할 일을 적어주세요.</label>
+          <input type="text" name="todo_item" id="input_todo">
+          <button class="btn_save">저장</button>
+        </div>
+        <div class="input_bx">
+          <span class="guide_desc">기간을 지정해주세요.</span>
+          <div class="all_day">
+            <span class="guide_desc">종일</span>
+            <button class="btn_all_day"></button>
+          </div>
+          <div class="start_day">
+             <span>시작일 : <span class="get_date"></span></span>
+          </div>  
+          <div class="end_day">
+            <span>종료일 : <span class="get_date"></span></span>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <script>
+        /*
+        과제)
+            마치 구글캘린더와 같은 기능을 하는 일정관리앱 (캘린더앱) 을 만들어보자.
+            화면에 달력 표시.
+            일정추가 버튼. 버튼을 누르면 일정을 입력받는 기능.
+            일정을 입력하고 나면 해당하는 년/월의 달력에 해당 날짜에 표시.
+
+            "일정"에는 3가지 유형이 있다.
+            1) 한 날에 시작시간 ~ 종료시간이 있는 일정
+            2) 한 날에 하루종일인 일정 (생일이나 기념일)
+            3) 여러날에 걸친 일정
+        */
+
+    // 모달창에 시간 입력 시 종일 버튼 활성화가 아닐 시 2022-10-10-10-10 년-월-일-시-분 모두 입력한다는 가정하에..
+    // 종일버튼이 활성화 일시 2022-10-10 년-월-일 
+    // 월,일,시,분은 두자리로 입력..   
+
+    let currDate = document.querySelector('.curr_date');
+    let now = new Date();
+    let userYear,userMonth,userDay,userDay2,userHour,userHour2,userMinutes,userMinutes2,inputDate,td,ul,list;
+    let numYear = document.querySelector('.num_year');
+    let numMonth = document.querySelector('.num_month');
+    let btnPrev = document.querySelector('.nav_prev');
+    let btnNext = document.querySelector('.nav_next');
+    let modalWrap= document.querySelector('.modal_wrap');
+    let btnClose= document.querySelector('.btn_close');
+    let allDay = document.querySelector('.all_day');
+    let btnAllDay = document.querySelector('.btn_all_day');
+    let btnStartDay = document.querySelector('.start_day');
+    let btnEndDay = document.querySelector('.end_day');
+    let setStartDate = document.querySelector('.start_day .get_date');
+    let setEndDate = document.querySelector('.end_day .get_date'); 
+    let toDoList = document.querySelector('#input_todo');
+    let btnSave = document.querySelector('.btn_save');
+
+    function dateObj (job, startDay, endDay, startTime, endTime, wholeDay){
+        this.job = job;
+        this.startDay = startDay;
+        this.endDay = endDay;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.wholeDay = wholeDay;
+    }
+    const listArr = [];
+    function drawCalendar(year, month){     
+        let firstDay = (new Date(year, month-1, 1)).getDay();
+        let lastDate;
+        let lastDay = (new Date(year, month-1, lastDate)).getDay();
+
+        //달력 연,월 표시
+        numYear.innerText=year;
+        numMonth.innerText=month;
+
+        // 마지막 날짜구하기
+        if(((year%400===0)||((year%4===0)&&(year%100!==0)))&&(month===02)){
+            lastDate=29; 
+        }else if(month===02){ // 윤년이 아닌 2월
+            lastDate=28;
+        }else if(month===01 ||month===03 || month===05 ||month===07 ||month===08||month===10||month===12){
+            lastDate=31;
+        }else if(month===04||month===06||month===09||month===11){
+            lastDate=30;
+        }
+
+        //tr 시작지점
+        let makeCal = `<tr>` 
+
+        //1일의 요일까지 빈칸 만들기
+        for(let space=0; space<firstDay; space+=1){
+            makeCal+=`<td></td>`;
+        }
+        let count = firstDay;
+        for(let dayCount=1; dayCount<=lastDate; dayCount+=1){
+            makeCal += `<td><span class="date_count">${dayCount}</span><button type="button" class="add_item"></button><ul class="item_lists"></ul></td>`;
+            count+=1;
+            if(count===7){
+                makeCal += `</tr><tr>`;
+                count=0;
+            }
+            if(dayCount === lastDate && count!==7){
+                for(let z=7-(6-count); z<=7; z+=1){
+                    makeCal+=`<td></td>`;
+                }
+                count=0;
+            }
+        }
+        for(let space=lastDay+1;space<=6; space+=1){
+            makeCal+=`<td></td>`;
+        }
+        makeCal += `</tr>`;
+        document.querySelector('.cal_body').innerHTML = makeCal;
+        td=document.querySelectorAll('tbody td');
+        for(let i = 0; i<listArr.length; i+=1){
+            if( year === parseInt(listArr[i].startDay.substr(0,4)) && month === parseInt(listArr[i].startDay.substr(5,2)) && parseInt(userDay) === parseInt(listArr[i].startDay.slice(-2))){
+                schedule(listArr[i].job, listArr[i].startDay, listArr[i].endDay,listArr[i].startTime,listArr[i].endTime, listArr[i].wholeDay);
+            }
+        }
+       
+    }
+  
+    // 현재달력 출력
+    drawCalendar(now.getFullYear(),now.getMonth()+1);
+
+    // 달력 초기화 함수
+    function init(){
+        makeCal=``;
+    }
+    // 시작일, 종료일(자동) 셋팅 함수
+    function settingTime(year, month, day, hours, minutes){
+      setStartDate.innerHTML = `${year}-${month}-${day} / ${hours}:${minutes}`;
+      if(hours>=23){
+        setEndDate.innerHTML = `${year}-${month}-${parseInt(day)+1} / 00:${minutes}`;
+        userDay2 = parseInt(day)+1;
+      }else{
+        setEndDate.innerHTML = `${year}-${month}-${day} / ${parseInt(hours)+1}:${minutes}`;
+      }
+    };
+    // 종료일 셋팅 함수
+    function settingEndTime(year, month, day, hours, minutes){
+        setEndDate.innerHTML = `${year}-${month}-${day} / ${hours}:${minutes}`;
+    }
+
+    // 종일 UI 활성화 시 시간 없애기
+    function allDayFunc(year,month,day){
+      setStartDate.innerHTML = `${year}-${month}-${day} / 00:00`;
+      setEndDate.innerHTML = `${year}-${month}-${day} / 23:59`;
+    }
+    // 클릭시 모달창 출력
+    function popup(){
+        for(let btn=0;btn<td.length;btn+=1){
+            td[btn].addEventListener('click',function(){
+                userDay = td[btn].childNodes[0].innerHTML;
+                userDay2 = userDay;
+                userHour = now.getHours(); 
+                if(parseInt(userHour)>=23) userHour2='00';    
+                else userHour2=parseInt(userHour)+1;
+                userMinutes = now.getMinutes();
+                userMinutes2 = userMinutes;
+                if(modalWrap.classList.contains('is_active')===false){
+                    modalWrap.classList.add('is_active');
+                    if(userYear===undefined || userYear===undefined){
+                        settingTime(now.getFullYear(),now.getMonth()+1,userDay,now.getHours(),now.getMinutes());
+                    }else{
+                        settingTime(userYear,userMonth,userDay,userHour,userMinutes);
+                    }
+                }
+            });
+        };
+    }
+    popup();
+    // 입력 받기 함수
+    function getAll(){
+        inputDate = prompt('년-월-일/시-분 을 입력해주세요');
+        if(inputDate.length!==0){
+            numYear.innerHTML = inputDate.substr(0,4);
+            numMonth.innerHTML = inputDate.substr(5,2);
+            userYear = parseInt(numYear.innerHTML);
+            userMonth = parseInt(numMonth.innerHTML);
+        }
+    }
+    //달력 재출력 함수
+    function reDraw(){
+        inputDate = prompt('년-월을 입력해주세요');
+        init();
+        numYear.innerHTML = inputDate.substring(0,4);
+        numMonth.innerHTML = inputDate.slice(-2);
+        userYear = parseInt(numYear.innerHTML);
+        userMonth = parseInt(numMonth.innerHTML);
+        drawCalendar(userYear,userMonth);
+        popup();
+    }
+
+    //달력 연,월 입력
+    currDate.addEventListener('click',function(){
+        reDraw();
+    });
+    // 이전 버튼
+    btnPrev.addEventListener('click', function(){
+        init();
+        userYear = parseInt(numYear.innerHTML);
+        userMonth = parseInt(numMonth.innerHTML)-1;
+        if(userMonth === 0){
+            userMonth=12;
+            userYear = userYear-1;
+        }
+        drawCalendar(userYear,userMonth);
+        popup();
+    });
+    // 다음 버튼
+    btnNext.addEventListener('click', function(){
+        init();
+        userYear = parseInt(numYear.innerHTML);
+        userMonth = parseInt(numMonth.innerHTML)+1;
+        if(userMonth === 12){
+            userMonth=1;
+            userYear = userYear+1;
+        }
+        drawCalendar(userYear,userMonth);
+        popup();
+    });
+    // 모달 닫기
+    btnClose.addEventListener('click',function(){
+        modalWrap.classList.remove('is_active');
+        allDay.classList.remove('is_active');
+    });
+    // 종일 버튼
+    btnAllDay.addEventListener('click',function(){
+        if(allDay.classList.contains('is_active')){
+            allDay.classList.remove('is_active');
+            if(userYear===undefined || userMonth===undefined){
+                settingTime(now.getFullYear(),now.getMonth()+1,userDay,now.getHours(),now.getMinutes());
+            }else{
+                settingTime(userYear,userMonth,userDay,userHour,userMinutes);
+            }
+        }else{
+            allDay.classList.add('is_active');
+            if(userYear===undefined || userYear===undefined || userDay === undefined){
+                allDayFunc(now.getFullYear(),now.getMonth()+1,now.getDate());
+                userDay2=userDay;
+            }else{
+                userDay2=userDay;
+                allDayFunc(userYear,userMonth,userDay);
+            }
+        }
+    });
+    // 시작일 클릭
+    btnStartDay.addEventListener('click',function(){
+        if(allDay.classList.contains('is_active')===false){
+            getAll();
+            userDay = inputDate.substr(8,2);
+            userDay2 = userDay;
+            userHour = inputDate.substr(11,2);
+            if(parseInt(userHour)>=23) userHour2='00';    
+            else userHour2=parseInt(userHour)+1;
+            userMinutes = inputDate.slice(-2);
+            userMinutes2 = userMinutes;
+            settingTime(userYear,userMonth,userDay,userHour,userMinutes);
+        }else if(allDay.classList.contains('is_active')){
+            inputDate = prompt('년-월-일 을 입력해주세요');
+            if(inputDate.length!==0){
+                numYear.innerHTML = inputDate.substr(0,4);
+                numMonth.innerHTML = inputDate.substr(5,2);
+                userYear = parseInt(numYear.innerHTML);
+                userMonth = parseInt(numMonth.innerHTML);
+                userDay = inputDate.substr(-2);
+                userDay2 = userDay;
+                userHour = inputDate.substr(11,2);
+            }
+            allDayFunc(userYear,userMonth,userDay);
+        }
+    });
+    // 종료일 클릭
+    btnEndDay.addEventListener('click',function(){
+        if(allDay.classList.contains('is_active')===false){
+            getAll();
+            userDay2 = inputDate.substr(8,2);
+            if(parseInt(userHour)>=23) userHour2='00';    
+            else userHour2=inputDate.substr(11,2);
+            userMinutes2 = inputDate.slice(-2);
+            settingEndTime(userYear,userMonth,userDay2,userHour2,userMinutes2);
+        }else{
+            allDayFunc(userYear,userMonth,userDay2);
+        }
+    });
+    let s;
+    // 저장버튼 
+    btnSave.addEventListener('click', function(){
+        s = new dateObj(toDoList.value,`${numYear.innerHTML}-${numMonth.innerHTML}-${userDay}`,`${numYear.innerHTML}-${numMonth.innerHTML}-${userDay2}`,`-${userHour}:${userMinutes}`,`-${userHour2}:${userMinutes2}`,allDay.classList.contains('is_active'));
+        listArr.push(s);
+        schedule(s.job,s.startDay,s.endDay,s.startTime,s.endTime,s.wholeDay);
+    });
+    function schedule(job, startDay, endDay, startTime, endTime, wholeDay){
+        for(let i=parseInt(userDay); i<=parseInt(userDay2); i+=1){
+            ul = document.querySelectorAll('tbody ul');
+            if(wholeDay){
+                ul[i-1].innerHTML += `<li><span class="items">${job}</span><span class="all_time"></span></li>`;
+            }else if(wholeDay === false){
+                ul[i-1].innerHTML += `<li><span class="items">${job}</span>${startDay}${startTime}~${endDay}${endTime}<span class="user_time"></span></li>`;
+            }
+        }
+        list = document.querySelectorAll('tbody td li');
+        toDoList.value=``;
+    }
+    </script>
+    
+</body>
+</html>

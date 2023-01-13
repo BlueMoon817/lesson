@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6번 1번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+        문제 1번)
+        원시적인 형태의 계산기
+        사용자로부터 숫자1개 사칙연산1개 숫자 1개를 한번에 입력받아 계산결과를 알려주는 프로그램을 작성하세요.
+        사용자가 입력하는 연산식은 숫자 연산자 숫자 순서로 띄어쓰기 없이 한번에 입력되며, 숫자는 여러자리일 수도 있고 연산자는 + - * /로 정해져 있다.
+        */
+       while(1){
+            let userVal,userNum1,userNum2,op,location,result; 
+            userVal = prompt("숫자1개 사칙연산 1개 숫자 1개를 띄어쓰기 없이 입력해주세요");
+            
+            // 입력된 문자열중 사칙연산 기호가 있으면 해당 기호를 op에 담음
+
+            if(userVal.indexOf("+") !== -1){
+                op = "+"
+            }else if(userVal.indexOf("-") !== -1){
+                op = "-"
+            }else if(userVal.indexOf("*") !== -1){
+                op = "*"
+            }else if(userVal.indexOf("/") !== -1){
+                op = "/"
+            }
+            
+            location = userVal.indexOf(op);
+            userNum1 = userVal.substr(0,location);
+            userNum2 = userVal.substr(location+1, userVal.length-1);
+            num1 = parseInt(userNum1);
+            num2 = parseInt(userNum2);
+            // 숫자자리에 숫자가 없거나, 사칙연산기호가 없거나, 3가지 요소 이외의 요소가 포함됐을 경우, 띄어쓰기가 있을경우
+            if(isNaN(parseInt(userVal)) || (op === undefined) || (userNum2.indexOf(op) !== -1) || (userVal.indexOf(" ") !== -1)){
+                console.log("숫자1개 사칙연산 1개 숫자 1개를 띄어쓰기 없이 입력해주세요");
+                continue;
+            }
+            if(op === "+"){
+                result = num1 + num2;
+            }else if(op === "-"){
+                result = num1 - num2;
+            }else if(op === "*"){
+                result = num1 * num2;
+            }else if(op === "/"){
+                result = num1 / num2;
+            }
+            console.log(`연산 결과는 ${result}입니다.`);
+            break;
+        }
+    </script>
+</body>
+</html>

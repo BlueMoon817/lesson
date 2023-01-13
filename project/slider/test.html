@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슬라이더</title>
+    <style>
+        *{margin: 0;padding: 0;}
+        ul{list-style: none;}
+        a{text-decoration: none;color: inherit;}
+        button{outline:none;border:0;background:transparent;cursor: pointer;}
+        .wrap{width: 100%;height: 100vh;display: flex;display: -webkit-flex;justify-content: center;align-items: center;}
+        .slider_con{position:relative;width: 640px;height: 427px;overflow:hidden;}
+        .slider_wrapper{position:absolute;left: 0;top: 0;width: 200%;height:100%;}
+        .slider_slide{position:absolute;left:640px; top:0;}
+        .slider_con img{width:640px;height:427px;object-fit: cover;}
+        .slider_con >button{position:absolute;top: 50%;transform: translateY(-50%);-webkit-transform: translateY(-50%);width:30px;height:50px;background-color: #fc0;z-index:20;}
+        .nav_prev{left: 0;}
+        .nav_next{right: 0;}
+        .pagination{width:90px;position: absolute;bottom: 15px;left: 50%;transform: translateX(-50%);display: flex;display:-webkit-flex;justify-content: space-between;z-index:20;}
+        .pagination >li{width: 20px;height: 20px;border-radius: 50%;line-height: 20px;text-align: center;background-color: #fc0;}
+        .pagination >li button{width:100%;height:100%;}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="slider_con">
+            <ul class="slider_wrapper">
+                <li class="slider_slide" style="left:0;">
+                    <a href="#">
+                        <img src="img/1.jpg" alt="cat1">
+                    </a>
+                </li>
+                <li class="slider_slide" style="left:640px;">
+                    <a href="#">
+                        <img src="img/2.jpg" alt="cat2">
+                    </a>
+                </li>
+                <li class="slider_slide" style="left:640px;">
+                    <a href="#">
+                        <img src="img/3.jpg" alt="cat3">
+                    </a>
+                </li>
+                <li class="slider_slide" style="left:-640px;">
+                    <a href="#">
+                        <img src="img/4.jpg" alt="cat4">
+                    </a>
+                </li>
+            </ul>
+            <button class="nav_prev">이전</button>
+            <ul class="pagination">
+                <li class="slider_pages"><button type="button">1</button></li>
+                <li class="slider_pages"><button type="button">2</button></li>
+                <li class="slider_pages"><button type="button">3</button></li>
+                <li class="slider_pages"><button type="button">4</button></li>
+            </ul>
+            <button class="nav_next">다음</button>
+        </div>
+    </div>
+    <script>
+        /*
+          -이미지 슬라이더 만들기.
+          -swiper, bxslider, slick 사용 금지. 직접 구현.
+          -좌/우 화살표. 클릭시 이미지 넘어감.
+          -이미지가 넘어갈때에는 갑자기 확 바뀌거나 페이드인/아웃이 아니고 슬라이드가 되어야 함.
+          -이미지 개수만큼의 버튼이 있어서 버튼을 누르면 대응하는 이미지로 바로 넘어감.
+          -아무 조작없이 일정시간(5초)이 지나면 자동으로 다음 이미지로 넘어감.
+          -마지막 이미지에서 다음 이미지로 넘어갈때에는 첫번째 이미지가 오른쪽에서 왼쪽으로 넘어옴.
+          -마우스를 이미지에 올리면 자동넘김이 멈췄다가, 이미지에서 마우스를 빼면 다시 자동넘김이 재개되어야 함.
+        */
+        let wrapper=document.querySelector('.slider_wrapper');
+        let slideItems=document.querySelectorAll('.slider_slide');
+        let btnPrev=document.querySelector('.nav_prev');
+        let btnNext=document.querySelector('.nav_next');
+        let btnPageNav=document.querySelectorAll('.slider_pages button');
+        let count=0,prevSlide,currSlide,nextSlide;
+        let isMoving=false;
+        // 초기값
+        prevSlide=slideItems[slideItems.length-1];
+        currSlide=slideItems[count];
+        nextSlide=slideItems[count+1];
+        function counter(){
+            if(count===0){
+                prevSlide=slideItems[slideItems.length-1];
+                currSlide=slideItems[count];
+                nextSlide=slideItems[count+1];
+            }else if(count===slideItems.length-1){
+                prevSlide=slideItems[count-1];
+                currSlide=slideItems[count];
+                nextSlide=slideItems[0];
+            }else{
+                prevSlide=slideItems[count-1];
+                currSlide=slideItems[count];
+                nextSlide=slideItems[count+1];
+            }
+        }
+        function sliderPos(){
+            prevSlide.style.left='-640px';
+            currSlide.style.left='0px';
+            nextSlide.style.left='640px';
+        }
+        function slider(){
+            counter();
+            let move=setInterval(function(){
+                isMoving=true;
+                if((parseInt(currSlide.style.left.replace('px','')))===parseInt(-640)){
+                    sliderIndex();
+                    prevSlide.style.left='640px';
+                    currSlide.style.left='-640px';
+                    nextSlide.style.left='0px';
+                    clearInterval(move);
+                    isMoving=false;
+                }else{
+                    currSlide.style.left=((parseInt(currSlide.style.left.replace('px','')))-20)+'px';
+                    nextSlide.style.left=((parseInt(nextSlide.style.left.replace('px','')))-20)+'px';
+                }
+            },1000/32);
+            count+=1;
+            if(count===slideItems.length){
+                count=0;
+            }
+        }
+        // 슬라이드 중지
+        function pause(){
+            clearInterval(moveSlider);
+        }
+        // 슬라이드 플레이
+        function play(){
+            moveSlider=setInterval(slider,5000);
+        }
+        // 슬라이드 인덱스 조절 함수
+        function sliderIndex(){
+            for(let i=0;i<slideItems.length;i+=1){
+                slideItems[i].style.zIndex=0;
+                slideItems[i].style.left='640px';
+                if(count===i){
+                    slideItems[i].style.zIndex=10;
+                    if(count+1<slideItems.length){
+                        slideItems[i+1].style.zIndex=10;
+                    }
+                }
+            }
+        }
+        function prev(){
+            let prevBtn = setInterval(function(){
+                isMoving=true;
+                if((parseInt(nextSlide.style.left.replace('px','')))===parseInt(640)){
+                    sliderIndex();
+                    sliderPos();
+                    clearInterval(prevBtn);
+                    isMoving=false;
+                }else{
+                    currSlide.style.left=((parseInt(currSlide.style.left.replace('px','')))+20)+'px';
+                    nextSlide.style.left=((parseInt(nextSlide.style.left.replace('px','')))+20)+'px';
+                }
+            },1000/32);
+        }
+        function next(){
+            let nextBtn = setInterval(function(){
+                isMoving=true;
+                if((parseInt(prevSlide.style.left.replace('px','')))===parseInt(-640)){
+                    sliderIndex();
+                    prevSlide.style.left='-640px';
+                    currSlide.style.left='0px';
+                    nextSlide.style.left='640px';
+                    clearInterval(nextBtn);
+                    isMoving=false;
+                }else{
+                    prevSlide.style.left=((parseInt(prevSlide.style.left.replace('px','')))-20)+'px';
+                    currSlide.style.left=((parseInt(currSlide.style.left.replace('px','')))-20)+'px';
+                }
+            },1000/32);
+        }
+        // 자동 시작
+        let moveSlider=setInterval(slider,5000);
+        // 페이져 이벤트
+        btnPageNav.forEach(function(ev){
+            ev.addEventListener('mousedown',function(){
+                pause();
+                count=parseInt(ev.innerHTML)-1;
+                sliderIndex();
+                counter();
+                sliderPos();
+                ev.addEventListener('mouseup',function(){
+                    pause();
+                    play();
+                });
+            });
+        });
+        // 이전 버튼
+        btnPrev.addEventListener('click',function(){
+            pause();
+            if(!isMoving){
+                if(count===0){
+                    count=slideItems.length-1;
+                }else{
+                    count=count-1;
+                }
+                counter();
+                prev();
+            }else if((parseInt(currSlide.style.left.replace('px','')))===parseInt(-640)&&(parseInt(nextSlide.style.left.replace('px','')))!==parseInt(640) && (parseInt(prevSlide.style.left.replace('px','')))===parseInt(640)){
+                if(count===0){
+                    count=slideItems.length-1;
+                }else{
+                    count=count-1;
+                }
+                counter();
+                prev();
+            }
+            play();
+        });
+        // 다음 버튼
+        btnNext.addEventListener('click',function(){
+            pause();
+            if(!isMoving){
+                if(count===slideItems.length-1){
+                    count=0;
+                }else{
+                    count=count+1;
+                }
+                counter();
+                next();
+            }else if((parseInt(currSlide.style.left.replace('px','')))===parseInt(-640)&&(parseInt(nextSlide.style.left.replace('px','')))!==parseInt(640)&&(parseInt(prevSlide.style.left.replace('px','')))===parseInt(640)){
+                pause();
+                if(count===slideItems.length-1){
+                    count=0;
+                }else{
+                    count=count+1;
+                }
+                counter();
+                next();
+            }
+            play();
+        });
+        // 마우스 인 아웃
+        wrapper.addEventListener('mouseover',function(){
+            pause();
+        });
+        wrapper.addEventListener('mouseleave',function(){
+            pause();
+            play();
+        });
+    </script>
+</body>
+</html>

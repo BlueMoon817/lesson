@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8강 3번 문제</title>
+</head>
+<body>
+    <script>
+        /*
+        3) 별찍기
+        k=2일 때, 
+        ** **
+         ***
+        ** **
+        
+        k=5일때,
+
+        *****       *****
+         *   *     *   *
+          *   *   *   *
+           *   * *   *
+            *   *   *
+           *   * *   *
+          *   *   *   *
+         *   *     *   *
+        *****       *****  
+        */
+
+
+        while(1){
+            userNum= parseInt(prompt('양의정수를 입력해주세요'));
+            if(isNaN(userNum) || userNum<0){
+                console.log("양의 정수를 다시 입력해주세요");
+                continue;
+            }
+            break;
+        }
+        let star='',spaceC='',sideSpace1='',spaceInc='',render,wordSpace='',starStr1='',starStr2='';
+        // 첫번째, 마지막줄: num만큼 star문자 만들기
+        for(let i=0; i<userNum; i+=1){
+            star+='*';
+        }  
+        // 첫번째, 마지막 줄: star사이 공백
+        for(let i=0; i<userNum*2-3; i+=1){
+            spaceC+=' ';   
+        }
+        // x자 모양 공백
+        for(let i=3; i<=userNum; i+=1){
+            if(userNum<=2){
+                starStr1='*';
+            }else if(userNum>=3){
+                wordSpace+=' ';
+                starStr1=`*${wordSpace}*`
+            }
+        }
+        
+        for(let x=1; x<=userNum*2-1; x+=1){
+            // 첫번째 줄, 마지막 줄  
+            if(x===1 || x===userNum*2-1){
+                render=`${star}${spaceC}${star}`;
+                console.log(render);
+                render='';
+            }
+            //첫행, 마지막행 제외한 중간행
+            if(x<=userNum && x>1){
+                //가운데 삼각 공백
+                spaceInc=spaceC.slice(-((userNum*2-1)-(2*x)));
+                //공백이 1개 미만일 시 별표
+                if((userNum*2-1)-(2*x)<1){
+                    spaceInc='*';
+                }
+                //왼쪽 공백
+                sideSpace1+=' ';
+                render=`${sideSpace1}${starStr1}${spaceInc}${starStr1}`
+                //정중앙행
+                if(x===userNum){
+                    starStr1=`*${wordSpace}`;
+                    starStr2=`${wordSpace}*`;
+                    render = `${sideSpace1}${starStr1}${spaceInc}${starStr2}`
+                }
+                console.log(render);
+                render='';
+            }else if(x>userNum && x!==(userNum*2-1)){
+                // 중간 이후~ 마지막-1 행
+                starStr1=`*${wordSpace}*`;
+                spaceInc=spaceC.slice(-((x-userNum)*2-1));
+                sideSpace2=sideSpace1.slice(-((userNum*2-1)-x));
+                render=`${sideSpace2}${starStr1}${spaceInc}${starStr1}`;
+                console.log(render);
+                render='';
+            }
+        }
+        
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6번 4번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+        문제 4번)함수 응용문제
+        사용자로부터 0~99 범위의 정수가 주어질 떄 다음과 같은 연산을 할 수 있다.
+        먼저 주어진 수가 10보다 작다면 앞에 0을 붙여 두 자리 수로 만들고, 각 자리의 숫자를 더한다.
+        그 다음, 주어진 수의 가장 오른쪽 자리 수와 앞에서 구한 합의 가장 오른쪽 자리 수를 이어 붙이면 새로운 수를 만들 수 있다.
+        ex)
+        26부터 시작한다.
+        2+6 = 08 이다. 새로운 수는 68이다.
+        6+8 = 14 이다. 새로운 수는 84이다.
+        8+4 = 12 이다. 새로운 수는 42이다.
+        4+2 = 06 이다. 새로운 수는 26이다. 
+        위의 예는 4번만에 원래 수로 돌아올 수 있다.
+        따라서 26의 사이클의 길이는 4이다. 
+        사용자로부터 0보다 크거나 같고 99보다 작거나 같은 정수 N을 입력받아 N의 사이클의 길이를 구하는 프로그램을 작성하시오.  
+        */
+       let userVal,sum,newNum,userNum0,userNum1,count=0;
+       while(1){
+            userVal = parseInt(prompt("0~99 사이의 정수를 입력해주세요."));
+            if(isNaN(userVal) || (userVal<0) || (userVal>99)){
+                console.log("0~99 사이의 정수를 다시 입력해주세요.");
+                continue;
+            }
+            break;
+        }
+        userVal = ("0" + userVal).slice(-2);
+        const firstNum = parseInt(userVal); //처음 입력받은 숫자 고정
+            
+        while(1){
+            if(firstNum !== parseInt(newNum)){
+                userNum0 = parseInt(userVal[0]);
+                userNum1 = parseInt(userVal[1]);    
+                sum = ("0" + (userNum0 + userNum1)).slice(-2);
+                newNum = userNum1 + sum[1];
+                console.log(`${userNum0}+${userNum1}은 ${sum}이다. 새로운 수는 ${newNum}이다.`);    
+                userVal = ("0" + newNum).slice(-2);
+                count+=1;
+                continue;
+            }
+            console.log(`처음입력한 숫자로 돌아오는 사이클 횟수는 ${count} 번 이다.`);
+            break;
+        }
+      
+
+
+
+    </script>
+</body>
+</html>

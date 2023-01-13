@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지렁이게임</title>
+    <style>
+        *{margin:0;padding:0;}
+        body{height:100vh;display:flex;display:-webkit-flex;justify-content:center;align-items:center;}
+        .banner{display:flex;display:-webkit-flex;justify-content:space-between;}
+        .score{display:inline-block;padding:3px 10px;background-color:rgb(57, 57, 141);color:#fff;font-weight:bold;border-radius:5px;}
+        .board{position:relative;width:600px;height:600px;border:2px dashed rgb(48, 54, 160);margin-top:15px;}
+        .game_over{position:absolute;width:100%;height:100%;background-color:rgba(255,255,255,0.7);text-align:center;line-height:600px;font-size:50px;font-weight:bold;}
+        .replay{appearance:none;border:0;background-color:rgb(96, 110, 156);padding:3px 10px;border-radius:5px;color:#fff;font-weight:bold;cursor:pointer;}
+        .worm_head{display:block;background:blue;}
+        .worm_body{background:#000;}
+        table{width:100%;height:100%;position:absolute;left:0;top:0;border-collapse:collapse;}
+        table td{width:20px;height:20px;}
+        table td>span{display:block;width:20px;height:20px;}
+        
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="banner">
+            <span class="score">Score : <span class="get_score">0</span></span>
+            <button class="replay">Replay</button>
+        </div>
+        <div class="board">
+            <table>
+                <tbody></tbody>
+            </table>
+            <div class="game_over" style="opacity:0;">Game Over</div>
+        </div>
+    </div>
+    <script>
+        class Game{
+            constructor(){
+                let tr, td, tdAll, head, headX, headY, tailX, tailY;
+                let feed,vertical = false, horizon = false;
+                let replay = document.querySelector('.replay');
+                let score = document.querySelector('.get_score');
+                let gameOver = document.querySelector('.game_over');
+               
+                this.stage={
+                    map: [
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                ]
+                };
+                let wormArr=[];
+                this.render(this.stage);
+                this.tdAll = document.querySelectorAll('td');
+                this.tr = document.querySelector('tr');
+                this.td = this.tr.querySelectorAll('td');
+                this.feed = document.querySelectorAll('.feed');
+                this.vertical = false;
+                this.horizon = false;
+                console.log(this.wormArr[0].posX)
+                this.dirB(this.wormArr,this.headY,this.headX,this.vertical, this.horizon);
+                this.dirL(this.wormArr,this.headY,this.headX,this.vertical, this.horizon);
+                this.dirR(this.wormArr,this.headY,this.headX,this.vertical, this.horizon);
+                this.dirT(this.wormArr,this.headY,this.headX,this.vertical, this.horizon);
+                this.moveOb;
+                this.headY='';
+                this.headX='';
+                let addBody=0,sum=0;
+                let moving = setInterval(this.moveOb(this.dirL(this.wormArr,this.headY,this.headX,this.vertical, this.horizon),this.wormArr,this.headY,this.headX,this.vertical, this.horizon), 300);
+            }
+            render(stage){
+                let tbody = document.querySelector('tbody');
+                let html = '';
+                let pos;
+                this.wormArr=[];
+                tbody.innerHTML = '';
+                for(let y = 0; y < stage.map.length; y += 1) {
+                    html += `<tr>`;
+                for(let x = 0; x < stage.map[y].length; x += 1) {
+                    if( stage.map[y][x] === 0 ) { html += `<td></td>`; }
+                    if( stage.map[y][x] === 1 ) {
+                        html += `<td class='worm_head'></td>`;
+                        pos={ posX:x, posY:y }
+                        this.wormArr.push( pos );
+                    }
+                    if( stage.map[y][x] === 2 ) {
+                        html += `<td class='worm_body'></td>`;
+                        pos={ posX:x,posY:y }
+                        this.wormArr.push( pos );
+                    }
+                    if( stage.map[y][x] === 3 ) {
+                        let feedNum = Math.floor( (Math.random() * 10) + 1 );
+                        html += `<td class='feed' data-x='${x}' data-y='${y}' data-feed='${feedNum}'>${feedNum}</td>`;
+                    }
+                }
+                html += `</tr>`;
+                }
+                tbody.innerHTML = html;
+            }
+           
+            random(){
+                let randomArr = [];
+                while(1){
+                    let numX = Math.floor(Math.random()*30);
+                    let numY = Math.floor(Math.random()*30);
+                    if( (tdAll[ (numY*30) + numX ].classList.contains('worm_head')) || 
+                    (this.tdAll[(numY*30) + numX].classList.contains('worm_body')) || 
+                    (this.tdAll[(numY*30)+numX].classList.contains('feed')) ){
+                        continue;
+                    }else{
+                        feedNum = Math.floor( (Math.random() * 10) + 1);
+                        this.tdAll[(numY * 30) + numX].classList.add('feed');
+                        this.tdAll[(numY * 30) + numX].setAttribute('data-x', numX);
+                        this.tdAll[(numY * 30) + numX].setAttribute('data-y', numY);
+                        this.tdAll[(numY * 30) + numX].setAttribute('data-feed', feedNum);
+                        this.tdAll[(numY * 30) + numX].innerText = feedNum;
+                        this.feed = document.querySelectorAll('.feed');
+                        break;
+                    }
+                }
+            }
+            dirL(wormArr,headY,headX,vertical,horizon){
+                headY = wormArr[0].posY;
+                if( wormArr[0].posX >= 1 ){
+                    wormArr[0].posX = wormArr[0].posX-1;
+                    headX = wormArr[0].posX;
+                    this.tdAll[(headY * 30) + headX + 1].classList.remove('worm_head');
+                    this.tdAll[(headY * 30) + headX + 1].classList.add('worm_body');
+                }else if(wormArr[0].posX === 0 && this.tdAll[(headY * 30)].classList.contains('worm_head')){
+                    wormArr[0].posX = this.td.length - 1;  
+                    headX = wormArr[0].posX;
+                    this.tdAll[(headY * 30)].classList.remove('worm_head');
+                    this.tdAll[(headY * 30)].classList.add('worm_body'); 
+                }
+                horizon = false;
+                vertical = true;
+            }
+            dirR(wormArr,headY,headX,vertical,horizon){
+                headY = wormArr[0].posY;
+                if( wormArr[0].posX < this.td.length -1 ){
+                    wormArr[0].posX = wormArr[0].posX + 1;
+                    headX = wormArr[0].posX;
+                    this.tdAll[(headY*30) + headX - 1].classList.remove('worm_head');
+                    this.tdAll[(headY*30) + headX - 1].classList.add('worm_body');
+                }else if(wormArr[0].posX === this.td.length - 1 && this.tdAll[(headY * 30) + this.td.length - 1].classList.contains('worm_head')){
+                    wormArr[0].posX = 0;  
+                    headX = wormArr[0].posX;
+                    this.tdAll[headY * 30].classList.add('worm_head');
+                    this.tdAll[(headY * 30) + this.td.length - 1].classList.remove('worm_head');
+                    this.tdAll[(headY * 30) + this.td.length - 1].classList.add('worm_body');
+                }
+                horizon=false;
+                vertical=true;
+                }
+            dirT(wormArr,headY,headX,vertical,horizon){
+                headX = wormArr[0].posX;
+                if(wormArr[0].posY >= 1){
+                    wormArr[0].posY = wormArr[0].posY - 1;
+                    headY = wormArr[0].posY;
+                    this.tdAll[((headY + 1) * 30) + headX].classList.remove('worm_head');
+                    this.tdAll[((headY + 1) * 30) + headX].classList.add('worm_body');
+                }else if(wormArr[0].posY === 0 && this.tdAll[headX].classList.contains('worm_head')){
+                    wormArr[0].posY = this.td.length - 1;
+                    headY = wormArr[0].posY;
+                    this.tdAll[headX].classList.remove('worm_head');
+                    this.tdAll[headX].classList.add('worm_body');
+                }
+                horizon = true;
+                vertical = false;
+            }
+            dirB(wormArr,headY,headX,vertical,horizon){
+                headX = wormArr[0].posX;
+                if( wormArr[0].posY < this.td.length - 1 ){
+                    wormArr[0].posY = wormArr[0].posY + 1;
+                    headY = wormArr[0].posY;
+                    this.tdAll[((headY - 1) * 30) + headX].classList.remove('worm_head');
+                    this.tdAll[((headY - 1) * 30) + headX].classList.add('worm_body');
+                }else if(wormArr[0].posY === this.td.length - 1 && this.tdAll[((this.td.length - 1) * 30) + headX].classList.contains('worm_head')){
+                    wormArr[0].posY = 0;  
+                    headY = wormArr[0].posY;
+                    this.tdAll[headX].classList.add('worm_head');
+                    this.tdAll[((this.td.length - 1) * 30) + headX].classList.remove('worm_head');
+                    this.tdAll[((this.td.length - 1) * 30) + headX].classList.add('worm_body');
+                }
+                horizon = true;
+                vertical = false;
+            }
+    
+            moveOb(dir,wormArr,headY,headX){
+                if( this.addBody!==0){
+                    wormArr.push({ posX: undefined, posY: undefined });
+                    for(let i = wormArr.length - 1; i >= 1; i -= 1){
+                        wormArr[i].posX = wormArr[i - 1].posX;
+                        wormArr[i].posY = wormArr[i - 1].posY;
+                    }
+                    this.tailX = wormArr[wormArr.length - 1].posX;
+                    this.tailY = wormArr[wormArr.length - 1].posY; 
+                    dir;
+                    this.addBody-=1;
+                }else{
+                    this.tailX = wormArr[wormArr.length - 1].posX;
+                    this.tailY = wormArr[wormArr.length - 1].posY; 
+                    for(let i = wormArr.length - 1; i >= 1; i -= 1){
+                        wormArr[i].posX = wormArr[i - 1].posX;
+                        wormArr[i].posY = wormArr[i - 1].posY;
+                    }
+                    dir;
+                    this.tdAll[(tailY * 30) + tailX].classList.remove('worm_body');
+                }
+                //move 호출시 head 한칸 추가, body한칸 삭제
+                this.tdAll[(headY * 30) + headX].classList.add('worm_head');
+                for(let w = 0; w < this.feed.length; w += 1){
+                // head의 좌표가 feed의 좌표와 같을 때 (먹이를 먹었을 때) 실행할 내용들
+                if((headX === parseInt(this.feed[w].getAttribute('data-x'))) && (headY === parseInt(this.feed[w].getAttribute('data-y')))){ 
+                    // 먹이의 점수
+                    addBody += parseInt(this.feed[w].getAttribute('data-feed'))       
+                    // 먹이점수 누적처리
+                    sum += addBody;
+                    // 먹이 점수 표시하기
+                    score.innerText = sum;
+                    feed[w].classList.remove('feed');
+                    feed[w].removeAttribute('data-x');
+                    feed[w].removeAttribute('data-y');
+                    feed[w].removeAttribute('data-feed');
+                    feed[w].innerText = '';
+                    random();
+                }
+            }
+            for(let q = 1; q < wormArr.length; q += 1){
+                if( ((headX === wormArr[q].posX) && (headY === wormArr[q].posY)) || (headX === this.tailX && headY === this.tailY)){
+                    clearInterval(moving);
+                    gameOver.style.opacity = 1;
+                }
+            }
+        }
+    }        
+        new Game();
+    </script>
+</body>
+</html>

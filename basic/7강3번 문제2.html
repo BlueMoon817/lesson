@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /*
+            1. a, b 숫자 입력받기
+            2. a를 인덱스 0으로 시작하여 b로 끝나는 배열만들기
+            3. 구구단 총 3줄 세로로 로직짜기
+            4. 3개의 각 로직을 붙여서 출력하기
+        */  
+        let userNumA, userNumB,result,arr=[], result1="",result2,result3;
+        while(1){
+            userNumA = prompt("시작할 구구단의 숫자를 입력해주세요");
+            if(isNaN(parseInt(userNumA)) || (parseInt(userNumA)<2)){
+                console.log("시작할 구구단의 숫자를 다시 입력해주세요.");
+                continue;
+            }
+            userNumB = prompt("마지막 구구단의 숫자를 입력해주세요");
+            if(isNaN(parseInt(userNumB)) || (parseInt(userNumB)<2)){
+                console.log("마지막 구구단의 숫자를 다시 입력해주세요.");
+                continue;
+            }
+            break;
+        }
+        userNumA = parseInt(userNumA);
+        userNumB = parseInt(userNumB);
+
+        for(let x=userNumA ; x<=userNumB; x+=1){
+            arr.push(x);
+        }
+        for(let i = 0; i<arr.length; i+=3){
+            if((i-2)<arr.length){
+                result=arr[i]+'단        /' + arr[i+1]+'단        /' + arr[i+2]+'단\n';   
+            }else{
+                result='';
+            }
+            for(let z = 1; z <=9; z+=1){
+                if((i-2)<arr.length){
+                    result += `${arr[i]} x ${z} = ${arr[i]*z} / ${arr[i+1]} x ${z} = ${arr[i+1]*z} / ${arr[i+2]} x ${z} = ${arr[i+2]*z}\n`;
+                }else{
+                    result='';
+                }
+            }
+            console.log(result);
+        }
+    
+    </script>
+</body>
+</html>

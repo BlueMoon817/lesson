@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4강 3번문제</title>
+</head>
+<body>
+    <script>
+        var starCount = parseInt(prompt("0보다 큰 숫자를 입력해주세요."));
+        while(starCount < 1){
+            var reset = confirm("숫자를 다시 입력해 주세요.");
+            if(reset === true){
+             var starCount = parseInt(prompt("0보다 큰 숫자를 입력해주세요."));
+            }
+            else{
+            console.log("입력을 취소하셨습니다.");
+            break;
+            }
+        }
+        if(starCount >= 1){
+            var star = "*";
+            var count = 1; 
+            while(count<=starCount){
+                // console.log(count);
+                console.log(star.slice(-count));
+                star+=star;
+                count+=1;
+            }
+        }
+
+    /*  
+        for문
+            for( var count = 1; count<=starCount; count+=1){
+                console.log(star.slice(-count));
+                star+=star;
+            }
+     */
+    </script>
+</body>
+</html>

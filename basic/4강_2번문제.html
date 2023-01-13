@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4강 2번문제</title>
+</head>
+<body>
+    <script>
+        var year = parseInt(prompt("연도를 숫자로 입력해주세요"));
+        if(year % 400 == 0){
+            console.log("윤년입니다.");
+        }else if( (year % 4 == 0) && (year % 100 != 0)){
+            console.log("윤년입니다.");
+        }else{
+            console.log("윤년이 아닙니다.");
+        }
+    </script>
+</body>
+</html>

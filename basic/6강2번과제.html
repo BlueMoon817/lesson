@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6번 2번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+        문제 2번)
+        사용자로부터 여러자리로 이뤄진 큰 정수를 입력받아, 그 정수를 3자리마다 콤마가 찍힌 형태로 출력하세요.
+        음수도 지원해야 한다.
+        ex) 1234567이 주어진 경우 1,234,567
+        */
+        let userNum, num, addStr;
+
+        while(1){
+            userNum = prompt("4자리 이상 정수를 입력해주세요");
+            num = parseInt(userNum);
+            if((isNaN(num)) || ((num < 1000) && (num > -999)) || (num!=userNum)){
+                console.log("정수를 다시 입력해주세요.");
+                continue;
+            }
+            break;
+        }
+        if (num > 0){
+            for(let i = 3; i<userNum.length; i+=4){
+               addStr = userNum.slice(-i);
+               userNum = (userNum.substr(0,userNum.length-i) + "," + addStr);
+            }
+            console.log(userNum);
+        }
+        if (num < 0){
+            for(let i = 3; i<userNum.length; i+=4){
+                if(userNum.substr(0,userNum.length-i)==="-") break;
+                addStr = userNum.slice(-i);
+                userNum = (userNum.substr(0,userNum.length-i) + "," + addStr);
+            }
+            console.log(userNum);
+        }
+
+    </script>
+</body>
+</html>

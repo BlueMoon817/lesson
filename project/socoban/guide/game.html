@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>game</title>
+    <style>
+      *{margin:0;padding:0;}
+      body{height:100vh;display:flex;display:-webkit-flex;justify-content:center;align-items:center;background:rgb(218, 245, 242);overflow:hidden;}
+      .container{width:400px;height:450px;background:url(img/stage3.png) no-repeat;background-size:cover;box-sizing:border-box;padding:50px;margin-top:30px;}
+      h2{text-align:center;border:2px dashed #fc0;font-size:17px;line-height:25px;color:#777;}
+      table{width:100%;height:100%;}
+      .table td{width:50px;height:50px;}
+    td.goal{position:relative}
+    .goal:not(.box)::before{content:'';position:absolute;background:rgb(242, 121, 121);left:50%;top:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;}
+    td.cat{background:url(img/cat.png) no-repeat;background-size:cover;}
+    .box{position:relative;}
+    .box::before{content:'';display:block;position:absolute;left:0;top:0;background:url(img/box1.jpg) no-repeat;background-size:cover;z-index:5;width:50px;height:50px;}
+    .box::after{content:'';position:absolute;left:0;top:0;background:url(img/box2.jpg) no-repeat;background-size:cover;display:none;width:50px;height:50px;}
+    .box.is_active::before{display:none;}
+    .box.is_active::after{display:block;z-index:10;}
+    .btn_area{margin-top:40px;width:100%;text-align:center}
+    .replay{outline:none;background:rgb(245, 213, 213);border:0;padding:5px 10px;border-radius:20px;color:#2d2d2d;font-weight:bold;cursor:pointer;font-size:13px;}
+    .next_stage{text-decoration:none;color:#777;font-size:13px;font-weight:bold;background:#ddd;padding:5px 10px;border-radius:20px;cursor:unset}
+    .next_stage.is_active{background:rgb(245, 213, 213);cursor:pointer;color:#2d2d2d;}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <h2>&lt; Stage<span class="grade">1</span>&gt;</h2>
+        <div class="container">
+            <div class="inner" style="width:300px;height:350px;">
+            </div>
+        </div>
+        <div class="btn_area">
+            <button class="replay">다시하기</button>
+            <a class="next_stage" href="#">다음단계</a>
+        </div>
+    </div>
+    <script>
+class Game {
+            constructor() {
+             // 초기화
+                this.stages = [
+               // 1스테이지를 추상화한 객체
+               {
+                 // 게임판의 모양
+                 // 벽=0  길=1   상자=2   목표지점=3   케릭터의시작점=4, 빈공간=5  목표랑,골이 같은 위치에서 시작 =6
+                map: [
+                   [4, 1, 1],
+                   [1, 2, 1],
+                   [0, 0, 1],
+                   [3, 2, 1],
+                   [1, 1, 3],
+                ],
+               },
+               // 2스테이지를 추상화한 객체
+               {
+                 map: [
+                   [0, 0, 1, 1, 1, 0],
+                   [3, 4, 1, 2, 1, 0],
+                   [0, 0, 1, 2, 1, 0],
+                   [3, 0, 0, 2, 3, 0],
+                   [1, 0, 1, 3, 1, 0],
+                   [2, 1, 6, 2, 2, 3],
+                   [1, 1, 1, 3, 1, 1],
+                 ],
+               },
+               {
+                map: [
+                   [1, 1, 0, 1, 1, 4],
+                   [1, 1, 1, 2, 0, 1],
+                   [3, 2, 2, 1, 3, 1],
+                   [1, 0, 3, 0, 2, 0],
+                   [1, 1, 3, 1, 1, 0],
+                ]
+               }
+             ];
+
+              this.currentStage=1;
+              this.drawStage(this.stages[this.currentStage]);
+              let catCell=document.querySelector('.cat')
+              let catX = parseInt(catCell.getAttribute('data-x'));
+              let catY = parseInt(catCell.getAttribute('data-y'));
+              let cell=document.querySelectorAll('.cell');
+              let cellX,cellY;
+              let box=document.querySelectorAll('td.box');
+             // 사용자의 키보드 입력을 받는다.
+            window.addEventListener('keydown',(ev)=>{
+               if(ev.keyCode==37){
+                    for(let i=0;i<td.length;i+=1){
+                    }
+               }
+               if(ev.keyCode==38){
+
+               }
+               if(ev.keyCode==39){
+
+               }
+               if(ev.keyCode==40){
+
+               }
+            });
+               // 모든 상자들이 목표지점에 들어있으면 이 스테이지는 해결한 것으로 간주하고 다음 스테이지로 넘어간다.
+               let count = 0;
+               let btnReplay=document.querySelector('.replay');
+              
+               for(let i=0; i<box.length; i+=1) {
+                 if( box[i].classList.contains('goal') ) count += 1;
+               }
+               if( count == 0 ) {
+                 console.log( "다음 스테이지로!" );
+               }
+               // A키를 누르면 게임을 초기화한다.
+               btnReplay.addEventListener('click',()=>{
+                 this.drawStage( this.stages[this.currentStage] );
+               });
+            
+           }
+       
+           // 게임판을 그리는 함수
+           drawStage( stage ) {
+            let inner=document.querySelector('.inner');
+             // 기존 게임판을 지운다.
+             inner.innerHTML='';
+             // 게임판을 나타낼 HTML을 조립한다.
+             let html = '';
+             html += `<table cellpadding='0' cellspacing='0'>`;
+             for(let y=0; y<stage.map.length; y+=1) {
+               html += `<tr>`;
+               for(let x=0; x<stage.map[y].length; x+=1) {
+                if( stage.map[y][x] == 0 ) html += `<td class='wall cell' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 1 ) html += `<td class='way cell' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 2 ) html += `<td class='way box cell' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 3 ) html += `<td class='way goal cell' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 4 ) html += `<td class='way cat cell' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 5 ) html += `<td class='space'></td>`;
+                if( stage.map[y][x] == 6 ) html += `<td class='box goal is_active cell' data-x='${x}' data-y='${y}'></td>`;
+               }
+               html += `</tr>`;
+             }
+             html += `</table>`;
+             inner.innerHTML=html;
+           }
+         }
+         new Game();
+
+        //  if( stage.map[y][x] == 0 ) html += `<td class='wall cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+        //          if( stage.map[y][x] == 1 ) html += `<td class='way cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+        //          if( stage.map[y][x] == 2 ) html += `<td class='way box cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+        //          if( stage.map[y][x] == 3 ) html += `<td class='way goal cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+        //          if( stage.map[y][x] == 4 ) html += `<td class='way player cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+        //          if( stage.map[y][x] == 5 ) html += `<td class='space'></td>`;
+        //          if( stage.map[y][x] == 6 ) html += `<td class='box goal cell_${x}_${y} data-x='${x}' data-y='${y}'></td>`;
+
+
+
+
+
+    </script>
+</body>
+</html>

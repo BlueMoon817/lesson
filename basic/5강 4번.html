@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5강 4번 과제</title>
+</head>
+<body>
+    <script>
+        /*
+        4) 사용자로부터 양의 정수를 하나 입력받아 다음과 같이 출력하는 프로그램을 작성하세요.
+        ex) 입력이 7인 경우
+        *******
+         ******
+          *****
+           ****
+            ***
+             **
+              *
+        */
+       var userNum;
+       var star="*";
+       var count;
+       var space="";
+       var starArr = [];
+       //양의 정수가 아닌 수 걸러내기 -> 1보다 작거나, 0이거나, 숫자가 아니거나, 소수점일때 리턴
+        while(true){
+            userNum = prompt("1 이상의 숫자를 입력해주세요");
+            if( (parseInt(userNum)<1) || (isNaN((parseInt(userNum)))) ||(parseInt(userNum)!=userNum)){
+            console.log("숫자를 다시 입력해주세요");
+            continue;
+            }
+            // 올바른 값일 때 탈출
+            break;
+        }
+        // 입력받은 문자열을 숫자로 바꾸기
+        starNum = parseInt(userNum);
+        // 입력받은 숫자만큼 *을 더한 문자열만들기
+        for(var i=1; i<starNum; i+=1){
+            star+="*";
+        }
+        
+        // 루프카운터 인덱스 0부터 시작
+        count=0;
+        // 카운트 0부터 입력받은 숫자의-1 될때까지
+        while(count<starNum){
+        // star의 문자열을 배열로 바꿔서 변수에 담기
+        starArr = star.split("");    
+        // count만큼 별을 없애고 다시 문자열로 만들어서 공백을 더한다음 카운트 올리기 
+            if(count<starArr.length){
+                starArr.splice(0,count);
+                console.log(space+starArr.join(""));
+                space+=" ";
+                count+=1;
+            }
+        }
+
+    </script>
+</body>
+</html>

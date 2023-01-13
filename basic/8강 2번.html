@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8강 2번 문제</title>
+</head>
+<body>
+    <script>
+        /*
+        2) 베르나르베르베르의 소설 "개미"에는 다음과 같은 수열이 등장한다.
+        1
+        1 1
+        1 2
+        1 1
+        1 1 2 1 
+        1 2 2 1 1 1 
+        1 1 2 2 1 3
+        사용자에게 양의 정수 k를 입력받아서, 개미수열의 k번째 행까지 출력하세요.
+        */
+        let userNum;
+
+        while(1){
+            userNum = parseInt(prompt("양의 정수를 입력해 주세요"));
+            if(isNaN(userNum) || userNum < 1){
+                console.log("양의 정수를 다시 입력해 주세요.");
+                continue;
+            }
+            break;
+        }
+
+        let arr = [], newArr=[];
+        arr[0]=1;
+        console.log(arr);
+        let count=1;
+        for(let i=1; i<userNum; i+=1){
+
+            for(let z=0;z<arr.length; z+=1){
+                if(arr[z+1]===arr[z]){
+                    count+=1;
+                }
+                if(arr[z+1]!==arr[z]){
+                    newArr.push(arr[z]);
+                    newArr.push(count);
+                    count=1;
+                }
+            }
+            console.log(newArr);
+            arr=[...newArr];
+            newArr=[];
+        }
+        
+
+    </script>
+</body>
+</html>

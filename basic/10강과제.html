@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        
+        let keep=0; let change=0;  let counter=1;
+        function Door(){
+            this.gift = 'random',
+            this.state = 'closed',
+            this.choice = false
+        }
+        let leftDoor = new Door();
+        let centerDoor = new Door();
+        let rightDoor = new Door();
+
+        // 선택한 문을 표시하기 위한 속성
+        leftDoor.dir = 0;
+        centerDoor.dir = 1;
+        rightDoor.dir = 2;
+
+        while(1){
+            if(counter<=10000){
+                //랜덤으로 각 문에 번호 0,1,2 부여하기(비율은 의미 없음)
+                while(1){
+                    leftDoor.num = (Math.floor(Math.random()*10))%3;
+                    centerDoor.num = (Math.floor(Math.random()*10))%3;
+                    rightDoor.num = (Math.floor(Math.random()*10))%3;
+                    // 각 숫자가 겹치지 않게 하기 
+                    if((leftDoor.num !== centerDoor.num) && (centerDoor.num !== rightDoor.num) && (rightDoor.num !== leftDoor.num)){
+                        // 1일 경우에 스포츠카로 정하기(상품정하기)
+                        if(leftDoor.num === 1){
+                            leftDoor.gift = 'sportsCar';
+                            rightDoor.gift = 'goat';
+                            centerDoor.gift = 'goat';
+                        }else{
+                            leftDoor.gift = 'goat';
+                        if(rightDoor.num === 1){
+                            rightDoor.gift = 'sportsCar';
+                            centerDoor.gift = 'goat'
+                        }else{
+                            rightDoor.gift = 'goat';
+                            centerDoor.gift = 'sportsCar';
+                        }
+                    }
+                        break;
+                    }
+                    continue;
+                }
+            }
+
+            // 상품이 정해진 상태에서 랜덤하게 문하나를 선택하기 (같은 비율로 0,1,2 나오게 하기)
+            let choose = (Math.floor(Math.random()*9+1))/3;
+            
+            // 왼쪽문0, 중간문1, 오른쪽문2 -> 고른 문의 choice를 true로 바꾸고 나머지 문 중에 goat가 있는 문 1개 open으로 바꾸기
+            if(leftDoor.dir===choose){
+                leftDoor.choice=true;
+                if(centerDoor.gift==='goat'){
+                    centerDoor.state='open';
+                }else{
+                    rightDoor.state='open';
+                }
+            }else if(centerDoor.dir===choose){
+                centerDoor.choice=true;
+                if(leftDoor.gift==='goat'){
+                    leftDoor.state='open';
+                }else{
+                    rightDoor.state='open';
+                }
+            }else{
+                rightDoor.choice=true;
+                if(centerDoor.gift ==='goat'){
+                    centerDoor.state='open';
+                }else{
+                    leftDoor.state='open';
+                }
+            }
+            // 안열리고, 선택되지 않은 문이 스포츠카일 경우(=바꿔서 당첨될 횟수) change로 당첨횟수 세기
+            if((leftDoor.gift==='sportsCar' && leftDoor.choice===false && leftDoor.state==='closed')||(centerDoor.gift==='sportsCar'&& centerDoor.choice===false && centerDoor.state==='closed')||(rightDoor.gift==='sportsCar'&& rightDoor.choice===false && rightDoor.state==='closed')){
+                change+=1;
+            }
+            // 처음 선택한 문이 스포츠카일 확률(=안바꿔서 당첨될 횟수) keep로 당첨횟수 세기 
+            if((leftDoor.choice===true && leftDoor.gift==='sportsCar')||(centerDoor.choice===true && centerDoor.gift==='sportsCar')||(rightDoor.choice===true && rightDoor.gift==='sportsCar')){
+                keep+=1;
+            }
+            // 10000번 반복했으면 탈출, 아니면 바꾼 값들 초기화
+            if(counter===10000){
+                break;
+            }else{
+                leftDoor.gift='';
+                rightDoor.gift='';
+                centerDoor.gift='';
+                leftDoor.choice=false;
+                rightDoor.choice=false;
+                centerDoor.choice=false;
+                leftDoor.state='closed';
+                rightDoor.state='closed';
+                centerDoor.state='closed';
+                counter+=1;
+                continue;
+            }
+            }
+        console.log(counter);
+        console.log(keep);
+        console.log(change);
+        console.log(`바꾸지 않았을 경우 : ${keep/100}% , 바꿨을 경우 ${change/100}%의 확률로 스포츠카를 얻을 수 있다.`);
+
+        // 결론 : 출연자가 처음 고른 문은, 선택지가 3개일 때 골랐던 것이므로, 그 문은 확률이 1/3이다. 선택을 무조건 바꿔야 한다.
+    </script>
+</body>
+</html>
