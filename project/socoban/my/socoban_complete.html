@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>소코반</title>
+    <style>
+        *{margin:0;padding:0;}
+        body{height:100vh;display:flex;display:-webkit-flex;justify-content:center;align-items:center;background:rgb(218, 245, 242);overflow:hidden;}
+        .container{display:flex;display:-webkit-flex;justify-content:center;margin-top:20px;}
+        h2{text-align:center;border:2px dashed #fc0;font-size:17px;line-height:25px;color:#777;}
+        td{width:50px;height:50px;}
+        td.wall {background:url(img/wall.jpg) no-repeat;background-size:cover}
+        td.goal{position:relative;}
+        td.goal:not(.box)::before{content:'';position:absolute;background:rgb(242, 121, 121);left:50%;top:50%;transform:translate(-50%,-50%);-webkit-transform:translate(-50%,-50%);width:10px;height:10px;border-radius:50%;display:block;}
+        td.box.goal{background:url(img/box2.jpg) no-repeat;background-size:cover;}
+        td.box.goal::before{display:none;}
+        td.player{background:url(img/cat.png) no-repeat;background-size:cover;}
+        td.box{position:relative;background:url(img/box1.jpg) no-repeat;background-size:cover;}
+        .btn_area{margin-top:40px;width:100%;text-align:center}
+        .replay{outline:none;background:rgb(245, 213, 213);border:0;padding:5px 10px;border-radius:20px;color:#2d2d2d;font-weight:bold;cursor:pointer;font-size:13px;}
+        .next_stage{text-decoration:none;color:#777;font-size:13px;font-weight:bold;background:#ddd;padding:5px 10px;border-radius:20px;cursor:unset}
+        .next_stage.is_active{background:rgb(245, 213, 213);cursor:pointer;color:#2d2d2d;}
+    </style>
+
+</head>
+<body>
+    <div class="wrap">
+      <h2>&lt; Stage<span class="grade">1</span> &gt;</h2>
+        <div class="container">
+        </div>
+        <div class="btn_area">
+            <button class="replay">다시하기</button>
+            <a class="next_stage" href="#">다음단계</a>
+        </div>  
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        class Game {
+            constructor() {
+             // 초기화
+              this.stages = [
+              // 1스테이지를 추상화한 객체
+              {
+                // 게임판의 모양
+                // 벽=0  길=1   상자=2   목표지점=3   케릭터의시작점=4, 빈공간=5  목표랑,골이 같은 위치에서 시작 =6
+                map: [
+                   [0, 0, 0, 0, 0],
+                   [0, 4, 1, 1, 0],
+                   [0, 1, 2, 1, 0],
+                   [0, 0, 0, 1, 0],
+                   [0, 3, 2, 1, 0],
+                   [0, 1, 1, 3, 0],
+                   [0, 0, 0, 0, 0]
+                ],
+              },
+              // 2스테이지를 추상화한 객체
+              {
+                map: [
+                  [5, 5, 0, 0, 0, 0, 0, 5],
+                  [0, 0, 0, 1, 1, 1, 0, 5],
+                  [0, 3, 4, 1, 2, 1, 0, 5],
+                  [0, 0, 0, 1, 2, 3, 0, 5],
+                  [0, 3, 0, 0, 2, 1, 0, 5],
+                  [0, 1, 0, 1, 3, 1, 0, 0],
+                  [0, 2, 1, 6, 2, 2, 3, 0],
+                  [0, 1, 1, 1, 3, 1, 1, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 0],
+                ],
+              },
+              {
+                map: [
+                  [0, 0, 0, 0, 0, 0, 0, 0],
+                  [0, 1, 1, 0, 1, 1, 4, 0],
+                  [0, 1, 1, 1, 2, 0, 1, 0],
+                  [0, 3, 2, 2, 1, 3, 1, 0],
+                  [0, 1, 0, 3, 0, 2, 0, 0],
+                  [0, 1, 1, 3, 1, 1, 0, 0],
+                  [0, 0, 0, 0, 0, 0, 0, 5],
+                ]
+              }
+            ];
+            // 1스테이지 게임판을 그린다.
+            this.currentStage = 0;
+            this.drawStage( this.stages[this.currentStage] );
+            // 사용자의 키보드 입력을 받는다.
+            $(document).on("keydown", (ev) => {
+              // 케릭터의 현재 위치를 얻는다.
+              let playerCell=document.querySelector('.player')
+              let playerX = parseInt(playerCell.getAttribute('data-x'));
+              let playerY = parseInt(playerCell.getAttribute('data-y'));
+              let btnReplay=document.querySelector('.replay');
+              let next=document.querySelector('.next_stage');
+              let tit=document.querySelector('.grade');
+              let lev=1;
+              let count=0;
+              // 플레이어가 입력한 조작에 따라 이동 가능 조건 판별
+              if( ev.keyCode==37 ) {
+                // 플레이어가 왼쪽으로 이동할 수 있는 조건은?
+                // #1 가려는 방향이 길이거나, 목표지점인데 박스가 없을때 
+                // #2 가려는 방향에 박스가 있는데 박스를 옮길 지점에 박스가 없을 때.
+                // #3 가려는 방향에 박스와 골이 함께 일 때.
+                // 박스를 옮길 땐 원래 박스자리에 way(길) 클래스를 추가한다. 
+                if($(`td.cell_${playerX-1}_${playerY}`).hasClass('way')||
+                ($(`td.cell_${playerX-1}_${playerY}`).hasClass('goal')&&!$(`td.cell_${playerX-1}_${playerY}`).hasClass('box'))){
+                  $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                  $(`td.cell_${playerX-1}_${playerY}`).addClass('player');
+              
+                }else if(($(`td.cell_${playerX-1}_${playerY}`).hasClass('box') &&!$(`td.cell_${playerX-2}_${playerY}`).hasClass('box')&&
+                  ($(`td.cell_${playerX-2}_${playerY}`).hasClass('way')||$(`td.cell_${playerX-2}_${playerY}`).hasClass('goal')))||
+                  (($(`td.cell_${playerX-1}_${playerY}`).hasClass('box')&&$(`td.cell_${playerX-1}_${playerY}`).hasClass('goal'))&&
+                  ($(`td.cell_${playerX-2}_${playerY}`).hasClass('way')||$(`td.cell_${playerX-2}_${playerY}`).hasClass('goal')))){
+                  if(!$(`td.cell_${playerX-1}_${playerY}`).hasClass('goal')){
+                    $(`td.cell_${playerX-1}_${playerY}`).removeClass('box').addClass('way');
+                  }else{
+                    $(`td.cell_${playerX-1}_${playerY}`).removeClass('box');
+                  }
+                  $(`td.cell_${playerX-2}_${playerY}`).addClass('box').removeClass('way');
+                  $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                  $(`td.cell_${playerX-1}_${playerY}`).addClass('player');
+                }
+              }else if( ev.keyCode===38 ) {
+                if($(`td.cell_${playerX}_${playerY-1}`).hasClass('way')||($(`td.cell_${playerX}_${playerY-1}`).hasClass('goal')&&!$(`td.cell_${playerX}_${playerY-1}`).hasClass('box'))){
+                  $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                  $(`td.cell_${playerX}_${playerY-1}`).addClass('player');
+                }else if(
+                  ($(`td.cell_${playerX}_${playerY-1}`).hasClass('box') && !$(`td.cell_${playerX}_${playerY-2}`).hasClass('box')&&
+                  ($(`td.cell_${playerX}_${playerY-2}`).hasClass('way')||$(`td.cell_${playerX}_${playerY-2}`).hasClass('goal'))) ||
+                  (($(`td.cell_${playerX}_${playerY-1}`).hasClass('box')&&$(`td.cell_${playerX}_${playerY-1}`).hasClass('goal'))&&
+                  ($(`td.cell_${playerX}_${playerY-2}`).hasClass('way')||$(`td.cell_${playerX}_${playerY-2}`).hasClass('goal')))){
+                  if($(`td.cell_${playerX}_${playerY-1}`).hasClass('goal')){
+                    $(`td.cell_${playerX}_${playerY-1}`).removeClass('box');
+                  }else{
+                    $(`td.cell_${playerX}_${playerY-1}`).removeClass('box').addClass('way');
+                  }
+                  $(`td.cell_${playerX}_${playerY-2}`).addClass('box').removeClass('way');
+                  $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                  $(`td.cell_${playerX}_${playerY-1}`).addClass('player');
+                } 
+              }else if( ev.keyCode===39 ) {
+                if($(`td.cell_${playerX+1}_${playerY}`).hasClass('way')||($(`td.cell_${playerX+1}_${playerY}`).hasClass('goal')&&!$(`td.cell_${playerX+1}_${playerY}`).hasClass('box'))){
+                  $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                  $(`td.cell_${playerX+1}_${playerY}`).addClass('player');
+                }else if(
+                  ($(`td.cell_${playerX+1}_${playerY}`).hasClass('box')&&!$(`td.cell_${playerX+2}_${playerY}`).hasClass('box')&&
+                  ($(`td.cell_${playerX+2}_${playerY}`).hasClass('way')||$(`td.cell_${playerX+2}_${playerY}`).hasClass('goal'))) ||
+                  (($(`td.cell_${playerX+1}_${playerY}`).hasClass('box')&&$(`td.cell_${playerX+1}_${playerY}`).hasClass('goal'))&& 
+                  ($(`td.cell_${playerX+2}_${playerY}`).hasClass('way')||$(`td.cell_${playerX+2}_${playerY}`).hasClass('goal')))){
+                  if($(`td.cell_${playerX+1}_${playerY}`).hasClass('goal')){
+                    $(`td.cell_${playerX+1}_${playerY}`).removeClass('box');
+                  }else{
+                    $(`td.cell_${playerX+1}_${playerY}`).removeClass('box').addClass('way');
+                  }
+                  $(`td.cell_${playerX+2}_${playerY}`).addClass('box').removeClass('way');
+                  $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                  $(`td.cell_${playerX+1}_${playerY}`).addClass('player');
+                }       
+              }else if( ev.keyCode===40 ) {
+               if($(`td.cell_${playerX}_${playerY+1}`).hasClass('way')||($(`td.cell_${playerX}_${playerY+1}`).hasClass('goal')&&!$(`td.cell_${playerX}_${playerY+1}`).hasClass('box'))){
+                  $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                  $(`td.cell_${playerX}_${playerY+1}`).addClass('player');
+                  
+                }else if(
+                  ($(`td.cell_${playerX}_${playerY+1}`).hasClass('box') && !$(`td.cell_${playerX}_${playerY+2}`).hasClass('box')&&
+                  ($(`td.cell_${playerX}_${playerY+2}`).hasClass('way')||$(`td.cell_${playerX}_${playerY+2}`).hasClass('goal'))) 
+                  ||(($(`td.cell_${playerX}_${playerY+1}`).hasClass('box')&&$(`td.cell_${playerX}_${playerY+1}`).hasClass('goal')) &&
+                  ($(`td.cell_${playerX}_${playerY+2}`).hasClass('way')||$(`td.cell_${playerX}_${playerY+2}`).hasClass('goal')))){
+                  if($(`td.cell_${playerX}_${playerY+1}`).hasClass('goal')){
+                    $(`td.cell_${playerX}_${playerY+1}`).removeClass('box');
+                  }else{
+                    $(`td.cell_${playerX}_${playerY+1}`).removeClass('box').addClass('way');
+                  }
+                  $(`td.cell_${playerX}_${playerY+2}`).addClass('box').removeClass('way');
+                  $(`td.cell_${playerX}_${playerY}`).removeClass('player');
+                  $(`td.cell_${playerX}_${playerY+1}`).addClass('player');
+                } 
+              }
+              // 모든 상자들이 목표지점에 들어있으면 이 스테이지는 해결한 것으로 간주하고 다음 스테이지로 넘어간다.
+              
+              for(let i=0; i<$("td.box").length; i+=1) {
+                // box의 클래스목록에 goal이 없으면 count+=1
+                // 모든 box에 클래스 목록에 goal이 있으면 count는 증가하지 않는다.
+                if( !$("td.box").eq(i).hasClass('goal') ) count += 1;
+              }
+              // 모든 박스가 목표지점에 있을 때 count===0;
+              if( count === 0) {
+                next.classList.add('is_active');
+                // stage 표시 변경을 위한 변수
+                lev=parseInt(tit.innerHTML)+1;
+              }else{
+                next.classList.remove('is_active');
+                lev=parseInt(tit.innerHTML);
+                count=0;
+              }
+              // A키를 누르면 게임을 초기화한다.
+              btnReplay.addEventListener('click',()=>{
+                this.drawStage( this.stages[this.currentStage] );
+              });
+              next.addEventListener('click',()=>{
+                
+                this.drawStage( this.stages[this.currentStage+lev-1] );
+                tit.innerHTML=lev;
+                next.classList.remove('is_active');
+                console.log(lev)
+              });
+            });
+          }
+          // 게임판을 그리는 함수
+          drawStage( stage ) {
+            // 기존 게임판을 지운다.
+            $('.container').html('');
+            // 게임판을 나타낼 HTML을 조립한다.
+            let html = '';
+            html += `<table cellpadding='0' cellspacing='0'>`;
+            for(let y=0; y<stage.map.length; y+=1) {
+              html += `<tr>`;
+              for(let x=0; x<stage.map[y].length; x+=1) {
+                if( stage.map[y][x] == 0 ) html += `<td class='wall cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 1 ) html += `<td class='way cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 2 ) html += `<td class='box cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 3 ) html += `<td class='goal cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 4 ) html += `<td class='way player cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+                if( stage.map[y][x] == 5 ) html += `<td class='space'></td>`;
+                if( stage.map[y][x] == 6 ) html += `<td class='box goal cell_${x}_${y}' data-x='${x}' data-y='${y}'></td>`;
+              }
+              html += `</tr>`;
+            }
+            html += `</table>`;
+            $(".container").html(html);
+          }
+        }
+        new Game();
+    </script>
+</body>
+</html>
