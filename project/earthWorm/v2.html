@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문유라 1코스 15강 예제</title>
+  <style>
+        *{margin:0;padding:0;}
+        body{height:100vh;display:flex;display:-webkit-flex;justify-content:center;align-items:center;}
+        .banner{display:flex;display:-webkit-flex;justify-content:space-between;}
+        .score{display:inline-block;padding:3px 10px;background-color:rgb(57, 57, 141);color:#fff;font-weight:bold;border-radius:5px;}
+        .board{position:relative;width:604px;height:604px;border:2px dashed rgb(48, 54, 160);margin-top:15px;}
+        .game_over{position:absolute;width:100%;height:100%;background-color:rgba(255,255,255,0.7);text-align:center;line-height:600px;font-size:50px;font-weight:bold;}
+        .replay{appearance:none;border:0;background-color:rgb(96, 110, 156);padding:3px 10px;border-radius:5px;color:#fff;font-weight:bold;cursor:pointer;}
+        .worm_head{background:blue;}
+        .worm_body{background:#000;}
+        table{width:600px;height:600px;position:absolute;left:2px;top:2px;border-collapse:collapse;}
+        table td{width:20px;height:20px;text-align: center;}
+        table td>span{display:block;width:100%;height:100%;}
+  </style>
+</head>
+<body>
+
+    <div class="wrap">
+        <div class="banner">
+            <span class="score">Score : <span class="get_score">0</span></span>
+            <button class="replay">Replay</button>
+        </div>
+        <div class="board">
+            <table>
+                <tbody></tbody>
+            </table>
+            <div class="game_over" style="opacity:0;">Game Over</div>
+        </div>
+    </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+  <script>
+    // 초기화
+    let replay = document.querySelector('.replay');
+    let score = document.querySelector('.get_score');
+    let gameOver = document.querySelector('.game_over');
+    let feed, feedNum, vertical = false, horizon = false;
+    let board = 
+                [
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                    [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                ]
+    // 게임판을 그리는 함수
+    let tr, td, wormArr = [], pos, head, headX, headY, tailX, tailY;    
+    let render = () => {
+        let tbody = document.querySelector('tbody');
+        let html = '';
+        wormArr = [];
+        tbody.innerHTML = '';
+        for(let y = 0; y < board.length; y += 1) {
+            html += `<tr>`;
+            for(let x = 0; x < board.length; x += 1) {
+                if( board[y][x] === 0 ) { html += `<td></td>`; }
+                if( board[y][x] === 1 ) {
+                    html += `<td class='worm_head'></td>`;
+                    pos={ posX:x, posY:y }
+                    wormArr.push( pos );
+                }
+                if( board[y][x] === 2 ) {
+                    html += `<td class='worm_body'></td>`;
+                    pos={ posX:x,posY:y }
+                    wormArr.push( pos );
+                }
+                if( board[y][x] === 3 ) {
+                    feedNum = Math.floor( (Math.random() * 10) + 1 );
+                    html += `<td class='feed' data-x='${x}' data-y='${y}' data-feed='${feedNum}'>${feedNum}</td>`;
+                }
+            }
+            html += `</tr>`;
+        }
+        tbody.innerHTML = html;
+        tdAll = document.querySelectorAll('td');
+        tr = document.querySelector('tr');
+        td = tr.querySelectorAll('td');
+        feed = document.querySelectorAll('.feed');
+    }
+    //출력
+    render();
+    let randomArr = [];
+    let random = () => {
+        while(1){
+            let numX = Math.floor(Math.random()*30);
+            let numY = Math.floor(Math.random()*30);
+            if( (tdAll[ (numY*30) + numX ].classList.contains('worm_head')) || 
+            (tdAll[(numY*30) + numX].classList.contains('worm_body')) || 
+            (tdAll[(numY*30)+numX].classList.contains('feed')) ){
+                continue;
+            }else{
+                feedNum = Math.floor( (Math.random() * 10) + 1);
+                tdAll[(numY * 30) + numX].classList.add('feed');
+                tdAll[(numY * 30) + numX].setAttribute('data-x', numX);
+                tdAll[(numY * 30) + numX].setAttribute('data-y', numY);
+                tdAll[(numY * 30) + numX].setAttribute('data-feed', feedNum);
+                tdAll[(numY * 30) + numX].innerText = feedNum;
+                feed = document.querySelectorAll('.feed');
+                break;
+            }
+        }
+    }
+    let dirL = () => { 
+        headY = wormArr[0].posY;
+        if( wormArr[0].posX >= 1 ){
+            wormArr[0].posX = wormArr[0].posX-1;
+            headX = wormArr[0].posX;
+            tdAll[(headY * 30) + headX + 1].classList.remove('worm_head');
+            tdAll[(headY * 30) + headX + 1].classList.add('worm_body');
+        }else if(wormArr[0].posX === 0 && tdAll[(headY * 30)].classList.contains('worm_head')){
+            wormArr[0].posX = td.length - 1;  
+            headX = wormArr[0].posX;
+            tdAll[(headY * 30)].classList.remove('worm_head');
+            tdAll[(headY * 30)].classList.add('worm_body'); 
+        }
+        horizon = false;
+        vertical = true;
+    }
+    let dirR = () => {
+        headY = wormArr[0].posY;
+        if( wormArr[0].posX < td.length -1 ){
+            wormArr[0].posX = wormArr[0].posX + 1;
+            headX = wormArr[0].posX;
+            tdAll[(headY*30) + headX - 1].classList.remove('worm_head');
+            tdAll[(headY*30) + headX - 1].classList.add('worm_body');
+        }else if(wormArr[0].posX === td.length - 1 && tdAll[(headY * 30) + td.length - 1].classList.contains('worm_head')){
+            wormArr[0].posX = 0;  
+            headX = wormArr[0].posX;
+            tdAll[headY * 30].classList.add('worm_head');
+            tdAll[(headY * 30) + td.length - 1].classList.remove('worm_head');
+            tdAll[(headY * 30) + td.length - 1].classList.add('worm_body');
+        }
+        horizon=false;
+        vertical=true;
+        }
+    let dirT = () => {
+        headX = wormArr[0].posX;
+        if(wormArr[0].posY >= 1){
+            wormArr[0].posY = wormArr[0].posY - 1;
+            headY = wormArr[0].posY;
+            tdAll[((headY + 1) * 30) + headX].classList.remove('worm_head');
+            tdAll[((headY + 1) * 30) + headX].classList.add('worm_body');
+        }else if(wormArr[0].posY === 0 && tdAll[headX].classList.contains('worm_head')){
+            wormArr[0].posY = td.length - 1;
+            headY = wormArr[0].posY;
+            tdAll[headX].classList.remove('worm_head');
+            tdAll[headX].classList.add('worm_body');
+        }
+        horizon = true;
+        vertical = false;
+    }
+    let dirB = () => {
+        headX = wormArr[0].posX;
+        if( wormArr[0].posY < td.length - 1 ){
+            wormArr[0].posY = wormArr[0].posY + 1;
+            headY = wormArr[0].posY;
+            tdAll[((headY - 1) * 30) + headX].classList.remove('worm_head');
+            tdAll[((headY - 1) * 30) + headX].classList.add('worm_body');
+        }else if(wormArr[0].posY === td.length - 1 && tdAll[((td.length - 1) * 30) + headX].classList.contains('worm_head')){
+            wormArr[0].posY = 0;  
+            headY = wormArr[0].posY;
+            tdAll[headX].classList.add('worm_head');
+            tdAll[((td.length - 1) * 30) + headX].classList.remove('worm_head');
+            tdAll[((td.length - 1) * 30) + headX].classList.add('worm_body');
+        }
+        horizon = true;
+        vertical = false;
+        }
+    let sum = 0, addBody = 0;
+    let move = (dir) => {
+        if( addBody!==0){
+            wormArr.push({ posX: undefined, posY: undefined });
+            for(let i = wormArr.length - 1; i >= 1; i -= 1){
+                wormArr[i].posX = wormArr[i - 1].posX;
+                wormArr[i].posY = wormArr[i - 1].posY;
+            }
+            tailX = wormArr[wormArr.length - 1].posX;
+            tailY = wormArr[wormArr.length - 1].posY; 
+            dir();
+            addBody-=1;
+        }else{
+            tailX = wormArr[wormArr.length - 1].posX;
+            tailY = wormArr[wormArr.length - 1].posY; 
+            for(let i = wormArr.length - 1; i >= 1; i -= 1){
+                wormArr[i].posX = wormArr[i - 1].posX;
+                wormArr[i].posY = wormArr[i - 1].posY;
+            }
+            dir();
+            tdAll[(tailY * 30) + tailX].classList.remove('worm_body');
+        }
+        //move 호출시 head 한칸 추가, body한칸 삭제
+        tdAll[(headY * 30) + headX].classList.add('worm_head');
+
+        for(let w = 0; w < feed.length; w += 1){
+            // head의 좌표가 feed의 좌표와 같을 때 (먹이를 먹었을 때) 실행할 내용들
+            if((headX === parseInt(feed[w].getAttribute('data-x'))) && (headY === parseInt(feed[w].getAttribute('data-y')))){ 
+                // 먹이의 점수
+                addBody += parseInt(feed[w].getAttribute('data-feed'))       
+                // 먹이점수 누적처리
+                sum += addBody;
+                // 먹이 점수 표시하기
+                score.innerText = sum;
+                feed[w].classList.remove('feed');
+                feed[w].removeAttribute('data-x');
+                feed[w].removeAttribute('data-y');
+                feed[w].removeAttribute('data-feed');
+                feed[w].innerText = '';
+                random();
+            }
+        }
+        for(let q = 1; q < wormArr.length; q += 1){
+            if( ((headX === wormArr[q].posX) && (headY === wormArr[q].posY)) || (headX === tailX && headY === tailY)){
+                clearInterval(moving);
+                gameOver.style.opacity = 1;
+            }
+        }
+    }
+    // 지렁이 움직이기
+    let moving;
+    moving = setInterval(function(){
+        move(dirL);
+    }, 300);
+    //방향
+    function moveDir (dir) {
+        moving = setInterval(function(){
+            move(dir);
+        }, 300);
+    }
+    //키보드 이벤트
+    window.addEventListener( 'keydown', (ev) => {
+        if( ev.keyCode === 37 ){
+            if(horizon){
+                clearInterval(moving);
+                moveDir(dirL)
+            }
+        }else if( ev.keyCode === 38 ){
+            if(vertical){
+                clearInterval(moving);
+                moveDir(dirT)
+            }
+        }else if( ev.keyCode === 39 ){
+            if(horizon){
+                clearInterval(moving);
+                moveDir(dirR)
+            }
+        }else if( ev.keyCode === 40 ){
+            if(vertical){
+                clearInterval(moving);
+                moveDir(dirB)
+            }
+        }
+    }); 
+    //재시작
+    replay.addEventListener('click', () => {
+        gameOver.style.opacity = 0;
+        addBody=0;
+        clearInterval(moving);
+        score.innerText = '0';
+        render();
+        moving = setInterval( function () {
+            move(dirL);
+        }, 300);
+    });
+
+
+  </script>
+</body>
+</html>
