@@ -21,6 +21,8 @@
         .btn_area{margin-top:40px;width:100%;text-align:center}
         .replay{outline:none;background:rgb(245, 213, 213);border:0;padding:5px 10px;border-radius:20px;color:#2d2d2d;font-weight:bold;cursor:pointer;font-size:13px;}
         .next_stage{text-decoration:none;color:#777;font-size:13px;font-weight:bold;background:#ddd;padding:5px 10px;border-radius:20px;cursor:unset}
+        .pop{position:absolute;left:0;top:0;opacity:0; width:100%;height:100vh;background:rgba(255,255,255,0.7);color:#000;font-weight:bold;font-size:80px;display:flex;justify-content:center;align-items:center;z-index:-1;}
+        .pop.is_active{opacity:1;z-index:10;}
         .next_stage.is_active{background:rgb(245, 213, 213);cursor:pointer;color:#2d2d2d;}
     </style>
 
@@ -35,6 +37,7 @@
             <a class="next_stage" href="#">다음단계</a>
         </div>  
     </div>
+    <div class="pop">Clear!!</div>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script>
         class Game {
@@ -95,6 +98,7 @@
               let tit=document.querySelector('.grade');
               let lev=1;
               let count=0;
+              let clear=document.querySelector('.pop');
               // 플레이어가 입력한 조작에 따라 이동 가능 조건 판별
               if( ev.keyCode==37 ) {
                 // 플레이어가 왼쪽으로 이동할 수 있는 조건은?
@@ -188,6 +192,10 @@
                 next.classList.add('is_active');
                 // stage 표시 변경을 위한 변수
                 lev=parseInt(tit.innerHTML)+1;
+                if(this.currentStage>=2){
+                  clear.classList.add('is_active');
+                  next.classList.remove('is_active');
+                }
               }else{
                 next.classList.remove('is_active');
                 lev=parseInt(tit.innerHTML);
@@ -196,10 +204,11 @@
               // A키를 누르면 게임을 초기화한다.
               btnReplay.addEventListener('click',()=>{
                 this.drawStage( this.stages[this.currentStage] );
+                next.classList.remove('is_active');
               });
               next.addEventListener('click',()=>{
-                
-                this.drawStage( this.stages[this.currentStage+lev-1] );
+                this.currentStage=lev-1
+                this.drawStage( this.stages[this.currentStage] );
                 tit.innerHTML=lev;
                 next.classList.remove('is_active');
                 console.log(lev)
