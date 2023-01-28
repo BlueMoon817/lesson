@@ -26,3 +26,6 @@ let socket = net.createConnection(8080, "127.0.0.1", function(){
 
 });
 
+/*node js 로 멀티플레이 하는 방법*/
+// 해당 폴더 경로로 이동하여 터미널에 node server.js
+// 터미널(bash)를 여러개 열어서 각각 node client.js 를 치면 시작된다.   
