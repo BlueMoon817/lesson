@@ -479,7 +479,7 @@ let server = net.createServer(function(socket){
           if(userY <= 35) { map[(userY *36) +userX] = 46 }
           maze[userY][userX] = road;
           maze[userY-1][userX] = socket.mark;
-          map[((userY-1)*36)+userX] = Buffer.from([socket.mark]);
+          map[((userY-1)*36)+userX] = Buffer.from([socket.mark]).toString();
           socket.userX=userX;
           socket.userY=userY-1;
           roadEvent(socket.userY,socket.userX);
@@ -497,7 +497,7 @@ let server = net.createServer(function(socket){
           if(userY >= 1) { map[(userY * 36) + userX] = 46 }
           maze[userY][userX] = road;
           maze[userY+1][userX] = socket.mark;
-          map[((userY+1)*36)+userX] = Buffer.from([socket.mark]);
+          map[((userY+1)*36)+userX] = Buffer.from([socket.mark]).toString();
           socket.userX=userX;
           socket.userY=userY+1;
           roadEvent(socket.userY,socket.userX);
@@ -515,7 +515,7 @@ let server = net.createServer(function(socket){
           if(userX >= 1) { map[(userY * 36) + userX] = 46 }
           maze[userY][userX] = road;
           maze[userY][userX+1] = socket.mark;
-          map[(userY * 36) + userX+1] = Buffer.from([socket.mark]);
+          map[(userY * 36) + userX+1] = Buffer.from([socket.mark]).toString();
           socket.userX=userX+1;
           socket.userY=userY;
           roadEvent(socket.userY,socket.userX);
@@ -533,7 +533,7 @@ let server = net.createServer(function(socket){
           if(userX <= 35) { map[(userY * 36) + userX] = 46 }
           maze[userY][userX] = road;
           maze[userY][userX-1] = socket.mark;
-          map[(userY*36)+userX-1] = Buffer.from([socket.mark]);
+          map[(userY*36)+userX-1] = Buffer.from([socket.mark]).toString();
           socket.userX=userX-1;
           socket.userY=userY;
           roadEvent(socket.userY,socket.userX);
@@ -553,7 +553,7 @@ let server = net.createServer(function(socket){
           for(let r=0;r<players.length;r+=1){
             if(players[r].mark!==socket.mark&& players[r].userX===userX&&players[r].userY===userY-1){
               socket.write(`플레이어${players[r].mark}을 공격했다!! 데미지 ${socket.damage-players[r].shield}을/를 주었다\n`);
-              players[r].write(`플레이어${socket.mark}에게 공격당했다!! 데미지 -10 남은체력: ${players[r].hp-=(socket.damage-players[r].shield)}!!\n`);
+              players[r].write(`플레이어${socket.mark}에게 공격당했다!! 데미지 ${-10+players[r].shield} 남은체력: ${players[r].hp-=(socket.damage-players[r].shield)}!!\n`);
               if(players[r].hp<=0){
                 players[r].write(`현재 체력 : ${socket.hp} 체력이 다 닳아서 죽었습니다..ㅠㅠ 안녕히..\n`);
               }
@@ -570,7 +570,7 @@ let server = net.createServer(function(socket){
           for(let r=0;r<players.length;r+=1){
             if(players[r].mark!==socket.mark&& players[r].userX===userX&&players[r].userY===userY+1){
               socket.write(`플레이어${players[r].mark}을 공격했다!! 데미지 ${socket.damage-players[r].shield}을/를 주었다\n`);
-              players[r].write(`플레이어${socket.mark}에게 공격당했다!! 데미지 -10 남은체력: ${players[r].hp-=(socket.damage-players[r].shield)}!!\n`);
+              players[r].write(`플레이어${socket.mark}에게 공격당했다!! 데미지 ${-10+players[r].shield} 남은체력: ${players[r].hp-=(socket.damage-players[r].shield)}!!\n`);
               if(players[r].hp<=0){
                 players[r].write(`현재 체력 : ${socket.hp} 체력이 다 닳아서 죽었습니다..ㅠㅠ 안녕히..\n`);
               }
@@ -587,7 +587,7 @@ let server = net.createServer(function(socket){
           for(let r=0;r<players.length;r+=1){
             if(players[r].mark!==socket.mark&& players[r].userX===userX-1&&players[r].userY===userY){
               socket.write(`플레이어${players[r].mark}을 공격했다!! 데미지 ${socket.damage-players[r].shield}을/를 주었다\n`);
-              players[r].write(`플레이어${socket.mark}에게 공격당했다!! 데미지 -10 남은체력: ${players[r].hp-=(socket.damage-players[r].shield)}!!\n`);
+              players[r].write(`플레이어${socket.mark}에게 공격당했다!! 데미지 ${-10+players[r].shield} 남은체력: ${players[r].hp-=(socket.damage-players[r].shield)}!!\n`);
               if(players[r].hp<=0){
                 players[r].write(`현재 체력 : ${socket.hp} 체력이 다 닳아서 죽었습니다..ㅠㅠ 안녕히..\n`);
               }
@@ -603,7 +603,7 @@ let server = net.createServer(function(socket){
           for(let r=0;r<players.length;r+=1){
             if(players[r].mark!==socket.mark&& players[r].userX===userX+1&&players[r].userY===userY){
               socket.write(`플레이어${players[r].mark}을 공격했다!! 데미지 ${socket.damage-players[r].shield}을/를 주었다\n`);
-              players[r].write(`플레이어${socket.mark}에게 공격당했다!! 데미지 -10 남은체력: ${players[r].hp-=(socket.damage-players[r].shield)}!!\n`);
+              players[r].write(`플레이어${socket.mark}에게 공격당했다!! 데미지 ${-10+players[r].shield} 남은체력: ${players[r].hp-=(socket.damage-players[r].shield)}!!\n`);
               if(players[r].hp<=0){
                 players[r].write(`현재 체력 : ${socket.hp} 체력이 다 닳아서 죽었습니다..ㅠㅠ 안녕히..\n`);
               }
