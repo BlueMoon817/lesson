@@ -1,37 +1,12 @@
 //기본페이지
 let fs = require( "fs" );
 let queryString = {};
-let postData = {};
-let cookies={};
-let memberInfos=JSON.parse(fs.readFileSync("members.json").toString());
-
 
 if( process.env[ "QUERY_STRING" ] ){
     process.env[ "QUERY_STRING" ].split( '&' ).forEach( field =>{
         queryString[ field.split("=")[0]] = decodeURIComponent(field.split("=")[1].replace(/\+/g," ") );
     });
 }
-
-//쿠키 파싱
-if(process.env["Cookie"]){
-    if(process.env["Cookie"].split('&')){
-        process.env["Cookie"].split('&').forEach(field =>{
-            cookies[field.split("=")[0]] = decodeURIComponent(field.split("=")[1].replace(/\+/g," "));
-        });
-    }
-}
-let nickname='',idx='';
-if(cookies["sess_id"] && fs.existsSync("./sessions/"+cookies["sess_id"])){
-    let session = fs.readFileSync("./sessions/"+cookies["sess_id"]).toString();
-    let loggedId = session.split("=")[1];
-    for(let i=0;i<memberInfos.length;i+=1){
-        if(memberInfos[i].id===loggedId){
-            idx=i;
-            break;
-        }
-    }
-}
-nickname=memberInfos[idx].nickname;
 
 //입력받기
 let html = `<!DOCTYPE html>
@@ -47,10 +22,6 @@ let html = `<!DOCTYPE html>
     <form action="board/write.js" method="post" enctype="multipart/form-data">
         <fieldset>
             <div class="info">
-                <div class="user">
-                    <label for="input_nick">${nickname}</label>
-                    <input type="text" name="nickname" value=${nickname} id="input_nick" style="display:none;"/>
-                </div>
                 <div class="cate">
                     <span class="cate_filter">말머리</span>
                     <select name="category" class="category">

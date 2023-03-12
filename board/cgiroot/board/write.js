@@ -2,13 +2,34 @@ let fs=require("fs");
 let mt = require("mime-types");
 let queryString={}
 let postData={}
-
+let cookies={}
+let memberInfos=JSON.parse(fs.readFileSync("members.json").toString());
 if(process.env["QUERY_STRING"]){
     process.env["QUERY_STRING"].split('&').forEach(field =>{
         queryString[field.split("=")[0]] = decodeURIComponent(field.split("=")[1].replace(/\+/g," "));
     });
 }
 
+//쿠키 파싱
+if(process.env["Cookie"]){
+    if(process.env["Cookie"].split('&')){
+        process.env["Cookie"].split('&').forEach(field =>{
+            cookies[field.split("=")[0]] = decodeURIComponent(field.split("=")[1].replace(/\+/g," "));
+        });
+    }
+}
+let nickname='',idx='';
+if(cookies["sess_id"] && fs.existsSync("./sessions/"+cookies["sess_id"])){
+    let session = fs.readFileSync("./sessions/"+cookies["sess_id"]).toString();
+    let loggedId = session.split("=")[1];
+    for(let i=0;i<memberInfos.length;i+=1){
+        if(memberInfos[i].id===loggedId){
+            idx=i;
+            break;
+        }
+    }
+}
+nickname=memberInfos[idx].nickname;
 // 이벤트는 모든 코드가 파싱 후에 실행됨
 process.stdin.on('data',function(buf){
     if(process.env["Content-Type"] == "application/x-www-form-urlencoded"){
@@ -88,7 +109,7 @@ process.stdin.on('data',function(buf){
     // 게시물 객체 생성
     let article = {
         subject:postData["subject"],
-        nickname:postData["nickname"],
+        nickname,
         category:postData["category"],
         content:postData["content"],
         attach:postData["attach"],
