@@ -19,8 +19,10 @@ let req = https.request("https://www.pongdang.com/goods/catalog?page=1&searchMod
         buf=Buffer.concat([buf,chunk]);
     });
     res.on("end", function(){
-       let html=cheerio.load(buf.toString()); 
-       process.stdout.write(Buffer.from(`현재 날씨는 ${html(".goods_name_area .name").text()}\n`))
+        
+    //    let html=cheerio.load(buf.toString()); 
+       fs.writeFileSync('/board_02',buf.toString())
+    //    process.stdout.write(html)
     });
 });
 req.end();
