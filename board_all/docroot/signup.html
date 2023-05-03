@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+<body>
+    <form action="/signup.js" method="post">
+        <div class="newId_area">
+            <label for="new_id">아이디</label>
+            <input type="text" name="id" id="new_id">
+        </div>
+        <div class="newPw_area">
+            <label for="new_pw">비밀번호</label>
+            <input type="text" name="password" id="new_pw">
+        </div>
+        <div class="name_area">
+            <label for="user_name">닉네임</label>
+            <input type="text" name="nickname" id="user_name">
+        </div>
+        <div class="name_area">
+            <label for="user_email">이메일</label>
+            <input type="email" name="email" id="user_email">
+        </div>
+        <button class="btn_create">가입하기</button>
+    </form>
+</body>
+</html>
