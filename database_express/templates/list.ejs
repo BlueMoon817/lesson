@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>할 일 관리 앱(TODO LIST)</title>
+</head>
+<body>
+  <h1>할 일 관리 앱 (TODO LIST)</h1>
+  <form action="/" method="get">
+    <input type="text" name="keyword" value="<%=keyword%>">
+    <input type="submit" name="검색">
+  </form>
+  <table>
+    <tr>
+      <th>번호</th>
+      <th>완료상태</th>
+      <th>할 일</th>
+      <th>등록일</th>
+      <th>데드라인</th>
+    </tr>
+    <% for(let i=0; i<todos.length; i+=1) { %>
+      <tr>
+        <td><%=todos[i].seq%></td>
+        <td>
+          <form action="/done" method="post">
+            <input type="checkbox" name="is_done_<%=todos[i].seq%>" value="done" <% if(todos[i].done=='y') { %>checked<% } %>>
+            <input type="hidden" name="seq" value="<%=todos[i].seq%>">
+            <input type="submit" value="변경">
+          </form>
+        </td>
+        <td>
+          <% if(todos[i].color) { %>
+            <span style="color:<%=todos[i].color%>"><%=todos[i].job%></span>
+          <% } else { %>
+            <%=todos[i].job%>
+          <% } %>
+        </td>
+        <td><%=todos[i].deadline%></td>
+      </tr>  
+      <% } %>
+      <% if(todos.length==0) { %>
+      <tr>
+        <td colspan="4" style="text-align:center">등록된 할 일이 없습니다.</td>
+      </tr>
+      <% } %>
+  </table>
+  <form action="/create" method="post">
+    <h2>새로운 할 일 등록하기</h2>
+    할 일 <input type="text" name="job"><br>
+    설명 <textarea name="description"></textarea><br>
+    데드라인 <input type="date" name="deadline"><br>
+    색상 <input type="text" name="color"><br>
+    <input type="submit" name="등록">
+  </form>
+</body>
+</html>
