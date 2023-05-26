@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="js/menu.js"></script>
+	<script type="text/javascript">
+
+		// 시작
+		$(function () {
+			// 달력 붙이기
+			$('.datePicker').datepicker({
+				dateFormat: 'yy-mm-dd',
+				prevText: '이전 달',
+				nextText: '다음 달',
+				monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+				monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+				dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+				dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+				dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+				showMonthAfterYear: true,
+				yearSuffix: '년',
+				showOn: 'button',
+				buttonImage: 'images/calendar.png',
+				buttonImageOnly: false
+			});
+			$('.ui-datepicker-trigger').addClass('between').css({
+				lineHeight: '40px',
+				height: 40,
+				backgroundColor: '#36393b',
+				border: 'none'
+			}).find('img').css({
+				width: 24,
+				height: 23,
+				verticalAlign: 'middle',
+				cursor: 'pointer'
+			});
+		});
+
+	</script>
+	<style>
+		.nav-tab li:hover {
+			border-color: #36393b;
+			background-color: #36393b;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">게시판 관리</a>
+						<ul class="sub-list-box">
+							<li>
+								<ul class="sub-list">
+									<li><a href="notice1.html">공지사항</a></li>
+									<li><a href="notice2.html">미호소식</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">미호소식</h1>
+							<a class="btn round pull-right" href="notice-add.html">새글작성</a>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 게시판 관리 - 미호소식
+						</span>
+					</div>
+					<div class="content-body">
+						<div class="form-inline">
+							<form action="" method="get">
+								<div class="pull-left m-r-10">
+									<input class="form-control pull-left datePicker m-0" type="text" name="date"
+										value="" readonly>
+								</div>
+								<span class="pull-left m-r-10 m-t-5">
+									~
+								</span>
+								<div class="pull-left m-r-5">
+									<input class="form-control pull-left datePicker m-0" type="text" name="date"
+										value="" readonly>
+								</div>
+								<ul class="nav-tab pull-left m-r-10">
+									<li class="pull-left btn round bg-darkgray m-r-5">전 체</li>
+								</ul>
+								<input class="form-control pull-left m-r-5" type="text" style="width:300px;"
+									placeholder="통합검색">
+								<input type="submit" value="검색"
+									class="btn round bg-darkgray search-btn text-center pull-left m-b-5">
+								<div class="clearfix"></div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+						<div class="table-responsive">
+							<table class="table table-hover text-center m-b-0">
+								<thead>
+									<tr class="bg-puple">
+										<th>
+											<input type="checkbox">
+										</th>
+										<th class="text-white">글번호</th>
+										<th class="text-white">작성일시</th>
+										<th class="text-white">제목</th>
+										<th class="text-white">작성자</th>
+										<th class="text-white">조회</th>
+										<th class="text-white">관리</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<input type="checkbox">
+										</td>
+										<td>1</td>
+										<td>19-06-06 14:30:33</td>
+										<td>
+											<a class="text-darkgray" href="#none">안녕하세요. 미호박물관 배수관 공사 일정 안내입니다.</a>
+										</td>
+										<td>관리자</td>
+										<td>700</td>
+										<td>
+											<button class="btn-sm round" type="button">수정</button>
+											<button class="btn-sm bg-red round" type="button">삭제</button>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox">
+										</td>
+										<td>1</td>
+										<td>19-06-06 14:30:33</td>
+										<td>
+											<a class="text-darkgray" href="#none">안녕하세요. 미호박물관 배수관 공사 일정 안내입니다.</a>
+										</td>
+										<td>관리자</td>
+										<td>700</td>
+										<td>
+											<button class="btn-sm round" type="button">수정</button>
+											<button class="btn-sm bg-red round" type="button">삭제</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="form-inline m-t-10">
+							<form action="each-stats.html" method="get">
+								<button class="btn-sm bg-red round">선택삭제</button>
+							</form>
+						</div>
+						<div class="block text-center">
+							<ul class="pagination m-0">
+								<li class="disabled"><a href="#" aria-label="Previous">First</a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#" aria-label="Next">Last</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

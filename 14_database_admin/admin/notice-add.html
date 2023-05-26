@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<link href="css/dist/summernote-lite.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="css/dist/summernote-lite.js"></script>
+	<script src="css/dist/lang/summernote-ko-KR.js"></script>
+	<script src="js/menu.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">게시판 관리</a>
+						<ul class="sub-list-box">
+							<li>
+								<ul class="sub-list">
+									<li><a href="notice1.html">공지사항</a></li>
+									<li><a href="notice2.html">미호소식</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">새글작성</h1>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 게시판 관리 - 새글작성
+						</span>
+					</div>
+					<div class="content-body">
+						<div class="table-responsive m-t-10" style="max-height: 100%;">
+							<table class="table table-condensed">
+								<tbody>
+									<tr>
+										<th class="table-title text-white bg-puple">제목</th>
+										<td class="text-indent">
+											<input class="block form-control-sm m-b-0" type="text" placeholder="제목을 입력하세요.">
+										</td>
+									</tr>
+									<tr>
+										<th class="text-white bg-puple">상단고정</th>
+										<td>
+											<select class="form-control-sm m-b-0">
+												<option>N</option>
+												<option>Y</option>
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<th class="text-white bg-puple">내용</th>
+										<td>
+											<div id="summernote">
+						
+											</div>
+											<script type="text/javascript">
+												$('#summernote').summernote({
+													placeholder: '게시판 내용을 입력하세요.',
+													tabsize: 2,
+													maxWidth:'100%',
+													height: 300,
+													lang: 'ko-KR'
+												});
+											</script>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+
+					<div class="content-foot clearfix">
+						<div class="pull-right">
+							<a href="#" class="btn round text-center">저장하기</a>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

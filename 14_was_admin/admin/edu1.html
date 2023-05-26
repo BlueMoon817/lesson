@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="js/menu.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			$('.table-date~.table-body li').on('click', function () {
+				$('.table-date~.table-body li a').removeAttr('style', 'background-color');
+				$(this).find('a').css({
+					color: '#fff',
+					borderRadius: 5,
+					backgroundColor: '#064280'
+				});
+			});
+
+			$('.info-data .table-date~.table-body li').on('click', function () {
+				$('.info-data .table-date~.table-body li').removeAttr('style', 'background-color');
+				$(this).css({
+					backgroundColor: '#ddd'
+				});
+
+			});
+		});
+
+	</script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">예약 관리</a>
+						<ul class="sub-list-box">
+							<li>
+								<ul class="sub-list">
+									<li><a href="index.html">단체예약현황</a></li>
+									<li><a href="group2.html">단체예약관리</a></li>
+									<hr>
+									<li><a href="edu1.html">교육예약현황</a></li>
+									<li><a href="edu2.html">교육예약관리</a></li>
+									<hr>
+									<li><a href="reserv.html">예약이력</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">교육예약 현황</h1>
+							<a href="edu-add.html" class="btn round pull-right" type="button" name="button">교육예약 +</a>
+							<a href="edu-add2.html" class="btn round pull-right m-r-10" type="button" name="button">교육등록</a>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 예약관리 - 교육예약 현황
+						</span>
+					</div>
+					<div class="content-body clearfix">
+						<div class="table-box n3 p-15 pull-right clearfix" style="margin-top: 50px;">
+							<div class="col-md-12">
+								<p class="table-caption">[ 프로그램명 ]</p>
+								<input class="block text-left m-b-10 form-control-sm" value="VR 숨은 공룡찾기" placeholder="15자 이내" disabled>
+							</div>
+							<div class="col-md-12">
+								<p class="table-caption">[ 내용 ]</p>
+								<input class="block text-left m-b-10 form-control-sm" value="VR 포토뷰어만들기" placeholder="15자 이내" disabled>
+							</div>
+							<div class="col-md-12">
+								<p class="table-caption">[ 비용 ]</p>
+								<input class="block text-left m-b-10 form-control-sm" value="6,000원" disabled>
+							</div>
+							<div class="col-md-12">
+								<p class="table-caption">[ 대상 ]</p>
+								<input class="block text-left m-b-10 form-control-sm" value="10세 - 15세" placeholder="15자 이내" disabled>
+							</div>
+							<div class="col-md-12">
+								<p class="table-caption">[ 교육일 ]</p>
+								<input class="block text-left m-b-10 form-control-sm" value="2019년 7월 4일" disabled>
+							</div>
+							<div class="col-md-12">
+								<p class="table-caption">[ 교육시간 ]</p>
+								<input class="block text-left m-b-10 form-control-sm" value="14:00 ~ 15:00" disabled>
+							</div>
+							<div class="col-md-12">
+								<p class="table-caption">[ 교육사용 ]</p>
+								<div class="m-b-10 b-b clearfix">
+									<label for="edu-on" class="pull-left m-r-10">
+										<input id="edu-on" type="radio" name="swich" checked disabled>on
+									</label>
+									<label for="edu-off" class="pull-left">
+										<input id="edu-off" type="radio" name="swich" disabled>off
+									</label>
+								</div>
+							</div>
+							<button class="btn-sm round" type="button">수정</button>
+							<button class="btn-sm bg-red round" type="button">삭제</button>
+						</div>
+
+						<div class="info-data n6 pull-left clearfix">
+							<div class="table-box n6">
+								<ul class="table-date clearfix" style="margin-bottom: 20px;">
+									<li>
+										<a href="#none">
+											<img src="images/prev.png" alt="이전">
+										</a>
+									</li>
+									<li class="date">
+										<span class="year">2019</span>년 <span class="month">05</span>월
+									</li>
+									<li>
+										<a href="#none">
+											<img src="images/next.png" alt="다음">
+										</a>
+									</li>
+								</ul>
+								<ul class="table-date clearfix" style="margin-bottom: 20px;">
+									<li>
+										<a href="#none">
+											<img src="images/prev.png" alt="이전">
+										</a>
+									</li>
+									<li class="date">
+										<span class="week">1</span>주
+									</li>
+									<li>
+										<a href="#none">
+											<img src="images/next.png" alt="다음">
+										</a>
+									</li>
+								</ul>
+								<ul class="table-head clearfix">
+									<li>구분</li>
+									<li>월</li>
+									<li>화</li>
+									<li>수</li>
+									<li>목</li>
+									<li>금</li>
+								</ul>
+								<ul class="table-body clearfix">
+									<li>
+										11:30<br>~<br>12:00
+									</li>
+									<li></li>
+									<li>
+										DINO PARK 탐방<br>
+										<span class="block text-red">교육 off</span>
+									</li>
+									<li></li>
+									<li>
+										DINO PARK 탐방<br>
+										<span class="block text-blue">3 / 10명</span>
+									</li>
+									<li>
+										DINO PARK 탐방<br>
+										<span class="block text-blue">10 / 10명</span>
+									</li>
+								</ul>
+								<ul class="table-body clearfix">
+									<li>
+										14:00<br>~<br>15:00
+									</li>
+									<li></li>
+									<li></li>
+									<li></li>
+									<li>
+										VR 숨은 공룡 찾기<br>
+										<span class="block text-blue">10 / 10명</span>
+									</li>
+									<li>
+										VR 숨은 공룡 찾기<br>
+										<span class="block text-red">교육 off</span>
+									</li>
+								</ul>
+								<ul class="table-body clearfix">
+									<li>
+										15:00<br>~<br>16:00
+									</li>
+									<li></li>
+									<li>
+										VR 숨은 공룡 찾기<br>
+										<span class="block text-blue">0 / 10명</span>
+									</li>
+									<li>
+										VR 숨은 공룡 찾기<br>
+										<span class="block text-blue">0 / 10명</span>
+									</li>
+									<li>
+										작은 알에서 어른으로<br>
+										<span class="block text-blue">0 / 10명</span>
+									</li>
+									<li>
+										작은 알에서 어른으로<br>
+										<span class="block text-blue">0 / 10명</span>
+									</li>
+								</ul>
+								<div class="m-t-10 clearfix">
+									<input class="form-control-sm pull-left" type="time">
+									<span class="between pull-left">~</span>
+									<input class="form-control-sm pull-left m-r-5" type="time">
+									<button class="btn-sm round pull-left">시간추가</button>
+								</div>
+							</div>
+
+							<div class="table-box m-t-30">
+								<p class="table-caption">예약현황</p>
+								<div class="table-responsive">
+									<table class="table text-center m-b-0">
+										<thead>
+											<tr class="bg-puple">
+												<th class="text-white">신청일시</th>
+												<th class="text-white">보호자</th>
+												<th class="text-white">연락처</th>
+												<th class="text-white">신청인원수</th>
+												<th class="text-white">학생이름</th>
+												<th class="text-white">나이</th>
+												<th class="text-white">기타 특이사항</th>
+												<th class="text-white">예약관리</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>19-06-11 14:30:21</td>
+												<td>남정규</td>
+												<td>010-1234-1234</td>
+												<td>5명</td>
+												<td>김학생</td>
+												<td>10세</td>
+												<td>-</td>
+												<td>
+													<select class="form-control-sm block" style="min-width:100px;">
+														<option>예약승인</option>
+														<option>예약대기</option>
+														<option>예약취소</option>
+													</select>
+												</td>
+											</tr>
+											<tr>
+												<td>19-06-11 14:30:21</td>
+												<td>남정규</td>
+												<td>010-1234-1234</td>
+												<td>5명</td>
+												<td>우학생</td>
+												<td>12세</td>
+												<td>-</td>
+												<td>
+													<select class="form-control-sm block" style="min-width:100px;">
+														<option>예약대기</option>
+														<option>예약취소</option>
+														<option>예약승인</option>
+													</select>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<!-- //end .info-data -->
+					</div>
+					<!-- //end .content-body -->
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

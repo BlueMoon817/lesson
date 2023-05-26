@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="js/menu.js"></script>
+	<script type="text/javascript">
+		$(function () {
+
+			$('.table-date~.table-body li').on('click', function () {
+				$('.table-date~.table-body li a').removeAttr('style', 'background-color');
+				$(this).find('a').css({
+					color: '#fff',
+					borderRadius: 5,
+					backgroundColor: '#064280'
+				});
+
+			});
+
+		});
+
+	</script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">예약 관리</a>
+						<ul class="sub-list-box">
+							<li>
+								<ul class="sub-list">
+									<li><a href="index.html">단체예약현황</a></li>
+									<li><a href="group2.html">단체예약관리</a></li>
+									<hr>
+									<li><a href="edu1.html">교육예약현황</a></li>
+									<li><a href="edu2.html">교육예약관리</a></li>
+									<hr>
+									<li><a href="reserv.html">예약이력</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">신규교육예약</h1>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 예약관리 - 신규교육예약
+						</span>
+					</div>
+					<div class="content-body clearfix">
+						<div class="table-box n3">
+							<ul class="table-date clearfix">
+								<li>
+									<a href="#none">
+										<img src="images/prev.png" alt="이전">
+									</a>
+								</li>
+								<li class="date">
+									<span class="year">2019</span>.<span class="month">05</span>
+								</li>
+								<li>
+									<a href="#none">
+										<img src="images/next.png" alt="다음">
+									</a>
+								</li>
+							</ul>
+							<ul class="table-head clearfix">
+								<li>월</li>
+								<li>화</li>
+								<li>수</li>
+								<li>목</li>
+								<li>금</li>
+								<li>토</li>
+								<li>일</li>
+							</ul>
+							<ul class="table-body clearfix">
+								<li><a href="#none"></a></li>
+								<li><a href="#none"></a></li>
+								<li><a href="#none">1</a></li>
+								<li><a href="#none">2</a></li>
+								<li><a href="#none">3</a></li>
+								<li><a href="#none">4</a></li>
+								<li><a href="#none">5</a></li>
+							</ul>
+							<ul class="table-body clearfix">
+								<li><a href="#none">6</a></li>
+								<li><a href="#none">7</a></li>
+								<li><a href="#none">8</a></li>
+								<li><a href="#none">9</a></li>
+								<li><a href="#none">10</a></li>
+								<li><a href="#none">11</a></li>
+								<li><a href="#none">12</a></li>
+							</ul>
+							<ul class="table-body clearfix">
+								<li><a href="#none">13</a></li>
+								<li><a href="#none">14</a></li>
+								<li><a href="#none">15</a></li>
+								<li><a href="#none">16</a></li>
+								<li><a href="#none">17</a></li>
+								<li><a href="#none">18</a></li>
+								<li><a href="#none">19</a></li>
+							</ul>
+							<ul class="table-body clearfix">
+								<li><a href="#none">20</a></li>
+								<li><a href="#none">21</a></li>
+								<li><a href="#none">22</a></li>
+								<li><a href="#none">23</a></li>
+								<li><a href="#none">24</a></li>
+								<li><a href="#none">25</a></li>
+								<li><a href="#none">26</a></li>
+							</ul>
+							<ul class="table-body clearfix">
+								<li><a href="#none">27</a></li>
+								<li><a href="#none">28</a></li>
+								<li><a href="#none">29</a></li>
+								<li><a href="#none">30</a></li>
+								<li><a href="#none">31</a></li>
+								<li><a href="#none"></a></li>
+								<li><a href="#none"></a></li>
+							</ul>
+						</div>
+						<!-- //end .table-box -->
+
+						<div class="info-data n6 clearfix">
+							<div class="info-data clearfix">
+								<p class="table-caption">프로그램선택 및 정보입력</p>
+								<select class="form-control blue">
+									<option>프로그램을 선택하세요.</option>
+									<option>DINO PARK 탐방</option>
+									<option>DINO PARK 탐방</option>
+									<option>DINO PARK 탐방</option>
+								</select>
+								<select class="form-control blue">
+									<option>시간을 선택하세요.</option>
+									<option>11:00 ~ 12:00</option>
+									<option>11:00 ~ 12:00</option>
+									<option>11:00 ~ 12:00</option>
+								</select>
+								<select class="form-control">
+									<option>수강 인원수를 선택하세요.</option>
+									<option value="">1</option>
+									<option value="">2</option>
+									<option value="">3</option>
+									<option value="">4</option>
+									<option value="">5</option>
+									<option value="">6</option>
+									<option value="">7</option>
+									<option value="">8</option>
+									<option value="">9</option>
+									<option value="">10</option>
+								</select>
+								<p class="help-text">※수강인원수는 최대10명까지입니다.</p>
+							</div>
+							<div class="info-data clearfix">
+								<div class="l clearfix">
+									<p class="table-caption">보호자 정보</p>
+									<input class="form-control" type="text" placeholder="보호자 성함">
+									<input class="form-control" type="text" placeholder="보호자 연락처">
+									<p class="table-caption">수강 학생정보</p>
+									<div class="input-box">
+										<input class="form-control" type="text" placeholder="학생이름">
+										<input class="form-control" type="text" placeholder="학생연령">
+										<input class="form-control" type="text" placeholder="학생이름">
+										<input class="form-control" type="text" placeholder="학생연령">
+										<input class="form-control" type="text" placeholder="학생이름">
+										<input class="form-control" type="text" placeholder="학생연령">
+									</div>
+								</div>
+								<div class="r clearfix">
+									<p class="table-caption">기타 특이사항</p>
+									<textarea class="block" cols="30" rows="8" placeholder="기타 특이사항을 입력하세요"></textarea>
+									<input class="form-control block m-t-5" type="password" placeholder="예약확인용 비밀번호">
+								</div>
+							</div>
+						</div>
+						<!-- //end .info-data -->
+					</div>
+					<!-- //end .content-body -->
+					<div class="content-foot clearfix">
+						<div class="pull-right">
+							<a href="#" class="btn round text-center">저장하기</a>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

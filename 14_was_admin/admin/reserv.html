@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="js/menu.js"></script>
+	<script type="text/javascript">
+		$(function () {
+
+			$('.nav-tab li').on('click', function () {
+				$(this).removeClass('bg-gray').siblings().addClass('bg-gray');
+			});
+
+			$('.line-show').on('click', function () {
+				$(this).parent('tr').next('tr').toggle();
+				if ($(this).data('on') == 'off') {
+					$(this).text('△');
+					$(this).data('on', 'on');
+				} else {
+					$(this).text('▼');
+					$(this).data('on', 'off');
+				}
+			});
+
+		});
+
+		// 시작
+		$(function () {
+			// 달력 붙이기
+			$('.datePicker').datepicker({
+				dateFormat: 'yy-mm-dd',
+				prevText: '이전 달',
+				nextText: '다음 달',
+				monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+				monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+				dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+				dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+				dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+				showMonthAfterYear: true,
+				yearSuffix: '년',
+				showOn: 'button',
+				buttonImage: 'images/calendar.png',
+				buttonImageOnly: false
+			});
+			$('.ui-datepicker-trigger').addClass('between').css({
+				lineHeight: '40px',
+				height: 40,
+				backgroundColor: '#36393b',
+				border: 'none'
+			}).find('img').css({
+				width: 24,
+				height: 23,
+				verticalAlign: 'middle',
+				cursor: 'pointer'
+			});
+		});
+
+	</script>
+	<style>
+		.nav-tab li:hover {
+			border-color: #36393b;
+			background-color: #36393b;
+		}
+
+		.second-line {
+			display: none;
+		}
+
+		.line-show {
+			cursor: pointer;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">예약 관리</a>
+						<ul class="sub-list-box">
+							<li>
+								<ul class="sub-list">
+									<li><a href="index.html">단체예약현황</a></li>
+									<li><a href="group2.html">단체예약관리</a></li>
+									<hr>
+									<li><a href="edu1.html">교육예약현황</a></li>
+									<li><a href="edu2.html">교육예약관리</a></li>
+									<li><a href="edu3.html">교육관리</a></li>
+									<hr>
+									<li><a href="reserv.html">예약이력</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">예약이력</h1>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 예약관리 - 예약이력
+						</span>
+					</div>
+					<div class="content-body">
+						<div class="form-inline">
+							<form action="" method="get">
+								<div class="pull-left m-r-10">
+									<input class="form-control pull-left datePicker m-0" type="text" name="date"
+										value="" readonly>
+								</div>
+								<span class="pull-left m-r-10 m-t-5">
+									~
+								</span>
+								<div class="pull-left m-r-5">
+									<input class="form-control pull-left datePicker m-0" type="text" name="date"
+										value="" readonly>
+								</div>
+								<ul class="nav-tab pull-left m-r-10">
+									<li class="pull-left btn round bg-darkgray m-r-5">이번주</li>
+									<li class="pull-left btn round bg-darkgray bg-gray m-r-5">전 체</li>
+								</ul>
+								<input class="form-control pull-left m-r-5" type="text" style="width:300px;"
+									placeholder="통합검색">
+								<input type="submit" value="검색"
+									class="btn round bg-darkgray search-btn text-center pull-left m-b-5">
+								<div class="clearfix"></div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+						<div class="form-inline pull-right">
+							<form action="" method="get">
+								<select class="form-control-sm pull-right">
+									<option>전체</option>
+									<option>단체</option>
+									<option>교육</option>
+								</select>
+								<select class="form-control-sm pull-right m-r-5">
+									<option>전체</option>
+									<option>완료</option>
+									<option>예약취소</option>
+									<option>노쇼</option>
+								</select>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+						<div class="table-responsive">
+							<table class="table text-center m-b-0">
+								<thead>
+									<tr class="bg-puple">
+										<th class="text-white">신청일시</th>
+										<th class="text-white">방문목적</th>
+										<th class="text-white">방문일</th>
+										<th class="text-white">방문시간</th>
+										<th class="text-white">방문인원</th>
+										<th class="text-white">단체명</th>
+										<th class="text-white">예약자</th>
+										<th class="text-white">연락처</th>
+										<th class="text-white">상태</th>
+										<th class="text-white">비용</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>19-06-06 14:30:33</td>
+										<td>단체관람</td>
+										<td>19-06-07</td>
+										<td>13:30</td>
+										<td>15명</td>
+										<td>와라유치원</td>
+										<td>남정규</td>
+										<td>010-0000-0000</td>
+										<td>완료</td>
+										<td>150,000원</td>
+									</tr>
+									<tr>
+										<td>19-06-06 14:30:33</td>
+										<td>교육</td>
+										<td>19-06-07</td>
+										<td>13:30</td>
+										<td>15명</td>
+										<td>와라유치원</td>
+										<td>남정규</td>
+										<td>010-0000-0000</td>
+										<td>예약취소</td>
+										<td></td>
+									</tr>
+									<tr>
+										<td>19-06-06 14:30:33</td>
+										<td>교육</td>
+										<td>19-06-07</td>
+										<td>13:30</td>
+										<td>15명</td>
+										<td>와라유치원</td>
+										<td>남정규</td>
+										<td>010-0000-0000</td>
+										<td>노쇼</td>
+										<td></td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<td class="bg-gray text-darkgray">합계</td>
+										<td class="bg-gray text-darkgray" colspan="8">65명</td>
+										<td class="bg-gray text-darkgray">3,000,000원</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+						<div class="form-inline m-t-10">
+							<form action="each-stats.html" method="get">
+								<button class="btn-sm round pull-right btnExcel" type="button"
+									name="button">엑셀다운</button>
+								<div class="clearfix"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

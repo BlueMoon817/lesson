@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<link href="css/dist/summernote-lite.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="css/dist/summernote-lite.js"></script>
+	<script src="css/dist/lang/summernote-ko-KR.js"></script>
+	<script src="js/menu.js"></script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">웹사이트 관리</a>
+						<br>
+						<ul class="sub-list-box">
+							<li>
+								<p class="sub-list-title">메인</p>
+								<ul class="sub-list p-0">
+									<li><a href="main1.html">상단배너</a></li>
+									<li><a href="main2.html">하단배너</a></li>
+								</ul>
+							</li>
+							<li>
+								<p class="sub-list-title">박물관소개</p>
+								<ul class="sub-list p-0">
+									<li><a href="web1-1.html">대표인사말</a></li>
+									<li><a href="web1-2.html">박물관소개</a></li>
+									<li><a href="web1-3.html">오시는길</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">이용안내</p>
+								<ul class="sub-list p-0">
+									<li><a href="web2-1.html">관람안내</a></li>
+									<li><a href="web2-2.html">예약안내</a></li>
+									<li><a href="web2-3.html">부대시설안내</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">전시안내</p>
+								<ul class="sub-list p-0">
+									<li><a href="web3-1.html">상설전시</a></li>
+									<li><a href="web3-2.html">관람순서</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">단체예약</p>
+								<ul class="sub-list p-0">
+									<li><a href="web4-1.html">단체예약</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">교육체험</p>
+								<ul class="sub-list p-0">
+									<li><a href="web5-2.html">교육체험소개</a></li>
+									<li><a href="web5-1.html">교육체험예약</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">교육체험소개</h1>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 웹사이트 관리 - 교육체험소개
+						</span>
+					</div>
+					<div class="content-body">
+						<h4 class="f-20 text-darkgray m-b-10">[ 교육체험소개 상단 ]</h4>
+						<div id="summernote">
+							<p style="padding:10px 15px;color:#444;font-size: 14px;box-sizing:border-box;background-color: #f8f8f8;">
+								미호박물관에서는 미래의 주역이 될 어린이들을 위한 체험 교육을 운영하고 있습니다. 유아•초등 저학년 대상으로 자연과 과학을 주제로 한 체험학습이 운영되며<br>
+								박물관의 다양한 전시물을 활용해 자연사를 이해하는 전시연계교육 프로그램도 운영합니다.
+							</p>
+						</div>
+						<script type="text/javascript">
+							$('#summernote').summernote({
+								placeholder: '게시판 내용을 입력하세요.',
+								tabsize: 2,
+								maxWidth: '100%',
+								height: 300,
+								lang: 'ko-KR'
+							});
+						</script>
+						<div class="clearfix m-t-10">
+							<button class="btn round pull-right">수정</button>
+						</div>
+
+						<h4 class="f-20 text-darkgray m-t-30 m-b-10">[ 교육체험소개 하단 ]</h4>
+						<div id="summernote2">
+							<p
+								style="padding:10px 15px;color:#444;font-size: 14px;box-sizing:border-box;background-color: #f8f8f8;">
+								다양한 체험교육을 통해 체험학습의 기회를 제공하며, 자연사를 이해하고 자연 속에서의 과학적 원리를 알 수 있습니다.<br>
+								체험교육을 통해 자연 속 과학의 원리를 이해하며 어린이들의 과학적 상상력과 호기심을 증대시켜 창의력을 증진시킬 수 있습니다.
+							</p>
+						</div>
+						<script type="text/javascript">
+							$('#summernote2').summernote({
+								placeholder: '게시판 내용을 입력하세요.',
+								tabsize: 2,
+								maxWidth: '100%',
+								height: 300,
+								lang: 'ko-KR'
+							});
+						</script>
+						<div class="clearfix m-t-10">
+							<button class="btn round pull-right">수정</button>
+						</div>
+
+						<h4 class="f-20 text-darkgray m-t-30 m-b-10">[ 교육체험소개 하단 이미지 ]</h4>
+						<input type="file" class="form-control m-t-10">
+						<input type="file" class="form-control">
+						<input type="file" class="form-control m-b-0">
+						<span style="color:crimson; font-size:12px;">※이미지 사이즈 394*308</span>
+						<div class="clearfix m-t-10">
+							<button class="btn round pull-left">수정</button>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

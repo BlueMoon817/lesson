@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<link href="css/dist/summernote-lite.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="css/dist/summernote-lite.js"></script>
+	<script src="css/dist/lang/summernote-ko-KR.js"></script>
+	<script src="js/menu.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">웹사이트 관리</a>
+						<br>
+						<ul class="sub-list-box">
+							<li>
+								<p class="sub-list-title">메인</p>
+								<ul class="sub-list p-0">
+									<li><a href="main1.html">상단배너</a></li>
+									<li><a href="main2.html">하단배너</a></li>
+								</ul>
+							</li>
+							<li>
+								<p class="sub-list-title">박물관소개</p>
+								<ul class="sub-list p-0">
+									<li><a href="web1-1.html">대표인사말</a></li>
+									<li><a href="web1-2.html">박물관소개</a></li>
+									<li><a href="web1-3.html">오시는길</a></li>
+								</ul>
+							</li>
+							
+							<li>
+								<p class="sub-list-title">이용안내</p>
+								<ul class="sub-list p-0">
+									<li><a href="web2-1.html">관람안내</a></li>
+									<li><a href="web2-2.html">예약안내</a></li>
+									<li><a href="web2-3.html">부대시설안내</a></li>
+								</ul>
+							</li>
+							
+							<li>
+								<p class="sub-list-title">전시안내</p>
+								<ul class="sub-list p-0">
+									<li><a href="web3-1.html">상설전시</a></li>
+									<li><a href="web3-2.html">관람순서</a></li>
+								</ul>
+							</li>
+							
+							<li>
+								<p class="sub-list-title">단체예약</p>
+								<ul class="sub-list p-0">
+									<li><a href="web4-1.html">단체예약</a></li>
+								</ul>
+							</li>
+							
+							<li>
+								<p class="sub-list-title">교육체험</p>
+								<ul class="sub-list p-0">
+									<li><a href="web5-2.html">교육체험소개</a></li>
+									<li><a href="web5-1.html">교육체험예약</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">대표인사말</h1>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 웹사이트 관리 - 대표인사말
+						</span>
+					</div>
+					<div class="content-body">
+						<h4 class="f-20 text-darkgray m-b-10">[ 대표인사말 ]</h4>
+						<div id="summernote">
+							<div style="width:1200px;font-family: 'Noto Sans Korean', sans-serif;">
+							
+							
+								<div class="text" style="float: left;width: calc(1200px - 532px);">
+							
+									<p style="margin-bottom: 25px;font-size: 18px;">
+									</p>
+									<p style="margin-bottom: 25px;font-size: 18px;"><img
+											src="data:image/png;base64,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"
+											data-filename="ceo-title.png" style="width: 387px;"><br></p>
+									<p style="margin-bottom: 25px;font-size: 18px;">자연과 생명에 대한 올바른 가치관 확립 및 자연환경 보전의 중요성을 널리 알리고자
+										2014년 7월 자연의 역사를 담은 미호 박물관이 개관하였습니다. 미호박물관은 푸른 별
+										지구의 과거와 현재를 알 수 있는 박물관으로 지구의 역사를 이야기해 주고 있습니다.
+										지구 최초의 생명체 화석인 스트로마톨라이트를 비롯하여 고생대, 중생대 시대의 동물,
+										식물 화석들을 다수 소장하고 전시 하고 있습니다.<br></p>
+									<p style="margin-bottom: 25px;font-size: 18px;">
+										또한, 신비롭고 다양한 광물, 곤충 표본, 동물 표본을 전시하고 있습니다.
+										중생대 시대를 대표하는 무서운 도마뱀인 공룡! 다양한 공룡의 화석과 공룡 골격을 전시한
+										공룡 테마파크에서 살아 숨 쉬는 듯이 움직이는 공룡과 친구가 되는 시간을 가질 수 있습니다.
+										수도권 속 회색 도시를 벗어나 초록의 자연을 느낄 수 있으며, 규화목과 공룡 전시물이 있는
+										공룡마을에서 어린이들이 자연과 공룡을 친구로 맞이합니다.
+									</p>
+									<p style="margin-bottom: 25px;font-size: 18px;">
+										따뜻한 햇살과 녹색의 숲과 호흡할 수 있는 식물들을 통해 식물 감수성을 느낄 수 있습니다.
+										이를 통해 식물과 자연의 소중함을 느끼고 실생활 속에서 환경보전 실천에 앞장 쓸 수
+										있도록 기여하겠습니다. 다양한 전시 표본들을 통해 자연사를 이해하고, 감각활동과
+										체험활동을 통해 자연과학에 대한 호기심을 증대시키며 자연환경 보전 의식을 실천하는데
+										보탬이 되고자 하는 바람입니다. 언제든지 앞으로 더욱 발전할 미호 박물관의 모습을 기대해
+										주시고, 푸른 지구에서 우리의 후손들에게 지속 가능한 자연 교육이 이루어질 수 있게
+										기여하겠습니다. 앞으로도 아낌없는 관심과 격려 부탁드립니다.<br>
+										감사합니다.</p>
+									<p style="margin-bottom: 25px;font-size: 18px;"><br></p>
+									<p style="margin-bottom: 25px;font-size: 18px;">
+									</p>
+								</div>
+							</div>
+						</div>
+						<script type="text/javascript">
+							$('#summernote').summernote({
+								placeholder: '게시판 내용을 입력하세요.',
+								tabsize: 2,
+								maxWidth: '100%',
+								height: 300,
+								lang: 'ko-KR'
+							});
+						</script>
+						<input class="form-control m-b-0 m-t-10" type="file">
+						<span class="text-red">※이미지 사이즈 492*679</span>
+					</div>
+					<div class="content-foot">
+						<form action="./submit_edit" method="post">
+							<button type="submit" class="btn round pull-right">수정</button>
+						</form>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

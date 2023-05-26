@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="js/menu.js"></script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">예약 관리</a>
+						<ul class="sub-list-box">
+							<li>
+								<ul class="sub-list">
+									<li><a href="index.html">단체예약현황</a></li>
+									<li><a href="group2.html">단체예약관리</a></li>
+									<hr>
+									<li><a href="edu1.html">교육예약현황</a></li>
+									<li><a href="edu2.html">교육예약관리</a></li>
+									<hr>
+									<li><a href="reserv.html">예약이력</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">교육예약관리</h1>
+							<a href="group-add.html" class="btn round pull-right btnExcel" type="button" name="button">교육예약 +</a>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 예약관리 - 교육예약관리
+						</span>
+					</div>
+					<div class="content-body">
+						<div class="form-inline">
+							<form action="" method="get">
+								<div class="pull-left m-r-10">
+									<input class="form-control pull-left datePicker m-0" type="text" name="date" value="" readonly>
+								</div>
+								<span class="pull-left m-r-10 m-t-5">
+									~
+								</span>
+								<div class="pull-left m-r-5">
+									<input class="form-control pull-left datePicker m-0" type="text" name="date" value="" readonly>
+								</div>
+								<ul class="nav-tab pull-left m-r-10">
+									<li class="pull-left btn round bg-darkgray m-r-5">한달</li>
+									<li class="pull-left btn round bg-darkgray bg-gray m-r-5">전 체</li>
+								</ul>
+								<input class="form-control pull-left m-r-5" type="text" style="width:300px;" placeholder="통합검색">
+								<input type="submit" value="검색" class="btn round bg-darkgray search-btn text-center pull-left m-b-5">
+								<div class="clearfix"></div>
+							</form>
+						</div>
+						<div class="clearfix"></div>
+						<ul class="sub-nav m-t-10 clearfix">
+							<li class="on"><a href="#none">전체</a></li>
+							<li><a href="#none">예약대기</a></li>
+							<li><a href="#none">예약승인</a></li>
+							<li><a href="#none">예약취소</a></li>
+						</ul>
+						<div class="table-responsive">
+							<table class="table text-center m-b-0">
+								<thead>
+									<tr class="bg-puple">
+										<th>
+											<input type="checkbox">
+										</th>
+										<th class="text-white">신청일시</th>
+										<th class="text-white">교육 예약일</th>
+										<th class="text-white">교육 시간</th>
+										<th class="text-white">프로그램</th>
+										<th class="text-white">수강 인원수</th>
+										<th class="text-white">보호자</th>
+										<th class="text-white">연락처</th>
+										<th class="text-white">기타</th>
+										<th class="text-white">예약관리</th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>
+											<input type="checkbox">
+										</td>
+										<td>
+											<input class="form-control-sm no-focus m-b-0 pointer" type="text" value="19.07.19 14:30:20">
+										</td>
+										<td>
+											<input class="form-control-sm no-focus m-b-0 pointer" type="text" value="19.07.20">
+										</td>
+										<td>
+											<input class="form-control-sm no-focus m-b-0 pointer" type="text" value="13:30">
+										</td>
+										<td>
+											<input class="form-control-sm no-focus m-b-0 pointer" type="text" value="DINO PARK 탐방">
+										</td>
+										<td>
+											<input class="form-control-sm no-focus m-b-0 pointer" type="text" value="5명">
+										</td>
+										<td>
+											<input class="form-control-sm no-focus m-b-0 pointer" type="text" value="지진희">
+										</td>
+										<td>
+											<input class="form-control-sm no-focus m-b-0 pointer" type="text" value="010-0000-0000">
+										</td>
+										<td>
+											장애우들로 구성되 있습니다.
+										</td>
+										<td>
+											<select class="block form-control-sm m-b-0" style="min-width: 80px;">
+												<option>예약대기</option>
+												<option>예약승인</option>
+												<option>예약취소</option>
+											</select>
+										</td>
+										<td class="line-show" data-on="off">
+											<a class="btn-sm bg-white text-darkgray border-darkgray round" href="edu1.html">보기</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="form-inline m-t-10">
+							<form action="each-stats.html" method="get">
+								<select class="form-control-sm pull-left m-0">
+									<option>예약상태 변경</option>
+									<option>예약대기</option>
+									<option>예약승인</option>
+									<option>예약취소</option>
+								</select>
+								<input type="submit" value="일괄변경" class="btn-sm bg-darkgray text-center pull-left m-b-0">
+								<button class="btn-sm round pull-right btnExcel" type="button" name="button">엑셀다운</button>
+								<div class="clearfix"></div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

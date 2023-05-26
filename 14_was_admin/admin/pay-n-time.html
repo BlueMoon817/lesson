@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="js/menu.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">관람정책 관리</a>
+						<ul class="sub-list-box">
+							<li>
+								<ul class="sub-list">
+									<li><a href="pay-n-time.html">관람시간 및 요금</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">관람시간 및 요금</h1>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 관람정책 관리 - 관람시간 및 요금
+						</span>
+					</div>
+					<div class="content-body">
+						<h4 class="f-20 text-darkgray m-b-10">[ 관람 및 입장시간 ]</h4>
+						<div class="table-responsive" style="max-height: 100%;">
+							<table class="table">
+								<tbody>
+									<tr>
+										<th class="text-white bg-puple" width="100px">평일</th>
+										<td width="40%">
+											<span class="between f-14 pull-left">관람시간 :</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>06</option>
+												<option>07</option>
+												<option>08</option>
+												<option>09</option>
+												<option>10</option>
+												<option>11</option>
+												<option>12</option>
+											</select>
+											<span class="between pull-left p-0 m-r-10 m-l-5">시</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>00</option>
+												<option>10</option>
+												<option>20</option>
+												<option>30</option>
+												<option>40</option>
+												<option>50</option>
+											</select>
+											<span class="between pull-left p-0 m-l-5">분</span>
+											<span class="between pull-left"> ~ </span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>13</option>
+												<option>14</option>
+												<option>15</option>
+												<option>16</option>
+												<option>17</option>
+												<option>18</option>
+												<option>19</option>
+												<option>20</option>
+											</select>
+											<span class="between pull-left p-0 m-r-10 m-l-5">시</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>00</option>
+												<option>10</option>
+												<option>20</option>
+												<option>30</option>
+												<option>40</option>
+												<option>50</option>
+											</select>
+											<span class="between pull-left p-0 m-l-5">분</span>
+										</td>
+										<td>
+											<span class="between f-14 pull-left">매표 및 입장 :</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>13</option>
+												<option>14</option>
+												<option>15</option>
+												<option>16</option>
+												<option>17</option>
+												<option>18</option>
+												<option>19</option>
+												<option>20</option>
+											</select>
+											<span class="between pull-left p-0 m-r-10 m-l-5">시</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>00</option>
+												<option>10</option>
+												<option>20</option>
+												<option>30</option>
+												<option>40</option>
+												<option>50</option>
+											</select>
+											<span class="between pull-left p-0 m-l-5">분</span>
+											<span class="between pull-left"> 마감 </span>
+										</td>
+									</tr>
+									<tr>
+										<th class="text-white bg-puple" width="100px">주말</th>
+										<td width="40%">
+											<span class="between f-14 pull-left">관람시간 :</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>06</option>
+												<option>07</option>
+												<option>08</option>
+												<option>09</option>
+												<option>10</option>
+												<option>11</option>
+												<option>12</option>
+											</select>
+											<span class="between pull-left p-0 m-r-10 m-l-5">시</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>00</option>
+												<option>10</option>
+												<option>20</option>
+												<option>30</option>
+												<option>40</option>
+												<option>50</option>
+											</select>
+											<span class="between pull-left p-0 m-l-5">분</span>
+											<span class="between pull-left"> ~ </span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>13</option>
+												<option>14</option>
+												<option>15</option>
+												<option>16</option>
+												<option>17</option>
+												<option>18</option>
+												<option>19</option>
+												<option>20</option>
+											</select>
+											<span class="between pull-left p-0 m-r-10 m-l-5">시</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>00</option>
+												<option>10</option>
+												<option>20</option>
+												<option>30</option>
+												<option>40</option>
+												<option>50</option>
+											</select>
+											<span class="between pull-left p-0 m-l-5">분</span>
+										</td>
+										<td>
+											<span class="between f-14 pull-left">매표 및 입장 :</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>13</option>
+												<option>14</option>
+												<option>15</option>
+												<option>16</option>
+												<option>17</option>
+												<option>18</option>
+												<option>19</option>
+												<option>20</option>
+											</select>
+											<span class="between pull-left p-0 m-r-10 m-l-5">시</span>
+											<select class="form-control-sm pull-left m-b-0" disabled>
+												<option>00</option>
+												<option>10</option>
+												<option>20</option>
+												<option>30</option>
+												<option>40</option>
+												<option>50</option>
+											</select>
+											<span class="between pull-left p-0 m-l-5">분</span>
+											<span class="between pull-left"> 마감 </span>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="pull-right">
+								<a href="#" class="btn round text-center">수정</a>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+
+						<h4 class="f-20 text-darkgray m-b-10">[ 관람요금 및 유의사항 ]</h4>
+						<div class="table-responsive" style="max-height: 100%;">
+							<table class="table text-center">
+								<thead>
+									<tr>
+										<th class="text-white bg-puple"></th>
+										<th class="text-white bg-puple" colspan="2">개인관람료</th>
+										<th class="text-white bg-puple">단체관람료</th>
+										<th class="text-white bg-puple">비고</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="">구분</td>
+										<td class="text-blue">평일</td>
+										<td class="text-red">주말 및 공휴일</td>
+										<td class="text-blue">평일</td>
+										<td class="text-blue"></td>
+									</tr>
+									<tr>
+										<td class="text-blue">대인</td>
+										<td>
+											<input class="block m-b-0 form-control-sm" type="text" value="6,000원" disabled>
+										</td>
+										<td>
+											<input class="block m-b-0 form-control-sm" type="text" value="7,000원" disabled>
+										</td>
+										<td>
+											<input class="block m-b-0 form-control-sm" type="text" value="5,000원" disabled>
+										</td>
+										<td>
+											<input class="block m-b-0 form-control-sm" type="text" value="만19세 이상" disabled>
+										</td>
+									</tr>
+									<tr>
+										<td class="text-blue">소인</td>
+										<td>
+											<input class="block m-b-0 form-control-sm" type="text" value="4,000원" disabled>
+										</td>
+										<td>
+											<input class="block m-b-0 form-control-sm" type="text" value="5,000원" disabled>
+										</td>
+										<td>
+											<input class="block m-b-0 form-control-sm" type="text" value="3,000원" disabled>
+										</td>
+										<td>
+											<input class="block m-b-0 form-control-sm" type="text" value="24개월 이상 ~ 만18세 이하" disabled>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<div class="pull-right">
+								<a href="#" class="btn round text-center">수정</a>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

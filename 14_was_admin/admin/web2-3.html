@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<link href="css/dist/summernote-lite.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="css/dist/summernote-lite.js"></script>
+	<script src="css/dist/lang/summernote-ko-KR.js"></script>
+	<script src="js/menu.js"></script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">웹사이트 관리</a>
+						<br>
+						<ul class="sub-list-box">
+							<li>
+								<p class="sub-list-title">메인</p>
+								<ul class="sub-list p-0">
+									<li><a href="main1.html">상단배너</a></li>
+									<li><a href="main2.html">하단배너</a></li>
+								</ul>
+							</li>
+							<li>
+								<p class="sub-list-title">박물관소개</p>
+								<ul class="sub-list p-0">
+									<li><a href="web1-1.html">대표인사말</a></li>
+									<li><a href="web1-2.html">박물관소개</a></li>
+									<li><a href="web1-3.html">오시는길</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">이용안내</p>
+								<ul class="sub-list p-0">
+									<li><a href="web2-1.html">관람안내</a></li>
+									<li><a href="web2-2.html">예약안내</a></li>
+									<li><a href="web2-3.html">부대시설안내</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">전시안내</p>
+								<ul class="sub-list p-0">
+									<li><a href="web3-1.html">상설전시</a></li>
+									<li><a href="web3-2.html">관람순서</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">단체예약</p>
+								<ul class="sub-list p-0">
+									<li><a href="web4-1.html">단체예약</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">교육체험</p>
+								<ul class="sub-list p-0">
+									<li><a href="web5-2.html">교육체험소개</a></li>
+									<li><a href="web5-1.html">교육체험예약</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">부대시설안내</h1>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 웹사이트 관리 - 부대시설안내
+						</span>
+					</div>
+					<div class="content-body">
+						<h4 class="f-20 text-darkgray m-b-10">[ 공룡마을 ]</h4>
+						<input type="file" class="form-control">
+						<input type="file" class="form-control">
+						<input type="file" class="form-control">
+						<input type="file" class="form-control m-b-0"><span style="color:crimson;">※이미지 사이즈 285*400</span>
+						<div id="summernote">
+							<h3
+								style="margin-bottom: 25px; transition: all 0.1s ease 0s; color: rgb(51, 51, 51); font-size: 40px; font-weight: normal; line-height: 1;">
+								공룡마을</h3>
+							<p style="margin-bottom: 25px; transition: all 0.1s ease 0s; font-size: 18px; color: rgb(68, 68, 68);">맑고 푸른 한강의 조망되는 넓은 잔디의 공룡마을 공룡 모형과 여러 가지의 석물들이 전시되어 있으며, 미호 박물관만이<br>
+							가지고 있는 멋진 전경이 방문하시는 관람객들에게 힐링이 되길 바라는 마음입니다.</p>
+						</div>
+						<script type="text/javascript">
+							$('#summernote').summernote({
+								placeholder: '게시판 내용을 입력하세요.',
+								tabsize: 2,
+								maxWidth: '100%',
+								height: 300,
+								lang: 'ko-KR'
+							});
+						</script>
+						<div class="clearfix m-t-10">
+							<button class="btn round pull-right">수정</button>
+						</div>
+
+						<h4 class="f-20 text-darkgray m-t-30 m-b-10">[ 미호동산 ]</h4>
+						<input type="file" class="form-control">
+						<input type="file" class="form-control">
+						<input type="file" class="form-control">
+						<input type="file" class="form-control m-b-0"><span style="color:crimson;">※이미지 사이즈 285*400</span>
+						<div id="summernote2">
+							<h3
+								style="margin-bottom: 25px; transition: all 0.1s ease 0s; color: rgb(51, 51, 51); font-size: 40px; font-weight: normal; line-height: 1;">
+								미호동산</h3>
+							<p style="margin-bottom: 25px; transition: all 0.1s ease 0s; font-size: 18px; color: rgb(68, 68, 68);">박물관 동편으로 난 미호동산을 따라 걸으면 봄에는 봄 꽃이, 여름에는 시원한 숲 향기가, 가을에는 낙엽과 도토리
+							<br>그리고 겨울에는 같이 걷고 있는 이의 따뜻함을 느낄 수 있을 것입니다.</p>
+						</div>
+						<script type="text/javascript">
+							$('#summernote2').summernote({
+								placeholder: '게시판 내용을 입력하세요.',
+								tabsize: 2,
+								maxWidth: '100%',
+								height: 300,
+								lang: 'ko-KR'
+							});
+						</script>
+						<div class="clearfix m-t-10">
+							<button class="btn round pull-right">수정</button>
+						</div>
+
+						<h4 class="f-20 text-darkgray m-t-30 m-b-10">[ 편의시설 ]</h4>
+						<input type="file" class="form-control">
+						<input type="file" class="form-control">
+						<input type="file" class="form-control">
+						<input type="file" class="form-control m-b-0"><span style="color:crimson;">※이미지 사이즈 285*400</span>
+						<div id="summernote3">
+							<h3
+								style="margin-bottom: 25px; transition: all 0.1s ease 0s; color: rgb(51, 51, 51); font-size: 40px; font-weight: normal; line-height: 1;">
+								편의시설</h3>
+							<p style="margin-bottom: 25px; transition: all 0.1s ease 0s; font-size: 18px; color: rgb(68, 68, 68);">- 매점(스낵 마트): 스낵, 아이스크림, 병음료 등을 판매하고 있습니다. (미호 박물관 내 3층)<br>
+							- 뮤지엄샵: 공룡화석 발굴 키트, 공룡 인형, 공룡 피규어 등의 다양한 제품을 구매할 수있습니다.</p>
+						</div>
+						<script type="text/javascript">
+							$('#summernote3').summernote({
+								placeholder: '게시판 내용을 입력하세요.',
+								tabsize: 2,
+								maxWidth: '100%',
+								height: 300,
+								lang: 'ko-KR'
+							});
+						</script>
+						<div class="clearfix m-t-10">
+							<button class="btn round pull-right">수정</button>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<link href="css/dist/summernote-lite.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src="css/dist/summernote-lite.js"></script>
+	<script src="css/dist/lang/summernote-ko-KR.js"></script>
+	<script src="js/menu.js"></script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">웹사이트 관리</a>
+						<br>
+						<ul class="sub-list-box">
+							<li>
+								<p class="sub-list-title">메인</p>
+								<ul class="sub-list p-0">
+									<li><a href="main1.html">상단배너</a></li>
+									<li><a href="main2.html">하단배너</a></li>
+								</ul>
+							</li>
+							<li>
+								<p class="sub-list-title">박물관소개</p>
+								<ul class="sub-list p-0">
+									<li><a href="web1-1.html">대표인사말</a></li>
+									<li><a href="web1-2.html">박물관소개</a></li>
+									<li><a href="web1-3.html">오시는길</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">이용안내</p>
+								<ul class="sub-list p-0">
+									<li><a href="web2-1.html">관람안내</a></li>
+									<li><a href="web2-2.html">예약안내</a></li>
+									<li><a href="web2-3.html">부대시설안내</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">전시안내</p>
+								<ul class="sub-list p-0">
+									<li><a href="web3-1.html">상설전시</a></li>
+									<li><a href="web3-2.html">관람순서</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">단체예약</p>
+								<ul class="sub-list p-0">
+									<li><a href="web4-1.html">단체예약</a></li>
+								</ul>
+							</li>
+						
+							<li>
+								<p class="sub-list-title">교육체험</p>
+								<ul class="sub-list p-0">
+									<li><a href="web5-2.html">교육체험소개</a></li>
+									<li><a href="web5-1.html">교육체험예약</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">상단배너</h1>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 웹사이트 관리 - 상단배너
+						</span>
+					</div>
+					<div class="content-body">
+						<h4 class="f-20 text-darkgray m-b-10">[ 상단배너 ]</h4>
+						<div class="table-responsive m-t-10">
+							<table class="table text-center">
+								<colgroup>
+									<col style="width:80px">
+									<col style="width:300px">
+									<col style="width:auto">
+									<col style="width:100px">
+									<col style="width:100px">
+									<col style="width:150px">
+								</colgroup>
+								<thead>
+									<tr>
+										<th>번호</th>
+										<th>이미지</th>
+										<th>배너명</th>
+										<th>사용여부</th>
+										<th>노출순서</th>
+										<th>관리</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td class="text-red">사용중</td>
+										<td>
+											<input class="block form-control-sm m-b-0" type="file" disabled>
+										</td>
+										<td>미호박물관의 공룡친구들</td>
+										<td>
+											<select class="block form-control-sm m-b-0" disabled>
+												<option>Y</option>
+												<option>N</option>
+											</select>
+										</td>
+										<td>
+											<input class="block form-control-sm m-b-0" type="number" disabled>
+										</td>
+										<td>
+											<button class="btn-sm round" type="button">수정</button>
+											<button class="btn-sm bg-red round" type="button">삭제</button>
+										</td>
+									</tr>
+									<tr>
+										<td class="text-red">사용중</td>
+										<td>
+											<input class="block form-control-sm m-b-0" type="file" disabled>
+										</td>
+										<td>미호박물관의 공룡친구들</td>
+										<td>
+											<select class="block form-control-sm m-b-0" disabled>
+												<option>Y</option>
+												<option>N</option>
+											</select>
+										</td>
+										<td>
+											<input class="block form-control-sm m-b-0" type="number" disabled>
+										</td>
+										<td>
+											<button class="btn-sm round" type="button">수정</button>
+											<button class="btn-sm bg-red round" type="button">삭제</button>
+										</td>
+									</tr>
+									<tr>
+										<td>1</td>
+										<td>
+											<input class="block form-control-sm m-b-0" type="file" disabled>
+										</td>
+										<td>미호박물관의 공룡친구들</td>
+										<td>
+											<select class="block form-control-sm m-b-0" disabled>
+												<option>N</option>
+												<option>Y</option>
+											</select>
+										</td>
+										<td>
+											<input class="block form-control-sm m-b-0" type="number" disabled>
+										</td>
+										<td>
+											<button class="btn-sm round" type="button">수정</button>
+											<button class="btn-sm bg-red round" type="button">삭제</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<span style="color:crimson; font-size:12px;">※이미지 사이즈 1920*574</span>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

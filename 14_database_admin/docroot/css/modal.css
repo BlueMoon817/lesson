@@ -1,0 +1,160 @@
+@charset "UTF-8";
+
+.modal-bx {
+	display: none;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0,0,0,0.5);
+	z-index: 10000;
+}
+.modal {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width:600px;
+	padding:20px;
+	min-height: 100px;
+	border-radius: 15px;
+	box-sizing: border-box;
+	box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+	background-color: #fff;
+	transform: translate(-50%,-50%);
+}
+.modal.modal-lg {
+	width:85%;
+}
+.modal.modal-sm {
+	width:400px;
+}
+.modal-header,
+.modal-body,
+.modal-footer {
+	box-sizing: border-box;
+}
+.modal-header h1,
+.modal-header h2,
+.modal-header h3,
+.modal-header h4 {
+	color:#333;
+}
+.modal-header .close {
+	float: right;
+}
+.modal-body {
+	overflow: hidden;
+	overflow-y: auto;
+	max-height: 350px;
+	
+	text-align: center;
+}
+.modal-body h3 {
+	margin-bottom: 20px;
+	font-size: 24px;
+	font-weight: normal;
+	text-align: center;
+}
+.modal-body h3 span {
+	display: block;
+	width: 15px;
+	height: 2px;
+	margin:8px auto;
+	background-color: #f28f02;
+}
+.modal-body h3 small {
+	display: block;
+	color:#666;
+	font-size: 18px;
+}
+.modal-body .table-head {
+	color:#fff;
+	background-color: #666;
+}
+.modal-body .table-body {
+	border-bottom:1px solid #eee;
+}
+.modal-body .table-head,
+.modal-body .table-body,
+.modal-body .table-foot {
+	padding:10px;
+	box-sizing: border-box;
+}
+.modal-body .table-head li,
+.modal-body .table-body li,
+.modal-body .table-foot li {
+	float: left;
+	padding:0;
+	text-align: center;
+}
+.modal-body .table-head li:nth-of-type(1),
+.modal-body .table-body li:nth-of-type(1),
+.modal-body .table-foot li:nth-of-type(1) {
+	width: 15%;
+}
+.modal-body .table-head li:nth-of-type(2),
+.modal-body .table-body li:nth-of-type(2),
+.modal-body .table-foot li:nth-of-type(2) {
+	width: 30%;
+}
+.modal-body .table-head li:nth-of-type(3),
+.modal-body .table-body li:nth-of-type(3),
+.modal-body .table-foot li:nth-of-type(3) {
+	width: 40%;
+}
+.modal-body .table-head li:nth-of-type(4),
+.modal-body .table-body li:nth-of-type(4),
+.modal-body .table-foot li:nth-of-type(4) {
+	width: 15%;
+}
+.item-list {
+	overflow: hidden;
+	overflow-y: auto;
+	width: 100%;
+	height:200px;
+	margin-top:10px;
+	border:1px solid #ccc;
+	box-sizing: border-box;
+}
+.item-list li {
+	padding:5px 10px;
+}
+.item-list li:hover {
+	background-color: #f7f7f7;
+	cursor: pointer;
+}
+.home {
+	display: inline-block;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	color:#444 !important;
+	text-align: center;
+}
+.home img {
+	width:60px;
+}
+
+
+@media screen and (max-width:768px) {
+	.modal {
+		width: 90%;
+	}
+	.modal.modal-lg {
+		width:90%;
+	}
+	.modal.modal-sm {
+		width:90%;
+	}
+	.modal-body .table-box {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	.modal-body h3 {
+		font-size: 20px;
+	}
+	.modal-body h3 small {
+		font-size: 14px;
+	}
+}

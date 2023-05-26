@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 관리자</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style-admin.css">
+	<link rel="stylesheet" href="css/custom.css">
+	<link href='css/packages/core/main.css' rel='stylesheet' />
+	<link href='css/packages/daygrid/main.css' rel='stylesheet' />
+	<link href='css/packages/timegrid/main.css' rel='stylesheet' />
+	<link href='css/packages/list/main.css' rel='stylesheet' />
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script src='css/packages/core/main.js'></script>
+	<script src='css/packages/interaction/main.js'></script>
+	<script src='css/packages/daygrid/main.js'></script>
+	<script src='css/packages/timegrid/main.js'></script>
+	<script src='css/packages/list/main.js'></script>
+	<script src="js/menu.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var Calendar = FullCalendar.Calendar;
+			var Draggable = FullCalendarInteraction.Draggable
+
+			/* initialize the external events
+			-----------------------------------------------------------------*/
+
+			var containerEl = document.getElementById('external-events-list');
+			new Draggable(containerEl, {
+				itemSelector: '.fc-event',
+				eventData: function (eventEl) {
+					return {
+						title: eventEl.innerText.trim()
+					}
+				}
+			});
+
+			//// the individual way to do it
+			// var containerEl = document.getElementById('external-events-list');
+			// var eventEls = Array.prototype.slice.call(
+			//   containerEl.querySelectorAll('.fc-event')
+			// );
+			// eventEls.forEach(function(eventEl) {
+			//   new Draggable(eventEl, {
+			//     eventData: {
+			//       title: eventEl.innerText.trim(),
+			//     }
+			//   });
+			// });
+
+			/* initialize the calendar
+			-----------------------------------------------------------------*/
+
+			var calendarEl = document.getElementById('calendar');
+			var calendar = new Calendar(calendarEl, {
+				plugins: ['interaction','timeGrid'],
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+				},
+				selectable:true,
+				editable: true,
+				droppable: true, // this allows things to be dropped onto the calendar
+				minTime: '10:00',
+				maxTime: '22:30',
+				drop: function (arg) {
+					// is the "remove after drop" checkbox checked?
+					if (document.getElementById('drop-remove').checked) {
+						// if so, remove the element from the "Draggable Events" list
+						arg.draggedEl.parentNode.removeChild(arg.draggedEl);
+					}
+				}
+			});
+			calendar.render();
+			calendar.unselect();
+
+		});
+	</script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<nav>
+				<div class="nav-top clearfix">
+					<h1 class="brand">
+						<a href="index.html">MIHO</a>
+					</h1>
+					<div class="nav-container">
+						<div class="nav-container-fiuld">
+							<ul class="right-nav">
+								<li><a href="index.html">예약 관리</a></li>
+								<li><a href="notice1.html">게시판 관리</a></li>
+								<li><a href="pay-n-time.html">관람정책 관리</a></li>
+								<li><a href="web1-1.html">웹사이트 관리</a></li>
+							</ul>
+							<ul class="right-nav-mobile">
+								<li>
+									<span class="hamburger"></span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>
+		</header>
+		<section class="wrapper">
+			<section class="nav-side">
+				<ul class="nav-list">
+					<li class="nav-sub-one">
+						<a href="#" class="sub-title">예약 관리</a>
+						<ul class="sub-list-box">
+							<li>
+								<ul class="sub-list">
+									<li><a href="index.html">단체예약현황</a></li>
+									<li><a href="group2.html">단체예약관리</a></li>
+									<hr>
+									<li><a href="edu1.html">교육예약현황</a></li>
+									<li><a href="edu2.html">교육예약관리</a></li>
+									<li><a href="edu3.html">교육관리</a></li>
+									<hr>
+									<li><a href="reserv.html">예약이력</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+			<section class="container">
+				<div class="container-fiuld">
+					<div class="content-header">
+						<div class="clearfix">
+							<h1 class="pull-left">교육관리</h1>
+							<a href="group-add.html" class="btn round pull-right btnExcel" type="button"
+								name="button">교육예약 +</a>
+						</div>
+						<span class="title-list">
+							<a href="#">홈</a> - 예약관리 - 교육관리
+						</span>
+					</div>
+					<div class="content-body">
+						<div id='external-events'>
+							<h4>교육리스트</h4>
+
+							<div id='external-events-list'>
+								<div class='fc-event2 p-15'>
+									<input class="block form-control-sm" type="text" placeholder="프로그램명">
+									<span class="title">내용</span> <input class="block form-control-sm" type="text"
+										placeholder="15자 이내">
+									<span class="title">비용</span>
+									<div class="clearfix v-mid" style="display: inline-block;">
+										<label for="edu-on" class="pull-left m-r-10">
+											<input id="edu-on" type="radio" name="swich">on
+										</label>
+										<label for="edu-off" class="pull-left">
+											<input id="edu-off" type="radio" name="swich">off
+										</label>
+									</div>
+									<input class="block form-control-sm" type="text" placeholder="금액입력">
+
+									<span class="title">대상</span><input class="block form-control-sm" type="text"
+										placeholder="15자 이내">
+									<button class="block btn-sm round m-t-5">저장</button>
+								</div>
+								<div class='fc-event'>
+									<h4>VR 숨은 공룡찾기</h4>
+									<span class="fc-event-cont">
+										내용 : <input class="" type="text" value="VR포토뷰어 만들기"
+											style="display: inline-block;">
+									</span>
+									<span class="fc-event-cont">
+										비용 : <input class="" type="text" value="6,000원"
+											style="display: inline-block;">
+									</span>
+									<span class="fc-event-cont">
+										대상 : <input class="" type="text" value="10세 이상 18세 미만"
+											style="display: inline-block;">
+									</span>
+									<div class="text-center m-t-10">
+										<input class="btn-sm round" type="button" value="수정"
+											onclick="$(this).val('저장').parent().siblings('.fc-event-cont').find('input').addClass('form-control-sm');$(this).siblings().val('취소')">
+										<input class="btn-sm bg-red round" type="button" value="삭제">
+									</div>
+									<script>
+										$(function () {
+												$('.fc-event-cont').find('.form-control-sm').on('click', function () {
+													$(this).focus();
+													console.log(1);
+												});
+											});
+									</script>
+								</div>
+								<div class='fc-event'>My Event 3</div>
+								<div class='fc-event'>My Event 4</div>
+								<div class='fc-event'>My Event 5</div>
+							</div>
+
+							<p>
+								<input type='checkbox' id='drop-remove' />
+								<label for='drop-remove'>remove after drop</label>
+							</p>
+						</div>
+
+						<div id='calendar'></div>
+
+						<div style='clear:both'></div>
+					</div>
+				</div>
+			</section>
+		</section>
+		<footer>
+
+		</footer>
+	</div>
+</body>
+
+</html>

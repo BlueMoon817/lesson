@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>미호박물관 - 전시안내</title>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/modal.css">
+	<link rel="stylesheet" href="css/swiper.min.css">
+	<link href='https://cdn.rawgit.com/theeluwin/NotoSansKR-Hestia/master/stylesheets/NotoSansKR-Hestia.css'
+		rel='stylesheet' type='text/css'>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="js/top.js"></script>
+	<script>
+		$(function () {
+			$('.cont-nav li').on('click', function () {
+				var idx = $(this).index();
+				var idx2 = idx / 2;
+				$('.thumb-list li').eq(idx2).addClass('on').siblings().removeClass('on');
+			});
+			$('.sub-nav li:nth-of-type(2)').on('click', function () {
+				var scroll = $('.diagram').offset().top;
+				$('body').animate({
+					"scrollTop": scroll - 250
+				}, 300);
+			});
+		});
+
+		$(window).on('load resize', function () {
+			if ($(window).width() <= 767)
+				$('.diagram').attr('src', 'images/m-diagram.png');
+			if ($(window).width() > 767)
+				$('.diagram').attr('src', 'images/diagram.png');
+		});
+	</script>
+</head>
+
+<body>
+	<div id="wrap">
+		<header>
+			<h1 class="logo">
+				<a href="index.html">미호박물관</a>
+			</h1>
+			<nav>
+				<ul class="gnb clearfix">
+					<li>
+						<a href="ceo.html">박물관소개</a>
+						<div class="sub-gnb-box">
+							<ul class="sub-gnb">
+								<li>
+									<a href="ceo.html">대표인사말</a>
+								</li>
+								<li>
+									<a href="intro.html">박물관소개</a>
+								</li>
+								<li>
+									<a href="contact.html">오시는길</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a href="look.html">이용안내</a>
+						<div class="sub-gnb-box">
+							<ul class="sub-gnb">
+								<li>
+									<a href="look.html">관람안내</a>
+								</li>
+								<li>
+									<a href="look1.html">예약안내</a>
+								</li>
+								<li>
+									<a href="look2.html">부대시설 안내</a>
+								</li>
+								<li>
+									<a href="look3.html">자주묻는 질문</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li class="on">
+						<a href="see.html">전시안내</a>
+					</li>
+					<li><a href="group.html">단체예약</a></li>
+					<li>
+						<a href="edu.html">교육체험</a>
+						<div class="sub-gnb-box">
+							<ul class="sub-gnb">
+								<li>
+									<a href="edu.html">교육체험 소개</a>
+								</li>
+								<li>
+									<a href="edu1.html">교육체험 예약</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+					<li>
+						<a href="notice.html">박물관소식</a>
+						<div class="sub-gnb-box">
+							<ul class="sub-gnb">
+								<li>
+									<a href="notice.html">공지사항</a>
+								</li>
+								<li>
+									<a href="notice1.html">미호소식</a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<section class="container">
+			<article class="sub-bnnr">
+				<h2>전시안내</h2>
+				<img src="images/sub-bnnr3.png" alt="전시안내">
+			</article>
+			<!-- //end .sub-bnnr -->
+			<article class="contents">
+				<div class="inner clearfix">
+					<ul class="sub-nav n2 clearfix">
+						<li class="on"><a href="#none">상설전시</a></li>
+						<li><a href="#none">관람순서</a></li>
+					</ul>
+					<!-- //end .sub-nav -->
+					<h3 class="sub-tit">
+						전시관 안내
+					</h3>
+					<ul class="cont-nav clearfix">
+						<li><a href="#none">화석관</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">식물화석관</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">광물관</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">곤충관</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">DINOPARK</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">공룡화석관</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">동물표본관</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">VR 영상 체험</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">체험학습관</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">해양 패각류</a></li>
+						<li><span class="bar">|</span></li>
+						<li><a href="#none">선사시대</a></li>
+					</ul>
+					<!-- //end .sub-nav -->
+					<div class="thumb">
+						<ul class="thumb-list">
+							<li class="on">
+								<img src="images/see10.png" alt="">
+								<p>
+									화석관 Fossil Gallery
+									<small>
+										돌처럼 생겼지만 돌이 아닌 스트로마톨라이트! 최초의 생명체 화석을 시작으로 화석의 세계로 떠나 봅시다.
+										바닷속을 둥둥~ 떠다니며 촉수를 발사하는 해파리! 바닷속 식물처럼 생겼지만 식물이 아닌 산호! 고생대 바다에서 살았던 동물인 삼엽충!
+										아주 먼 옛날 지구에서 살았던 다양한 동물과 식물은 귀한 화석이 되어 현재 우리 앞에 나타났어요. 아주 먼 옛날 푸른 별 지구에는 어떤 생물들이
+										활동했는지 화석을 통해 과거의 지구로 탐험해 봅시다.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see6.png" alt="">
+								<p>
+									식물화석관 Plant Fossils
+									<small>
+										아주 먼 옛날 푸른 별 지구에는 어떤 식물이 있었을까요? 화려한 꽃을 가진 식물들이 많았을까요?<br>
+										아주 먼 옛날 석탄기에 있었던 레피도덴드론의 화석을 살펴볼 수 있어요. 화석으로 발견된 고사리와 소나무의 특징도 화석을 통해 관찰해 볼 수
+										있어요.<br>
+										이 외에 어떤 식물들이 고생대와 중생대에 있었는지 화석으로 알아보는 과거 식물의 세계로 탐험해 봅시다.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see2.png" alt="">
+								<p>
+									광물관 Mineral Gallery
+									<small>
+										다 같은 돌이 아닙니다! 자세히 살펴보면 각 각의 특징이 있지요. 반짝반짝 빛나는 광물, 저마다 다양한 형광빛을 내는 광물, 화산활동으로 인해
+										생긴 암석이 전시되어 있어요.<br>
+										12개의 보석 중 과연 나의 탄생석은 무엇일까요? 세계 곳곳에서 모인 다양하고 신비로운 광물의 세계로 탐험을 떠나 봅시다.<br>
+										저 멀리 우주에서 날아와 지구로 떨어진 운석을 직접 만져 볼 수도 있답니다.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see11.png" alt="">
+								<p>
+									곤충관 Insect Gallery
+									<small>
+										몸의 크기가 작지만 공룡보다 먼저 지구에서 터를 잡고 활동을 하고 있는 곤충! 푸른 별 지구에는 우리가 보지 못했던 정말 많은 종류의 곤충이
+										있어요.<br>
+										큰 턱이 사슴의 뿔처럼 생긴 사슴벌레처럼 곤충의 이름을 보면서 곤충의 특징을 살펴볼 수도 있어요. 화려한 색을 가진 곤충과 특별한 무늬를 띈
+										곤충,
+										생김새가 특이한 곤충! 다양한 곤충 표본들을 눈으로 관찰하면서 곤충의 다양성에 대해 알 수 있어요.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see1.png" alt="">
+								<p>
+									디노파크 Dino Park
+									<small>
+										으악!~미호 박물관에 공룡이 나타났어요! 소리도 내고 살아있는 것처럼 공룡이 움직여요. 힘이 센 티라노사우루스! 탐험 시 꼬리를
+										조심해요!<br>
+										얼굴에 있는 세 개의 뿔과 프릴이 인상적인 트리케라톱스! 몸의 크기가 작지만 달리기 선수인 벨로키랍토르! 골격으로 나타난 마멘키사우르스의
+										살펴보고 그 특징을 알 수 있어요.<br>
+										중생대 시대를 살았던 다양한 공룡을 살펴보며 그들의 특징에 대해 알아봅시다. 자~ 지금부터 중생대 시대로 공룡 탐험을 떠나 봅시다.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see5.png" alt="">
+								<p>
+									공룡화석관 Dino Fossil Gallery
+									<small>
+										공룡은 우리들 앞에 화석으로 나타나요. 화석을 발굴해 공룡의 뼈를 관찰하여 특징을 연구해 어떤 공룡인지 밝혀내요. 전시된 공룡의 뼈를 보면서
+										공룡의 모습을 상상해 볼 수 있어요.<br>
+										심지어 동물, 식물뿐만 아니라 똥도 화석이 될 수 있지요. 직접 분화석, 티라노사우루스 알 화석, 하드로사우루스의 새끼 모암 등을 눈으로
+										관찰하면서 공룡들을 상상해 봅시다.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see3.png" alt="">
+								<p>
+									동물표본관 Stuffed Animals Gallery
+									<small>
+										고생대와 중생대를 지나 신생대에 속하는 현대에 있는 동물들이 전시되어 있어요. 어린 왕자에 등장한 보아뱀과 갑옷처럼 생긴 멋진 비늘을 가진
+										천산갑 등의 동물표본들도 있어요.<br>
+										천산갑의 특징을 살펴보며 적으로부터 자신의 몸을 어떻게 보호하는지 유추할 수 있어요. 우리 주위에서 흔히 볼 수 없는 동물표본들을 관찰하면서
+										동물의 다양성을 알 수 있어요.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see7.png" alt="">
+								<p>
+									VR(Virtual Reality) 영상체험관(유료 시설)
+									<small>
+										옆을 둘러보아도 공룡! 앞을 봐도 공룡! 주위에 랩터가 빠르게 달리고 있어요! 책에서만 보던 공룡들이 살아 움직이고 있어요. 타임머신 타고
+										공룡의 세계로 온 것 같은
+										느낌이 들어요. 어떤 공룡들이 지금 무엇을 하고 있을까요? 열차를 타면서 떠나는 공룡 모험! 자~! 지금 바로 열차를 타고 VR 공룡의 세계로
+										들어가 볼까요?<br>
+										가상의 세계에서 실제와 비슷한 공간적, 시간적 체험을 할 수 있어요.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see8.png" alt="">
+								<p>
+									체험학습관
+									<small>
+										어린이 고생물학자가 되어 공룡 뼈를 직접 발굴해 봅시다. 공룡과 직접 사진을 찍으며 공룡과의 추억을 간직할 수 있는 포토존에서 사진을 찍어
+										보아요.<br>
+										티라노사우루스를 타고 함께 사진을 찰칵~ 찍을 수 있는 공룡 라이더도 있어요. 멋진 공룡친구들과 사진을 통해 신나는 추억을 남겨 보아요.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see9.png" alt="">
+								<p>
+									해양 패각류
+									<small>
+										바다에 살고 있는 생물은 무엇이 있을까요? 바다의 생물을 떠올리면 물고기, 문어, 오징어, 미역 등이 생각이 나지요.<br>
+										하지만! 단단한 껍질로 자신의 몸을 보호하는 바다의 생물도 있답니다. 그것은 바로 조개와 고둥이어요. 바다가 배경인 만화영화 속에 자주
+										엑스트라로 등장하는 가리비!<br>
+										소라처럼 생겼지만 껍질에 뿔이 있는 뿔소라! 아름다운 모습을 하고 있는 가리비와 뿔소라의 패각을 관찰해 볼 수 있어요.
+									</small>
+								</p>
+							</li>
+							<li>
+								<img src="images/see4.png" alt="">
+								<p>
+									선사시대 - 선조들의 생활 도구
+									<small>
+										지금 우리가 살고 있는 시대에는 다양한 도구들이 있어요. 우리는 도구들을 사용하여 생활에 필요한 물건을 만들고 좀 더 편리한 생활을 할 수 있게
+										도움을 주고 있어요.
+										선조들도 물고기를 잡기 위한 도구, 곡식을 빻는 도구, 사냥을 하기 위한 도구 등을 만들어 생활하였어요. 돌을 단순히 떼어내 사용한 뗀석기와
+										돌을 갈아서 사용한 간석기들을 볼 수 있어요.
+									</small>
+								</p>
+							</li>
+						</ul>
+					</div>
+					<h3 class="sub-tit">
+						전시 관람순서
+					</h3>
+					<br><br>
+					<img class="diagram" src="images/diagram.png" alt="" width="100%">
+				</div>
+			</article>
+			<!-- //end .contents -->
+		</section>
+		<!-- //end .container -->
+		<footer>
+			<div class="inner clearfix">
+				<ul class="clearfix l-fnb">
+					<li><a href="agree2.html" target="_blank">개인정보취급방침</a></li>
+					<li><span class="bar">|</span></li>
+					<li><a href="agree3.html" target="_blank">이메일주소무단수집거부</a></li>
+					<li><span class="bar">|</span></li>
+					<li><a href="agree1.html" target="_blank">이용약관</a></li>
+				</ul>
+				<ul class="clearfix r-fnb">
+					<li><a href="index.html">미호박물관</a></li>
+					<li><span class="bar">|</span></li>
+					<li>주소 : 경기도 남양주시 고산로 126번길 15-2</li>
+					<li><span class="bar">|</span></li>
+					<li>전화문의: 031-566-7377</li>
+					<li><span class="bar">|</span></li>
+					<li>팩스 : 031-551-7377</li>
+					<li class="copy">Copyright &copy; reserved.2014 MIHO MUSEUM ALL RIGHTS RESERVED.</li>
+				</ul>
+			</div>
+		</footer>
+	</div>
+	<!-- //end #wrap -->
+	<a class="top" href="#none">TOP</a>
+</body>
+
+</html>
