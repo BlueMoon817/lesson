@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // axios는 응답 받은 데이터를 가공하기 위한 콜백함수를 넣을 수 없다.
+    // axios는 콜백함수를 받는 것이 아니고 promise 객체를 리턴하게 되어있다.
+  //  let p = axios.get("http://localhost:3000/header.html");
+  //  p.then(function(res){
+  //   console.log("axios 리소스를 수신했음")
+  //   console.log(res);
+  //   console.log(res.data);
+  //  });
+   
+   
+   
+  let p = axios.post("http://localhost:3000/calc",{
+    a:17,
+    b:22
+  });
+   p.then(function(res){
+    console.log("post 요청에 대한 응답1");
+    console.log(res)
+   });
+   
+   
+  //json 말고 urlencoded로 보내고 싶을 경우
+//json 말고 urlencoded로 보내고 싶을 경우
+// 모든 요소를 객체 안에 넣어서 보내야 한다.
+  let p1 = axios({
+    method:"POST",  
+    url:"http://localhost:3000/calc",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data:"a=17&b=22"
+  });
+   p1.then(function(res){
+    console.log("post 요청에 대한 응답2");
+    console.log(res)
+   });
+
+  </script>
+</body>
+</html>

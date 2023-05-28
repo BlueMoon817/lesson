@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ajax</title>
+</head>
+<body>
+  <script>
+   /* //객체 생성
+    let xhr = new XMLHttpRequest();
+    // 대상 리소스 등록
+    xhr.open("GET", "http://localhost:3000/header.html");
+    // 대상 리소스를 수신했을 때 실행될 콜백함수(이벤트리스너) 등록 : loadend (불러오는게 끝났을 때.)
+    // 코드가 비동기로 실행됨.
+    xhr.addEventListener("loadend", function() {
+      console.log( "리소스를 모두 수신했음" );
+      //받아온 소스는 xhr.responseText 에 들어있음.
+      console.log(xhr.responseText)
+      document.querySelector("body").innerHTML += xhr.responseText;
+    });
+    //통신 실행(이제 받아온 걸 가공한 것을 요청으로 보냄)
+    xhr.send();
+    */
+    
+    // let xhr = new XMLHttpRequest();
+    // xhr.open("POST", "http://localhost:3000/calc");
+    // xhr.addEventListener("loadend", function() {
+    //   // 문자로 전달 받았기 때문에 
+    //   let res = JSON.parse(xhr.responseText);
+    //   let n = document.createElement("h2");
+    //   n.innerText = `서버에서 받아온 응답은 ${res.result} 입니다.`;
+    //   document.querySelector("body").appendChild( n );
+    // });
+    // // 요청헤더를 조작해서 보내기 (조작하지 않으면 html/plain으로 전달됨. -> 오류남)
+    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    // // post로 보낼 때 페이로드는 send의 인자로 보내야 한다.
+    // // server에서는 urlencoded 형태의 페이로드를 받을 준비중이므로 인자를 문자열로 보낸다. 
+    // xhr.send("a=10&b=15");
+    
+  </script>
+</body>
+</html>
