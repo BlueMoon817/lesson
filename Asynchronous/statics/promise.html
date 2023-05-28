@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promise</title>
+</head>
+<body>
+  <button id="btn">나를 5초안에 클릭하세요</button>
+  <script>
+    
+  let p2 = new Promise(function(resolve){
+	  setTimeout(function(){
+		  resolve("timeout");
+	  },5000)
+  });
+  let p1 = new Promise(function(resolve){
+	  document.querySelector('#btn').addEventListener("click", function(){
+		  resolve("click");
+	  });
+  });
+  let p3 = Promise.race([p1,p2]);
+    p3.then(function(data){
+	    data === "timeout"? console.log("5초가 지났습니다!") : console.log("5초 내 클릭성공!");
+  });
+    
+    
+  </script>
+</body>
+</html>
