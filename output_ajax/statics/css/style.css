@@ -20,7 +20,16 @@ section{display:flex;align-items:center;width:100%;height:100vh;}
 .inner{box-sizing: border-box;max-width:1000px;margin:0 auto;padding:0 50px;width:100%;}
 h2{font-size:22px;color:#777;font-weight:bold;border-bottom:1px solid #b6b3b3;}
 .note-editable{background-color:#faf4f4;}
+#page_list_content .btn_group a,#page_login_content .btn_group a,#page_signup_content .btn_signup,#page_signup_content .btn_back{display:inline-block;padding:0 10px;height:32px;line-height:30px;border: 1px solid #ddd;font-size: 14px;background-color: #f39292;text-align:center;font-weight:bold;border-radius:5px;transition: 0.3s;box-sizing: border-box;}
 
+#page_write .btn_cancel, #page_write .btn_update,.btn_comment_update,#page_list_content .btn_reply,#page_login_content .btn_login,#page_signup_content .btn_check_id,#page_login_content .btn_signup{box-sizing: border-box;text-align:center;line-height:30px;height:32px;padding:0 10px;display:inline-block;vertical-align:top;border:1px solid #ddd;font-size:14px;background-color:#f39292;cursor:pointer;border-radius: 5px;font-family: 'Nanum Gothic', sans-serif;font-weight:bold;transition: .3s;cursor:pointer;}
+
+#page_write .btn_cancel:hover, #page_write .btn_update:hover,
+.btn_comment_update:hover,#page_login_content .btn_group a:hover, #page_list_content a:hover,#page_list_content .btn_reply:hover,#page_login_content .btn_login:hover,#page_login_content .btn_signup:hover,#page_signup_content .btn_check_id:hover,#page_signup_content .btn_back:hover,#page_signup_content .btn_signup:hover{
+  background-color:rgba(243,146,146,0.7);color:#fff;
+}
+.curruser{display:inline-block;color:#4a347c}
+.userline{display:inline-block;font-weight:bold;padding:20px 0;}
 
 /* Page - Write */
 #page_write form{margin-top:30px;}
@@ -31,12 +40,7 @@ h2{font-size:22px;color:#777;font-weight:bold;border-bottom:1px solid #b6b3b3;}
 #page_write .tit_box label{display:block;}
 #page_write .tit_box input{box-sizing: border-box; width:100%;padding:0;border:1px solid #ddd;height:30px;margin:5px 0;padding:0 10px;}
 #page_write .btn_group{margin-top:30px;text-align:right;}
-#page_write .btn_cancel, #page_write .btn_update,
-.btn_comment_update{box-sizing: border-box;text-align:center;line-height:32px;height:32px;width:55px;display:inline-block;vertical-align:top;border:1px solid #ddd;font-size:14px;background-color:#f39292;cursor:pointer;border-radius: 5px;font-family: 'Nanum Gothic', sans-serif;font-weight:bold;padding:0;transition: .3s;}
-#page_write .btn_cancel:hover, #page_write .btn_update:hover,
-.btn_comment_update:hover{
-  background-color:rgba(243,146,146,0.7);color:#fff;
-}
+
 
 
 
@@ -61,15 +65,9 @@ h2{font-size:22px;color:#777;font-weight:bold;border-bottom:1px solid #b6b3b3;}
 
 
 
-#page_list_content{}
 #page_list_content .con_wrap{border:1px solid #b6b3b3;border-radius:10px;background: #f5f5f5;}
 #page_list_content .btn_group{text-align:right;padding-bottom:10px;}
-#page_list_content .btn_group a{display:inline-block;padding:0 10px;height:32px;line-height:32px;border: 1px solid #ddd;font-size: 14px;background-color: #f39292;text-align:center;font-weight:bold;border-radius:5px;transition: 0.3s;}
-#page_list_content a:hover {background-color: rgba(243, 146, 146, 0.7);color: #fff;}
-#page_list_content{}
-#page_list_content{}
-#page_list_content{}
-#page_list_content{}
+
 #page_list_content .con_header{width:95%;margin:0 auto;border-bottom: 1px solid #b6b3b3;box-sizing: border-box;padding:20px 0;}
 #page_list_content .view_subject{font-weight:bold;font-size:18px;line-height:28px;}
 #page_list_content .info_group{margin-top:10px;}
@@ -83,13 +81,28 @@ h2{font-size:22px;color:#777;font-weight:bold;border-bottom:1px solid #b6b3b3;}
 #page_list_content td.list_date{width:10%;text-align:center;font-size:12px;}
 #page_list_content td.list_con{width:70%;}
 #page_list_content td.list_reply{width:10%;text-align:center;}
-#page_list_content .btn_reply{display:inline-block;padding:0 10px;height:32px;line-height:32px;border: 1px solid #ddd;font-size: 14px;background-color: #f39292;text-align:center;font-weight:bold;border-radius:5px;transition: 0.3s;}
-#page_list_content .btn_reply:hover{
-  background-color: rgba(243, 146, 146, 0.7);color: #fff;}
+
 #page_list_content .comm_update{margin-top:15px;padding-top:15px;background-color:#fff;padding: 15px;}
 #page_list_content .comm_update .comm_writer{display:block;font-size:14px;font-weight:bold;}
 #input_comment{margin-top:15px;width:100%;border:0;resize: none;}
 #page_list_content .btn_area {width:100%;text-align:right;}
 
 
+
+
+#page_login_content .login_wrap{width:600px;height:300px;border:2px solid #b6b3b3;background: #f5f5f5;display:flex;align-items:center;display: -webkit-flex;justify-content:center;margin:0 auto;}
+#page_login_content .login_box,
+#page_signup_content .signup_box
+{font-size:14px;}
+#page_login_content label,
+#page_signup_content label{display:inline-block;width:70px;text-align:center;vertical-align:middle; }
+#page_login_content input,
+#page_signup_content input {border:0; background-color:transparent;border-bottom:1px solid #777;height:25px;}
+#page_login_content input[name="password"]{margin-top:15px;}
+#page_login_content .btn_group,#page_signup_content .btn_group{margin-top:30px;display:flex;justify-content:right;}
+
+
+#page_signup_content .signup_wrap{width:400px;height:auto;padding:0 0 20px;margin:0 auto;border: 2px solid #b6b3b3; background: #f5f5f5;display:-webkit-flex; display: flex;justify-content:center; align-items: center;}
+#page_signup_content .guide_desc{display:block;margin-top:10px;font-size:11px;color:#777;padding-left:10px;}
+#page_signup_content .signup_area{margin-top:30px;}
 
