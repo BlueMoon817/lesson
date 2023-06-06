@@ -4,6 +4,9 @@ const listPage=document.querySelector('#page_list');
 const listViewPage=document.querySelector('#page_list_content');
 const writePage=document.querySelector('#page_write');
 const replyPage=document.querySelector('#page_reply');
+const currListNum=document.querySelector('.board_guide');
+const listWrap = document.querySelector('#board_list');
+const pagination=document.querySelector('.pagination');
 let currUser='';
 // page 배열
 const pageArr=document.querySelectorAll("section>div");
@@ -29,7 +32,6 @@ const loginFunc = function(){
     },
   })
   login.then(function(res){
-    console.log(typeof res.data)
     if(res.data.state === 'success'){
       alert("로그인 성공!");
       hide();
@@ -74,18 +76,68 @@ const pageWrite = function(){
 const pageList = function(){
   let goList = axios.get("http://localhost:3000/pageList");
   goList.then(function(res){
-    if(res){
-      hide();
-      listPage.style.display='block';
+    // 등록된 글이 없을 때 처리
+    console.log(res.data.articles)
+    if(!res.data.length) {
+      currListNum.style.display="block";
+      return;
+    }else{currListNum.style.display="none";}
+    // 목록 렌더링
+    let insertList='', firstList, pageCheck=0, btnInsert='';
+    if( parseInt(res.data.length/10)>=10){
+      firstList=parseInt(res.data.length/10);
+    }else{
+      firstList=res.data.length % 10
     }
-  })
+    for(let i=0;i<firstList; i+=1){
+      insertList+=`<tr class="list_items"><td class="list_cate">${res.data[i].category}</td><td><button type="button" class="list_subject">${res.data[i].subject}</button></td><td class="list_writer">${res.data[i].nickname}</td><td class="list_date">${res.data[i].date}</td><td class="list_count">${res.data[i].hit}</td></tr>`
+      if(i===9 || (i>8 && (i-9)%10===0)){
+        pageCheck+=1;
+      }
+    }
+    btnInsert=`<button type="button" class="page_prev">&nbsp;<<&nbsp;</button>`
+    for(let btn=0;btn<pageCheck;btn+=1){
+      btnInsert+=`<button type="button" class="btn_page">${btn+1}</button>`;
+    }
+    btnInsert+=`<button type="button" class="page_next">&nbsp;>>&nbsp;</button>`
+    listWrap.innerHTML=insertList;
+    pagination.innerHTML=btnInsert;
+    hide();
+    listPage.style.display='block';
+  });
 }
 const pageReply = function(){
-  let goList = axios.get("http://localhost:3000/pageReply");
-  goList.then(function(res){
+  let replyList = axios.get("http://localhost:3000/pageReply");
+  replyList.then(function(res){
     if(res){
       hide();
       replyPage.style.display='block';
+    }
+  })
+}
+const boardList=document.querySelector('#board_list');
+
+const updateList = function(){
+  let listCate=writePage.querySelector('.data_cate');
+  let subject=writePage.querySelector('#input_subject');
+  let content=writePage.querySelector('.input_content');
+  let updatePage = axios({
+    method:"POST",
+    url:"http://localhost:3000/pageUpdate",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data: {
+      category: listCate.value,
+      subject: subject.value,
+      content: content.value
+    }
+  });
+  updatePage.then(function(res){
+    console.log(res.data)
+    if(res.data==='ok'){
+      console.log("등록후에 체크완료")
+      pageList();
     }
   })
 }
@@ -127,7 +179,6 @@ const makeIdFunc = function(){
       },
     });
     makeId.then(function(res){
-      console.log(res.data)
       if(res.data ==="ok"){
         alert("회원가입이 완료되었습니다. 다시 로그인 해주세요");
         hide();

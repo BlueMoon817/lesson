@@ -75,7 +75,7 @@
         <h2>[ 글쓰기 ]</h2>
         <div class="input_category">
           <select name="category" class="data_cate">
-            <option value="select_cate">카테고리 선택</option>
+            <option value="선택해주세요"></option>
             <option value="수다"></option>
             <option value="고민"></option>
             <option value="정보"></option>
@@ -87,36 +87,29 @@
           </label>
         </div>
         <div class="container">
-          <textarea class="summernote" name="editordata"></textarea>
+          <textarea class="summernote input_content" name="editordata"></textarea>
         </div>
         <div class="btn_group">
-          <a href="#none" class="btn_cancel">취소</a>
-          <button type="submit" class="btn_update">등록</button>
+          <button type="button" class="btn_cancel" onclick="pageList()">취소</button>
+          <button type="button" class="btn_update" onclick="updateList()">등록</button>
         </div>
       </div>
       <div id="page_list" class="inner" style="display:none">
         <h1 class="blind">게시판</h1>
         <span class="userline"><span class="curruser"></span>님 반갑습니다.</span>
         <div class="title">
-          <h2>[ 게시판 목록화면 ]<button type="button" class="btn_write" onclick="writeFunc()">글쓰기</button></h2>
+          <h2>[ 게시판 목록화면 ]<button type="button" class="btn_write" onclick="pageWrite()">글쓰기</button></h2>
         </div>
         <div class="board">
-          <div class="caution">등록된 게시물이 없습니다.</div>          
+          <div class="board_guide">등록된 게시물이 없습니다.</div>          
           <table>
             <thead>
               <tr><th class="st01">구분</th><th class="st02">글제목</th><th class="st01">작성자</th><th class="st03">작성일</th><th class="st04">조회수</th></tr>
             </thead>
-            <tbody>
+            <tbody id="board_list">
             </tbody>
           </table>
           <div class="pagination">
-            <button type="button" class="page_prev"> << </button>
-            <button type="button" class="btn_page is_active">1</button>
-            <button type="button" class="btn_page">2</button>
-            <button type="button" class="btn_page">3</button>
-            <button type="button" class="btn_page">4</button>
-            <button type="button" class="btn_page">5</button>
-            <button type="button" class="page_next"> >> </button>
           </div>        
         </div>
       </div>
