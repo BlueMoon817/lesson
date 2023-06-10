@@ -64,18 +64,12 @@ server.get("/backLogin", function(req,res,next){
 server.get("/pageWrite", function(req,res,next){
   res.send(true);
 });
-server.post("/pageUpdate",function(req,res,next){
-
+server.get("/checkUser",function(req,res,next){
   pool.query("SELECT * FROM session",function(err, dbres){
     let state;
     if(err) console.log("오류발생",err);
     for(let i=0; i<dbres.length; i+=1){
       if(req.session.id===dbres[i].id && req.session.num===dbres[i].randomkey){
-        pool.query("INSERT INTO RECORD SET subject=?,date=NOW(),category=?,writer=?,content=?,count=?",[req.body.subject,req.body.category,dbres[i].nickname,req.body.content,0], function(err,db){
-          if(err) console.log("오류발생",err);
-          console.log("등록되었습니다.");
-        
-        });
         state='ok';
       }
     }
@@ -86,24 +80,90 @@ server.post("/pageUpdate",function(req,res,next){
     res.send(state);
   });
 });
-server.get("/pageList", function(req,res,next){
+server.post("/pageUpdate",function(req,res,next){
   pool.query("SELECT * FROM RECORD", function(err, dbres){
-    let articles=[];
+    let state;
+    pool.query("INSERT INTO RECORD SET subject=?,date=NOW(),category=?,writer=?,content=?,count=?",[req.body.subject,req.body.category,req.body.writer,req.body.content,0], function(err,db){
+        if(err) console.log("오류발생",err);
+        console.log("등록되었습니다.");
+        state='complete';
+       res.send(state);  
+    });
+  }); 
+});
+server.post("/pageList", function(req,res,next){
+  let getPageNum=parseInt(req.body.pageNum);
+  pool.query("SELECT * FROM RECORD", function (err, dbres){
     if(err) console.log("오류발생",err);
-    for(let i=0; i<dbres.length; i+=1){
-      articles.unshift({
-        subject:dbres[i].subject,
-        category:dbres[i].category,
-        nickname: dbres[i].writer,
-        date: dbres[i].date,
-        content: dbres[i].content,
-        hit: dbres[i].count
-      })
+    let firstPageNum=1, lastPageNum,dataArr=[],articles=[],pageInfo={},restPageCount=0,restListCount=0,dataCount=10,startIndex,lastListNum = dbres.length, lastIndex=dbres.length-1
+    if(lastListNum%10!==0) {
+      restListCount=lastListNum%10;
+      restPageCount=1;
     }
-    console.log(articles)
-    res.send(articles);
+    
+    // 총 페이지 수
+    let pageCountAll = parseInt(lastListNum/10)+restPageCount;
+    //첫번째버튼, 끝버튼 번호
+    if(getPageNum<6){
+      firstPageNum = 1;
+      if (pageCountAll<6){
+        if(pageCountAll!=getPageNum){
+          lastPageNum = pageCountAll;
+        }
+      }else{
+        lastPageNum = 5;
+      }
+    }else if(getPageNum>5 && getPageNum%5 === 0){
+      firstPageNum = getPageNum - 4;
+      lastPageNum = getPageNum;
+    }else if( (getPageNum>5) && (getPageNum%5 !== 0)){
+      firstPageNum = getPageNum - (5 - getPageNum%5);
+      if((getPageNum + (5 - getPageNum%5)) >= pageCountAll){
+        lastPageNum = pageCountAll;
+      }else{
+        lastPageNum = getPageNum + (5 - getPageNum%5);
+      }
+    }
+    // 시작 인덱스
+    if(getPageNum===1){
+      startIndex=0;
+    }else if(getPageNum===pageCountAll && getPageNum>1){
+      startIndex=((getPageNum - 1) * 10);
+    }else if(getPageNum!==pageCountAll && getPageNum>1){
+      startIndex=(getPageNum * 10)-10;
+    }
+    // 출력할 데이터 개수
+    if(startIndex+10>dbres.length){
+      dataCount=restListCount;
+    }
+    // 시작인덱스, 개수변수 필요
+    let queryTxt=`SELECT * FROM RECORD ORDER BY seq DESC LIMIT ${dataCount} OFFSET ${startIndex}`;
+    pool.query(queryTxt, function(err, pages){
+      if(err) console.log("오류발생",err);
+      for(let i=0;i<pages.length;i+=1){
+        articles.push({
+          number: pages[i].seq,
+          category: pages[i].category,
+          nickname: pages[i].writer,
+          hit: pages[i].count,
+          date: pages[i].date,
+          subject: pages[i].subject
+        });
+      }
+      pageInfo = {
+        firstPage: firstPageNum,
+        lastPage: lastPageNum,
+        currPage: getPageNum,
+        dataCount,
+        startIndex,
+        lastIndex
+      }
+      dataArr=[articles, pageInfo];
+      res.send(dataArr);
+    });
   });
 });
+
 server.post("/makeid",function(req,res,next){
   let checkId;
   pool.query("SELECT * FROM USER", function(err, dbres){
@@ -130,9 +190,6 @@ server.post("/makeid",function(req,res,next){
     res.send(checkId);
   }
 });
-// server.use(function(req,res,next){
-//   res.render("/board",{});
-// });
 server.use(function(req,res,next){
   res.redirect("/board.html");
 });

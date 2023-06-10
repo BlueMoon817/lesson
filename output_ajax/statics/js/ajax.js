@@ -16,6 +16,50 @@ const hide=function(){
     item.style.display="none";
   });
 }
+const pageList = function(page){
+
+  let goList = axios({ 
+    method:"POST",
+    url: "http://localhost:3000/pageList",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data: { pageNum: page }
+  });
+  goList.then(function(res){
+    console.log(res.data)
+    console.log(res.data[0].length)
+    // 등록된 글이 없을 때 처리
+    if(res.data[0].length===0) {
+      currListNum.style.display="block";
+      return;
+    }else{ currListNum.style.display="none"; }
+    // 목록 렌더링
+    let insertList="", btnInsert="";
+    for( let i=0;i<res.data[0].length; i+=1 ){
+      insertList+=`<tr class="list_items">
+      <td class="list_cate">${res.data[0][i].category}</td>
+      <td><button type="button" class="list_subject">${res.data[0][i].subject}</button></td>
+      <td class="list_writer">${res.data[0][i].nickname}</td>
+      <td class="list_date">${res.data[0][i].date}</td>
+      <td class="list_count">${res.data[0][i].hit}</td>
+      </tr>`
+    }
+    btnInsert=`<button type="button" class="page_prev" onclick="prev()">&nbsp;<<&nbsp;</button>`
+    for(let btn=res.data[1].firstPage;btn<=res.data[1].lastPage;btn+=1){
+      if(btn===res.data[1].currPage){
+        btnInsert+=`<button type="button" class="btn_page is_act" onclick="pageList(${btn})">${btn}</button>`;
+      }else{
+        btnInsert+=`<button type="button" class="btn_page" onclick="pageList(${btn})">${btn}</button>`;
+      }
+    }
+    btnInsert+=`<button type="button" class="page_next" onclick="next()">&nbsp;>>&nbsp;</button>`
+    listWrap.innerHTML=insertList;
+    pagination.innerHTML=btnInsert;
+    hide();
+    listPage.style.display='block';
+  });
+}
 // login Func
 const loginFunc = function(){
   let pw1=document.querySelector('input[name="password1"]').value;
@@ -33,13 +77,14 @@ const loginFunc = function(){
   })
   login.then(function(res){
     if(res.data.state === 'success'){
-      alert("로그인 성공!");
+      currUser=document.querySelectorAll('.curruser');
       hide();
       listPage.style.display='block';
-      currUser=document.querySelectorAll('.curruser');
       currUser.forEach(function(item){
         item.innerHTML=res.data.user;
-        });
+      });
+      alert("로그인 성공!");
+      return pageList(1);
     }else{
       alert("해당 아이디는 존재하지 않거나 비밀번호가 틀렸습니다.");
     }
@@ -73,39 +118,13 @@ const pageWrite = function(){
     }
   })
 }
-const pageList = function(){
-  let goList = axios.get("http://localhost:3000/pageList");
-  goList.then(function(res){
-    // 등록된 글이 없을 때 처리
-    console.log(res.data.articles)
-    if(!res.data.length) {
-      currListNum.style.display="block";
-      return;
-    }else{currListNum.style.display="none";}
-    // 목록 렌더링
-    let insertList='', firstList, pageCheck=0, btnInsert='';
-    if( parseInt(res.data.length/10)>=10){
-      firstList=parseInt(res.data.length/10);
-    }else{
-      firstList=res.data.length % 10
-    }
-    for(let i=0;i<firstList; i+=1){
-      insertList+=`<tr class="list_items"><td class="list_cate">${res.data[i].category}</td><td><button type="button" class="list_subject">${res.data[i].subject}</button></td><td class="list_writer">${res.data[i].nickname}</td><td class="list_date">${res.data[i].date}</td><td class="list_count">${res.data[i].hit}</td></tr>`
-      if(i===9 || (i>8 && (i-9)%10===0)){
-        pageCheck+=1;
-      }
-    }
-    btnInsert=`<button type="button" class="page_prev">&nbsp;<<&nbsp;</button>`
-    for(let btn=0;btn<pageCheck;btn+=1){
-      btnInsert+=`<button type="button" class="btn_page">${btn+1}</button>`;
-    }
-    btnInsert+=`<button type="button" class="page_next">&nbsp;>>&nbsp;</button>`
-    listWrap.innerHTML=insertList;
-    pagination.innerHTML=btnInsert;
-    hide();
-    listPage.style.display='block';
-  });
+const prev = function(btn){
+  console.log(btn);
 }
+const next = function(btn){
+  console.log(btn);
+}
+
 const pageReply = function(){
   let replyList = axios.get("http://localhost:3000/pageReply");
   replyList.then(function(res){
@@ -121,25 +140,35 @@ const updateList = function(){
   let listCate=writePage.querySelector('.data_cate');
   let subject=writePage.querySelector('#input_subject');
   let content=writePage.querySelector('.input_content');
-  let updatePage = axios({
-    method:"POST",
-    url:"http://localhost:3000/pageUpdate",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    data: {
-      category: listCate.value,
-      subject: subject.value,
-      content: content.value
-    }
-  });
+  let updatePage = axios.get("http://localhost:3000/checkUser");
   updatePage.then(function(res){
-    console.log(res.data)
     if(res.data==='ok'){
-      console.log("등록후에 체크완료")
-      pageList();
+      console.log("등록후에 체크완료");
+      let user = document.querySelector('.curruser').innerHTML
+      let upload= axios({
+        method:"POST",
+        url:"http://localhost:3000/pageUpdate",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        data: {
+          category: listCate.value,
+          subject: subject.value,
+          content: content.value,
+          writer: user
+       }
+      })
+      upload.then(function(res){
+        console.log(res.data)
+        if(res.data==="complete"){
+          pageList(1);
+        }
+      });
+    }else{
+      alert("잘못된 접근입니다.")
     }
   })
+  
 }
 const makeIdFunc = function(){
   let pw2=document.querySelector('input[name="password2"]').value;
