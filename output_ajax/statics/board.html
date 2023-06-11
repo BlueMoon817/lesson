@@ -17,7 +17,7 @@
 <body>
   <div id="container">
     <section>
-      <div id="page_login_content" class="inner" style="display:block">
+      <div id="page_login_content" class="inner" style="display:none">
        <div class="login_wrap">
         <div class="login_box">
           <div class="login_area">
@@ -64,7 +64,7 @@
             </div>
             <div class="btn_group">
               <input type="submit" class="btn_signup" name="signup" value="가입하기" onclick="makeIdFunc()"></input>
-              <input type="submit" name="backlogin" class="btn_back" value="돌아가기" data-sort="back" onclick="backLogin()"></input>
+              <input type="submit" name="backlogin" class="btn_back" value="돌아가기" data-sort="back" onclick="viewLogin()"></input>
             </div>
           </div>
         </div>
@@ -72,6 +72,7 @@
       <div id="page_write" class="inner" style="display:none">
         <h1 class="blind">게시판</h1>
         <span class="userline"><span class="curruser"></span>님 반갑습니다.</span>
+
         <h2>[ 글쓰기 ]</h2>
         <div class="input_category">
           <select name="category" class="data_cate">
@@ -90,13 +91,16 @@
           <textarea class="summernote input_content" name="editordata"></textarea>
         </div>
         <div class="btn_group">
-          <button type="button" class="btn_cancel" onclick="pageList(1)">취소</button>
+          <button type="button" class="btn_cancel" onclick="checkState()">취소</button>
           <button type="button" class="btn_update" onclick="updateList()">등록</button>
         </div>
       </div>
-      <div id="page_list" class="inner" style="display:none">
+      <div id="page_list" class="inner" style="display:block">
         <h1 class="blind">게시판</h1>
-        <span class="userline"><span class="curruser"></span>님 반갑습니다.</span>
+        <div class="util_area" style="display: flex;justify-content: space-between; align-items: center;">
+          <span class="userline"><span class="curruser"></span></span>
+          <button type="button" class="login" onclick="checkUser()">로그인</button>
+        </div>
         <div class="title">
           <h2>[ 게시판 목록화면 ]<button type="button" class="btn_write" onclick="pageWrite()">글쓰기</button></h2>
         </div>
@@ -115,10 +119,10 @@
       </div>
       <div id="page_list_content" class="inner" style="display:none">
         <h1 class="blind">게시판</h1>
-        <span class="userline"><span class="curruser"></span>님 반갑습니다.</span>
+        <span class="userline"><span class="curruser"></span></span>
         <div class="view">
           <div class="btn_group">
-            <button href="#none" class="btn_list" onclick="pageList()">목록으로</button>
+            <button href="#none" class="btn_list" onclick="checkState()">목록으로</button>
             <button href="#none" class="btn_reply" onclick="pageReply()">답글작성</button>
           </div>
           <div class="con_wrap">
@@ -180,13 +184,13 @@
           <textarea class="summernote" name="editordata"></textarea>
         </div>
         <div class="btn_group">
-          <button href="#none" class="btn_cancel" onclick="">취소</button>
+          <button href="#none" class="btn_cancel" onclick="checkHash()">취소</button>
           <button type="submit" class="btn_update" onclick="">등록</button>
         </div>
       </div>
     </section>
   </div>
-  <script src="./js/ajax.js"></script>
+  <script src="./js/index.js"></script>
   <script>
     $('.summernote').summernote({
 	    height: 300,

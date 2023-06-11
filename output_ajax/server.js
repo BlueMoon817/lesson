@@ -21,7 +21,6 @@ server.use(function(req,res,next){
     next();
 });
 
-//세션 파괴 req.session = null
 
 server.use(express.static("./statics"));
 // post를 파싱해주는 미들웨어
@@ -32,14 +31,17 @@ server.use(express.json()); //json 형식의 post payload를 파싱하는 미들
 // 파일 경로
 // server.set("views", "./templates");
 // post를 전달받는 미들웨어
+
 server.post("/login", function(req,res,next){
   let result;
+  // 로그인 아이디 패스워드 체크 및 세션 등록
   pool.query("SELECT * FROM USER",function(err, dbres){
     if(err) console.log("오류발생",err);
     for(let i=0; i<dbres.length; i+=1){
       if(req.body.id===dbres[i].id && req.body.pw===dbres[i].password){
         req.session.id = dbres[i].id;
         req.session.num = Math.random().toString()+Math.random().toString()+Math.random().toString();
+        req.session.nickname=dbres[i].nickname;
         pool.query("INSERT INTO session SET randomkey=?, nickname=?, id=?",[req.session.num, dbres[i].nickname, req.session.id],function(err, db){
           if(err) console.log("오류발생",err);
         });
@@ -52,30 +54,37 @@ server.post("/login", function(req,res,next){
     }
     res.send(result);
   });
-
 });
-
 server.get("/pagesignup", function(req,res,next){
   res.send(true);
 });
-server.get("/backLogin", function(req,res,next){
-  res.send(true);
-});
-server.get("/pageWrite", function(req,res,next){
-  res.send(true);
+server.get("/logout", function(req,res,next){
+  //세션 데이터 삭제
+  pool.query("DELETE FROM session WHERE id=?, randomkey=?", [req.session.id ,req.session.num],function(err, session){
+    if(err) console.log("에러");
+      console.log("세션이 삭제되었음.");
+      console.log(req.session);
+      //세션 파괴 
+      req.session = null;
+      console.log(req.session);
+      res.send(true);
+  });
 });
 server.get("/checkUser",function(req,res,next){
   pool.query("SELECT * FROM session",function(err, dbres){
-    let state;
+    let state={};
+    state.pageNum=req.body.pageNum;
     if(err) console.log("오류발생",err);
     for(let i=0; i<dbres.length; i+=1){
       if(req.session.id===dbres[i].id && req.session.num===dbres[i].randomkey){
-        state='ok';
+        console.log("로그인 상태입니다.");
+        state.state='in';
+        state.user=dbres[i].id;
       }
     }
-    console.log(state)
     if(state===undefined){
-      state = 'fail';
+      state.state='out';
+      console.log("미로그인 상태입니다.")
     }
     res.send(state);
   });
@@ -93,38 +102,48 @@ server.post("/pageUpdate",function(req,res,next){
 });
 server.post("/pageList", function(req,res,next){
   let getPageNum=parseInt(req.body.pageNum);
+  let userState;
+  
+  req.session.id? userState=req.session.id : userState=null;
+  
   pool.query("SELECT * FROM RECORD", function (err, dbres){
     if(err) console.log("오류발생",err);
-    let firstPageNum=1, lastPageNum,dataArr=[],articles=[],pageInfo={},restPageCount=0,restListCount=0,dataCount=10,startIndex,lastListNum = dbres.length, lastIndex=dbres.length-1
+    let firstPageNum, lastPageNum,dataArr=[],articles=[],pageInfo={},restPageCount=0,restListCount=0,dataCount=10,startIndex=0,lastListNum = dbres.length, lastIndex=dbres.length-1
     if(lastListNum%10!==0) {
       restListCount=lastListNum%10;
       restPageCount=1;
     }
-    
+    let prev,next;
     // 총 페이지 수
     let pageCountAll = parseInt(lastListNum/10)+restPageCount;
-    //첫번째버튼, 끝버튼 번호
-    if(getPageNum<6){
+    // 첫번째 버튼 구하는 변수
+    let firstCalc = getPageNum - (getPageNum%5-1);
+    // 첫번째 버튼 숫자, 마지막 버튼 숫자 구하는 조건문
+    if(getPageNum<=5){
       firstPageNum = 1;
-      if (pageCountAll<6){
-        if(pageCountAll!=getPageNum){
-          lastPageNum = pageCountAll;
-        }
-      }else{
+      prev=1;
+      next=6;
+      if(pageCountAll>5){
         lastPageNum = 5;
+      }else if(pageCountAll<=5){
+        lastPageNum=pageCountAll;
+        next=lastPageNum;
       }
-    }else if(getPageNum>5 && getPageNum%5 === 0){
-      firstPageNum = getPageNum - 4;
-      lastPageNum = getPageNum;
-    }else if( (getPageNum>5) && (getPageNum%5 !== 0)){
-      firstPageNum = getPageNum - (5 - getPageNum%5);
-      if((getPageNum + (5 - getPageNum%5)) >= pageCountAll){
-        lastPageNum = pageCountAll;
-      }else{
-        lastPageNum = getPageNum + (5 - getPageNum%5);
+    }else if( getPageNum > 5){
+      firstPageNum=firstCalc;
+      if(getPageNum===6){
+        prev=1;
       }
+      if(firstPageNum+4>=pageCountAll){
+        lastPageNum=pageCountAll;
+        next=lastPageNum;
+      }
+      prev=firstPageNum-5
+      console.log(prev, next);
     }
-    // 시작 인덱스
+ 
+    
+    // 게시물 시작 인덱스
     if(getPageNum===1){
       startIndex=0;
     }else if(getPageNum===pageCountAll && getPageNum>1){
@@ -132,6 +151,8 @@ server.post("/pageList", function(req,res,next){
     }else if(getPageNum!==pageCountAll && getPageNum>1){
       startIndex=(getPageNum * 10)-10;
     }
+    
+    
     // 출력할 데이터 개수
     if(startIndex+10>dbres.length){
       dataCount=restListCount;
@@ -151,14 +172,19 @@ server.post("/pageList", function(req,res,next){
         });
       }
       pageInfo = {
+        user: userState,
         firstPage: firstPageNum,
-        lastPage: lastPageNum,
+        lastPage: lastPageNum, // 출력할 마지막 페이지번호
         currPage: getPageNum,
         dataCount,
         startIndex,
-        lastIndex
+        lastIndex,
+        endPage: pageCountAll,
+        nextMove:next,
+        prevMove:prev,
       }
       dataArr=[articles, pageInfo];
+
       res.send(dataArr);
     });
   });
