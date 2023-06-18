@@ -7,9 +7,13 @@ const replyPage=document.querySelector('#page_reply');
 const currListNum=document.querySelector('.board_guide');
 const listWrap = document.querySelector('#board_list');
 const pagination=document.querySelector('.pagination');
+const commentList=document.querySelector('.comment_list');
+const commContainer = commentList.querySelector('tbody');
 const boardList=document.querySelector('#board_list');
-
+const detailHeader= document.querySelector('.con_header');
+const detailContent=document.querySelector('.con_body p');
 let currUser=document.querySelectorAll('.curruser');
+const writer=document.querySelector('#page_list_content .comm_writer');
 let login=document.querySelector('.login');
 
 // page 배열
@@ -22,6 +26,7 @@ const hide=function(){
 }
 // 페이지 체크 & 리스트 출력 함수 호출
 const checkState= function(){
+  detailContent.value='';
   let targetURL = window.location.href;
   let pageHash = targetURL.split('#')[1]?targetURL.split('#')[1]:undefined;
   let pageNum = pageHash? pageHash.split('=')[1] : undefined
@@ -61,7 +66,7 @@ const pageList = function(pageNum){
     for( let i=0;i<res.data[0].length; i+=1 ){
       insertList+=`<tr class="list_items">
       <td class="list_cate">${res.data[0][i].category}</td>
-      <td><button type="button" class="list_subject">${res.data[0][i].subject}</button></td>
+      <td><button type="button" class="list_subject" onclick="detailPage(${res.data[0][i].number})">${res.data[0][i].subject}</button></td>
       <td class="list_writer">${res.data[0][i].nickname}</td>
       <td class="list_date">${res.data[0][i].date}</td>
       <td class="list_count">${res.data[0][i].hit}</td>
@@ -69,17 +74,17 @@ const pageList = function(pageNum){
     }
     // 버튼 렌더링 
 
-    btnInsert=`<button type="button" class="page_prev" onclick="pageList(${res.data[1].prevMove})">&nbsp;<<&nbsp;</button>`;
+    btnInsert=`<a href="#page=${res.data[1].prevMove}" class="page_prev" onclick="pageList(${res.data[1].prevMove})">&nbsp;<<&nbsp;</button>`;
     
     for(let btn=res.data[1].firstPage;btn<=res.data[1].lastPage;btn+=1){
       if(btn===res.data[1].currPage){
-        btnInsert+=`<button type="button" class="btn_page is_act" onclick="pageList(${btn})">${btn}</button>`;
+        btnInsert+=`<a href="#page=${btn}" class="btn_page is_act" onclick="pageList(${btn})">${btn}</a>`;
       }else{
-        btnInsert+=`<button type="button" class="btn_page" onclick="pageList(${btn})">${btn}</button>`;
+        btnInsert+=`<a href="#page=${btn}" class="btn_page" onclick="pageList(${btn})">${btn}</a>`;
       }
     }
     
-    btnInsert+=`<button type="button" class="page_next" onclick="pageList(${res.data[1].nextMove})">&nbsp;>>&nbsp;</button>`;
+    btnInsert+=`<a href="#page=${res.data[1].nextMove}" class="page_next" onclick="pageList(${res.data[1].nextMove})">&nbsp;>>&nbsp;</a>`;
         
     // html에 출력시키기
     if(res.data[1].user!==null){
@@ -99,7 +104,75 @@ const pageList = function(pageNum){
     listPage.style.display='block';
   });
 }
-
+//상세페이지 출력
+const detailPage = function(listNum){
+  let detail = axios({ 
+    method:"POST",
+    url: `http://localhost:3000/detailPage`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data: {listNum}
+  });
+  detail.then(function(res){
+    let html=`
+    <div class="view_subject">${res.data.viewSub}</div>
+      <ul class="info_group">
+        <li class="view_nick">${res.data.viewNick}</li>
+        <li>글번호 <span class="view_listNum">${listNum}</span></li>
+        <li class="view_date">${res.data.viewDate}</li>
+        <li class="view_count">조회 <span class="view_num">${res.data.viewCount}</span></li> 
+      </ul>`;
+    detailContent.innerHTML = res.data.viewContent;
+    detailHeader.innerHTML = html;
+    commentRender(listNum);
+    hide();
+    listViewPage.style.display='block';
+  });
+}
+//코멘트 렌더링
+const commentRender= function(listNum){
+  let detail = axios({ 
+    method:"POST",
+    url: `http://localhost:3000/commentRender`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data: {listNum}
+  });
+  detail.then(function(res){
+    let html='';
+    console.log(res.data)
+    for(let i = 0; i<res.data.length; i+=1){
+      html+=`<tr class="list_items"><td class="list_id">${res.data[i].writer}</td><td class="list_con">${res.data[i].content}</td><td class="list_date">${res.data[i].date}</td><td class="list_reply"><button type="button" class="btn_reply" onclick="moveReplyPage(${listNum})">대댓글</button></td></tr>`;
+    }
+    commContainer.innerHTML=html;
+  });
+}
+//코멘트 등록
+const commentUpdate= function(){
+  let commCont=document.querySelector('#input_comment');
+  let detailListNum=document.querySelector('.view_listNum');
+  let detail = axios({ 
+    method:"POST",
+    url: `http://localhost:3000/commentUpdate`,
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data: {
+     commCont: commCont.value,
+     listNum:  detailListNum.innerHTML
+    }
+  });
+  detail.then(function(res){
+    if(res.data==='ok'){
+      commentRender(parseInt(detailListNum.innerHTML));
+      commCont.value='';
+    }else{
+      alert("세션이 만료되었습니다. 다시 작성해주세요.")
+    }
+  });
+}
 // login Func
 const loginFunc = function(){
   let pw1=document.querySelector('input[name="password1"]').value;
@@ -120,6 +193,7 @@ const loginFunc = function(){
       currUser.forEach(function(item){
         item.innerHTML=res.data.user;
       });
+      writer.innerHTML=res.data.user;
       hide();
       listPage.style.display='block';
       alert("로그인 성공!");
@@ -152,6 +226,7 @@ const checkUser = function(){
     }
   })
 }
+// 로그아웃
 const logout=function(){
   let viewLogin = axios.get("http://localhost:3000/logout");
   viewLogin.then(function(res){
@@ -212,6 +287,24 @@ const updateList = function(){
     }else{
       alert("잘못된 접근입니다.");
     }
+  });
+}
+const edit = function(){
+  let subject=writePage.querySelector('#edit_subject');
+  let content=writePage.querySelector('.edit_content');
+  let editPage=axios({
+    method:'POST',
+    url:"http://localhost:3000/editPage",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+      },
+    data: {
+      subject: subject.value,
+      content: content.value,
+    }
+  });
+  editPage.then(function(res){
+    
   });
 }
 // 아이디 등록.

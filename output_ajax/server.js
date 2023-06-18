@@ -91,8 +91,31 @@ server.get("/checkUser",function(req,res,next){
 });
 server.post("/pageUpdate",function(req,res,next){
   pool.query("SELECT * FROM RECORD", function(err, dbres){
-    let state;
-    pool.query("INSERT INTO RECORD SET subject=?,date=NOW(),category=?,writer=?,content=?,count=?",[req.body.subject,req.body.category,req.body.writer,req.body.content,0], function(err,db){
+    let state, user;
+    for(let i=0; i<dbres.length; i+=1){
+      if(req.session.id===dbres[i].id){
+        user=dbres[i].nickname;
+        break;
+      }
+    }
+    pool.query("INSERT INTO RECORD SET subject=?,date=NOW(),category=?,writer=?,content=?,count=?",[req.body.subject,req.body.category, user ,req.body.content,0], function(err,db){
+        if(err) console.log("오류발생",err);
+        console.log("등록되었습니다.");
+        state='complete';
+       res.send(state);  
+    });
+  }); 
+});
+server.post("/editPage",function(req,res,next){
+  pool.query("SELECT * FROM RECORD", function(err, dbres){
+    let state, user;
+    for(let i=0; i<dbres.length; i+=1){
+      if(req.session.id===dbres[i].id){
+        user=dbres[i].nickname;
+        break;
+      }
+    }
+    pool.query("UPDATE RECORD SET subject=?,date=NOW(),writer=?,content=?,count=?",[req.body.subject, user ,req.body.content,0], function(err,db){
         if(err) console.log("오류발생",err);
         console.log("등록되었습니다.");
         state='complete';
@@ -189,6 +212,45 @@ server.post("/pageList", function(req,res,next){
     });
   });
 });
+server.post("/detailPage", function(req,res,next){
+  let listSeq=parseInt(req.body.listNum);
+  pool.query("SELECT * FROM RECORD WHERE seq=?",[listSeq], function (err, dbres){
+    if(err) console.log("오류발생",err);
+    let pageInfo={
+      viewSub: dbres[0].subject,
+      viewNick: dbres[0].writer,
+      viewDate: dbres[0].date,
+      viewCount: dbres[0].count + 1,
+      viewContent: dbres[0].content,
+    }
+    let statement=`UPDATE RECORD SET count=${dbres[0].count + 1} WHERE seq=${listSeq}`;
+    pool.query(statement, function(err,data){
+      if(err) console.log("오류발생",err);
+      console.log("done");
+    });
+    res.send(pageInfo);
+  });
+});
+server.post("/commentUpdate", function(req,res,next){
+  let listSeq=parseInt(req.body.listNum);
+  pool.query("INSERT INTO comment SET writer=?, date=NOW(), content=?, list=?", [req.session.id, req.body.commCont, listSeq], function (err, dbres){
+    if(err) console.log("오류발생",err);
+    console.log("코멘트 등록 완료");
+    res.send("ok");
+  });
+});
+server.post("/commentRender", function(req,res,next){
+  let listSeq=parseInt(req.body.listNum);
+  pool.query("SELECT * FROM comment WHERE list=?",[listSeq], function (err, dbres){
+    if(err) console.log("오류발생",err);
+    let commentArr=[];
+    for(let i=0; i<dbres.length; i+=1){
+      commentArr.push({writer:dbres[i].writer, date:dbres[i].date, content:dbres[i].content});
+    }
+    res.send(commentArr);
+  });
+});
+
 
 server.post("/makeid",function(req,res,next){
   let checkId;

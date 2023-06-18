@@ -95,6 +95,23 @@
           <button type="button" class="btn_update" onclick="updateList()">등록</button>
         </div>
       </div>
+      <div id="page_edit" class="inner" style="display:none">
+        <h1 class="blind">게시판</h1>
+        <span class="userline"><span class="curruser"></span>님 반갑습니다.</span>
+        <h2>[ 글 수정 ]</h2>
+        <div class="tit_box">
+          <label for="edit_subject">
+            <input type="text" id="edit_subject" name="subject">
+          </label>
+        </div>
+        <div class="container">
+          <textarea class="summernote edit_content" name="txtdata"></textarea>
+        </div>
+        <div class="btn_group">
+          <button type="button" class="btn_cancel" onclick="checkState()">취소</button>
+          <button type="button" class="btn_update" onclick="edit()">등록</button>
+        </div>
+      </div>
       <div id="page_list" class="inner" style="display:block">
         <h1 class="blind">게시판</h1>
         <div class="util_area" style="display: flex;justify-content: space-between; align-items: center;">
@@ -128,12 +145,12 @@
           <div class="con_wrap">
             <div class="list_con">
               <div class="con_header">
-                <div class="view_subject">등록된 글의 제목입니다.</div>
+                <div class="view_subject"></div>
                 <ul class="info_group">
-                  <li class="view_nick">nick</li>
-                  <li class="view_id">id</li>
-                  <li class="view_date">2023-05-30 06:58</li>
-                  <li class="view_count">조회 <span class="view_num">3</span></li>
+                  <li class="view_nick"></li>
+                  <li>글번호 <span class="view_listNum"></span></li>
+                  <li class="view_date"></li>
+                  <li class="view_count">조회 <span class="view_num"></span></li>
                 </ul>
               </div>
               <div class="con_body">
@@ -143,27 +160,14 @@
             <div class="comment_con">
               <div class="comment_list">
                 <table>
-                  <tbody>
-                    <tr class="list_items">
-                      <td class="list_id">id</td><td class="list_con">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa doloribus asperiores cupiditate obcaecati, sit natus qui sapiente modi amet autem assumenda nihil nam ad perferendis alias, tempore exercitationem labore ullam.</td><td class="list_date">2023.05.30</td><td class="list_reply"><button type="button" class="btn_reply">대댓글</button></td>
-                    </tr>
-                    <tr class="list_items">
-                      <td class="list_id">id</td><td class="list_con">perferendis alias, tempore exercitationem labore ullam</td><td class="list_date">2023.05.30</td><td class="list_reply"><button type="button" class="btn_reply">대댓글</button></td>
-                    </tr>
-                    <tr class="list_items">
-                      <td class="list_id">id</td><td class="list_con">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa doloribus asperiores cupiditate obcaecati, sit natus qui sapiente modi amet autem assumenda nihil nam ad perferendis alias, tempore exercitationem labore ullam.</td><td class="list_date">2023.05.30</td><td class="list_reply"><button type="button" class="btn_reply">대댓글</button></td>
-                    </tr>
-                    <tr class="list_items">
-                      <td class="list_id">id</td><td class="list_con">perferendis alias, tempore</td><td class="list_date">2023.05.30</td><td class="list_reply"><button type="button" class="btn_reply">대댓글</button></td>
-                    </tr>
-                  </tbody>
+                  <tbody></tbody>
                 </table>
               </div>
               <div class="comm_update">
-                <span class="comm_writer">작성자</span>
+                <span class="comm_writer"></span>
                 <textarea name="comment" id="input_comment" cols="30" rows="5" placeholder="댓글을 남겨보세요."></textarea>
                 <div class="btn_area">
-                  <button type="submit" class="btn_comment_update" onclick="">등록</button>                  
+                  <button type="submit" class="btn_comment_update" onclick="commentUpdate()">등록</button>                  
                 </div>
               </div>
             </div>
