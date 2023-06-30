@@ -2,7 +2,10 @@ const loginPage=document.querySelector('#page_login_content');
 const signUpPage=document.querySelector('#page_signup_content');
 const listPage=document.querySelector('#page_list');
 const listViewPage=document.querySelector('#page_list_content');
+const listViewBtn=listViewPage.querySelector('.btn_group');
 const writePage=document.querySelector('#page_write');
+const editPage=document.querySelector('#page_edit');
+const editBtn=document.querySelector('#page_edit .btn_group');
 const replyPage=document.querySelector('#page_reply');
 const currListNum=document.querySelector('.board_guide');
 const listWrap = document.querySelector('#board_list');
@@ -15,7 +18,9 @@ const detailContent=document.querySelector('.con_body p');
 let currUser=document.querySelectorAll('.curruser');
 const writer=document.querySelector('#page_list_content .comm_writer');
 let login=document.querySelector('.login');
-
+let subject=editPage.querySelector('#edit_subject');
+let content=editPage.querySelector('.summernote');
+let cateVal=editPage.querySelector('.cate_val');
 // page 배열
 const pageArr=document.querySelectorAll("section>div");
 // page on/off Func
@@ -24,6 +29,56 @@ const hide=function(){
     item.style.display="none";
   });
 }
+// 리스트 출력 함수
+const listRender=function(res){
+  // 등록된 글이 없을 때 처리
+  if(!res.data[0].length) {
+    currListNum.style.display="block";
+    return;
+  } else { 
+    currListNum.style.display="none";
+  } 
+  // 받은데이터 리스트 렌더링
+  let insertList="", btnInsert="";
+  for( let i=0;i<res.data[0].length; i+=1 ){
+    insertList+=`<tr class="list_items">
+    <td class="list_cate">${res.data[0][i].category}</td>
+    <td><button type="button" class="list_subject" onclick="detailPage(${res.data[0][i].number})">${res.data[0][i].subject}</button></td>
+    <td class="list_writer">${res.data[0][i].nickname}</td>
+    <td class="list_date">${res.data[0][i].date}</td>
+    <td class="list_count">${res.data[0][i].hit}</td>
+    </tr>`
+  }
+  // 버튼 렌더링 
+  btnInsert=`<a href="#page=${res.data[1].prevMove}" class="page_prev" onclick="pageList(${res.data[1].prevMove})">&nbsp;<<&nbsp;</button>`;
+    
+  for(let btn=res.data[1].firstPage;btn<=res.data[1].lastPage;btn+=1){
+    if(btn===res.data[1].currPage){
+      btnInsert+=`<a href="#page=${btn}" class="btn_page is_act" onclick="pageList(${btn})">${btn}</a>`;
+    }else{
+      btnInsert+=`<a href="#page=${btn}" class="btn_page" onclick="pageList(${btn})">${btn}</a>`;
+    }
+  }
+  btnInsert+=`<a href="#page=${res.data[1].nextMove}" class="page_next" onclick="pageList(${res.data[1].nextMove})">&nbsp;>>&nbsp;</a>`;   
+  // html에 출력시키기
+  if(res.data[1].user!==null){
+    currUser.forEach(function(item){
+      item.innerHTML=`${res.data[1].user}님 반갑습니다.`;
+    });
+    login.innerHTML="로그아웃";
+  }else{
+    currUser.forEach(function(item){
+      item.innerHTML="미로그인 상태입니다.";
+    });
+    login.innerHTML="로그인";
+  }
+  listWrap.innerHTML=insertList;
+  pagination.innerHTML=btnInsert;
+  hide();
+  listPage.style.display='block';
+}
+
+
 // 페이지 체크 & 리스트 출력 함수 호출
 const checkState= function(){
   detailContent.value='';
@@ -53,55 +108,7 @@ const pageList = function(pageNum){
   });
   goList.then(function(res){
     console.log(res.data)
-    // 등록된 글이 없을 때 처리
-    if(!res.data[0].length) {
-      currListNum.style.display="block";
-      return;
-    } else { 
-      currListNum.style.display="none";
-    }
-    
-    // 받은데이터 리스트 렌더링
-    let insertList="", btnInsert="";
-    for( let i=0;i<res.data[0].length; i+=1 ){
-      insertList+=`<tr class="list_items">
-      <td class="list_cate">${res.data[0][i].category}</td>
-      <td><button type="button" class="list_subject" onclick="detailPage(${res.data[0][i].number})">${res.data[0][i].subject}</button></td>
-      <td class="list_writer">${res.data[0][i].nickname}</td>
-      <td class="list_date">${res.data[0][i].date}</td>
-      <td class="list_count">${res.data[0][i].hit}</td>
-      </tr>`
-    }
-    // 버튼 렌더링 
-
-    btnInsert=`<a href="#page=${res.data[1].prevMove}" class="page_prev" onclick="pageList(${res.data[1].prevMove})">&nbsp;<<&nbsp;</button>`;
-    
-    for(let btn=res.data[1].firstPage;btn<=res.data[1].lastPage;btn+=1){
-      if(btn===res.data[1].currPage){
-        btnInsert+=`<a href="#page=${btn}" class="btn_page is_act" onclick="pageList(${btn})">${btn}</a>`;
-      }else{
-        btnInsert+=`<a href="#page=${btn}" class="btn_page" onclick="pageList(${btn})">${btn}</a>`;
-      }
-    }
-    
-    btnInsert+=`<a href="#page=${res.data[1].nextMove}" class="page_next" onclick="pageList(${res.data[1].nextMove})">&nbsp;>>&nbsp;</a>`;
-        
-    // html에 출력시키기
-    if(res.data[1].user!==null){
-      currUser.forEach(function(item){
-        item.innerHTML=`${res.data[1].user}님 반갑습니다.`;
-      });
-      login.innerHTML="로그아웃";
-    }else{
-      currUser.forEach(function(item){
-        item.innerHTML="미로그인 상태입니다.";
-      });
-      login.innerHTML="로그인";
-    }
-    listWrap.innerHTML=insertList;
-    pagination.innerHTML=btnInsert;
-    hide();
-    listPage.style.display='block';
+    listRender(res);
   });
 }
 //상세페이지 출력
@@ -115,6 +122,15 @@ const detailPage = function(listNum){
     data: {listNum}
   });
   detail.then(function(res){
+    if(res.data.user==='collect'){
+      listViewBtn.innerHTML=`
+      <button class="btn_list" onclick="checkState()">목록으로</button>
+      <button class="btn_edit" onclick="moveEditPage(${listNum})">수정하기</button>`
+    }else {
+      listViewBtn.innerHTML=`
+      <button class="btn_list" onclick="checkState()">목록으로</button>
+      <button class="btn_reply" onclick="pageReply(${listNum})">답글작성</button>`
+    }
     let html=`
     <div class="view_subject">${res.data.viewSub}</div>
       <ul class="info_group">
@@ -252,7 +268,7 @@ const pageWrite = function(){
   })
 }
 
-// 답글쓰기 페이지 (로그인여부 확인필요.)
+// 답글쓰기 페이지 (로그인 확인여부 필요)
 const pageReply = function(){
   let replyList = axios.get("http://localhost:3000/pageReply");
   replyList.then(function(res){
@@ -289,10 +305,38 @@ const updateList = function(){
     }
   });
 }
-const edit = function(){
-  let subject=writePage.querySelector('#edit_subject');
-  let content=writePage.querySelector('.edit_content');
-  let editPage=axios({
+const moveEditPage= function(listNum){
+
+  let moveEdit=axios({
+    method: "POST",
+    url: "http://localhost:3000/moveEdit",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+      },
+    data: {
+      listNum
+    }
+  });
+  moveEdit.then(function(res){
+    if(res.data!=='false'){
+      console.log("in")
+      console.log(res.data)
+      subject.value=res.data.subject;
+      let note = document.querySelector('#page_edit .note-editable')
+      note.innerHTML=res.data.content
+      cateVal.innerHTML=res.data.category;
+      editBtn.innerHTML=`
+      <button type="button" class="btn_cancel" onclick="checkState()">취소</button>
+      <button type="button" class="btn_update" onclick="edit(${listNum})">등록</button>`
+      hide();
+      editPage.style.display="block";
+    }
+  });
+}
+const edit = function(listNum){
+  subject=editPage.querySelector('#edit_subject');
+  content=editPage.querySelector('.edit_content');
+  let editWrite=axios({
     method:'POST',
     url:"http://localhost:3000/editPage",
     headers: {
@@ -301,10 +345,15 @@ const edit = function(){
     data: {
       subject: subject.value,
       content: content.value,
+      listNum
     }
   });
-  editPage.then(function(res){
-    
+  editWrite.then(function(res){
+    if(res.data==='complete'){
+      detailPage(listNum);
+    }else{
+      alert("수정을 완료하지 못했습니다. 재시도 해주세요.")
+    }
   });
 }
 // 아이디 등록.
@@ -360,7 +409,22 @@ const makeIdFunc = function(){
   }
 }
 
-
+// 검색
+const searchKeyword = function(){
+  let keyword = document.querySelector('#input_keyword').value;
+  let searchReq = axios({
+    method:'POST',
+    url:'http://localhost:3000/pageList',
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    data:{keyword}
+  })
+  searchReq.then(function(res){
+    listRender(res);
+  });
+  
+}
 
 
 

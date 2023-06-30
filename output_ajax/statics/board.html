@@ -97,8 +97,8 @@
       </div>
       <div id="page_edit" class="inner" style="display:none">
         <h1 class="blind">게시판</h1>
-        <span class="userline"><span class="curruser"></span>님 반갑습니다.</span>
         <h2>[ 글 수정 ]</h2>
+        <span class="cate_val"></span>
         <div class="tit_box">
           <label for="edit_subject">
             <input type="text" id="edit_subject" name="subject">
@@ -107,19 +107,24 @@
         <div class="container">
           <textarea class="summernote edit_content" name="txtdata"></textarea>
         </div>
-        <div class="btn_group">
-          <button type="button" class="btn_cancel" onclick="checkState()">취소</button>
-          <button type="button" class="btn_update" onclick="edit()">등록</button>
-        </div>
+        <div class="btn_group"></div>
       </div>
       <div id="page_list" class="inner" style="display:block">
         <h1 class="blind">게시판</h1>
-        <div class="util_area" style="display: flex;justify-content: space-between; align-items: center;">
+        <div class="user_area" style="display: flex;justify-content: space-between; align-items: center;">
           <span class="userline"><span class="curruser"></span></span>
           <button type="button" class="login" onclick="checkUser()">로그인</button>
         </div>
         <div class="title">
-          <h2>[ 게시판 목록화면 ]<button type="button" class="btn_write" onclick="pageWrite()">글쓰기</button></h2>
+          <h2>[ 게시판 목록화면 ]</h2>
+          <div class="util_area">
+            <div class="search_box">
+              <label for="input_keyword"></label>
+              <input type="text" name="search" id="input_keyword" placeholder="검색어를 입력하세요.">
+              <button type="button" class="btn_search" onclick="searchKeyword()">🔎</button>
+            </div>
+            <button type="button" class="btn_write" onclick="pageWrite()">글쓰기</button>
+          </div>
         </div>
         <div class="board">
           <div class="board_guide">등록된 게시물이 없습니다.</div>          
@@ -130,18 +135,14 @@
             <tbody id="board_list">
             </tbody>
           </table>
-          <div class="pagination">
-          </div>        
+          <div class="pagination"></div>        
         </div>
       </div>
       <div id="page_list_content" class="inner" style="display:none">
         <h1 class="blind">게시판</h1>
         <span class="userline"><span class="curruser"></span></span>
         <div class="view">
-          <div class="btn_group">
-            <button href="#none" class="btn_list" onclick="checkState()">목록으로</button>
-            <button href="#none" class="btn_reply" onclick="pageReply()">답글작성</button>
-          </div>
+          <div class="btn_group"></div>
           <div class="con_wrap">
             <div class="list_con">
               <div class="con_header">

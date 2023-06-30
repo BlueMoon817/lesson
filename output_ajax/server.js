@@ -90,11 +90,11 @@ server.get("/checkUser",function(req,res,next){
   });
 });
 server.post("/pageUpdate",function(req,res,next){
-  pool.query("SELECT * FROM RECORD", function(err, dbres){
+  pool.query("SELECT * FROM user", function(err, dbres){
     let state, user;
     for(let i=0; i<dbres.length; i+=1){
       if(req.session.id===dbres[i].id){
-        user=dbres[i].nickname;
+        user=dbres[i].id;
         break;
       }
     }
@@ -108,14 +108,9 @@ server.post("/pageUpdate",function(req,res,next){
 });
 server.post("/editPage",function(req,res,next){
   pool.query("SELECT * FROM RECORD", function(err, dbres){
-    let state, user;
-    for(let i=0; i<dbres.length; i+=1){
-      if(req.session.id===dbres[i].id){
-        user=dbres[i].nickname;
-        break;
-      }
-    }
-    pool.query("UPDATE RECORD SET subject=?,date=NOW(),writer=?,content=?,count=?",[req.body.subject, user ,req.body.content,0], function(err,db){
+    let state;
+    let stateMent=`UPDATE RECORD SET subject=?, content=? WHERE seq=${req.body.listNum}`
+    pool.query(stateMent,[req.body.subject,req.body.content], function(err,db){
         if(err) console.log("오류발생",err);
         console.log("등록되었습니다.");
         state='complete';
@@ -123,14 +118,35 @@ server.post("/editPage",function(req,res,next){
     });
   }); 
 });
+server.post("/moveEdit", function(req,res,next){
+  pool.query("SELECT * FROM RECORD WHERE seq=?",[req.body.listNum], function(err,dbres){
+    if(err) console.log("오류발생",err);
+    let content;
+    if(req.session.id===dbres[0].writer){
+      content={
+        content: dbres[0].content,
+        category:dbres[0].category,
+        subject: dbres[0].subject
+      }
+    }else{
+      content='false';
+    }
+    console.log(content);
+    res.send(content);
+  });
+ 
+});
 server.post("/pageList", function(req,res,next){
   let getPageNum=parseInt(req.body.pageNum);
   let userState;
   
   req.session.id? userState=req.session.id : userState=null;
-  
+
   pool.query("SELECT * FROM RECORD", function (err, dbres){
     if(err) console.log("오류발생",err);
+    
+    
+    
     let firstPageNum, lastPageNum,dataArr=[],articles=[],pageInfo={},restPageCount=0,restListCount=0,dataCount=10,startIndex=0,lastListNum = dbres.length, lastIndex=dbres.length-1
     if(lastListNum%10!==0) {
       restListCount=lastListNum%10;
@@ -223,12 +239,15 @@ server.post("/detailPage", function(req,res,next){
       viewCount: dbres[0].count + 1,
       viewContent: dbres[0].content,
     }
-    let statement=`UPDATE RECORD SET count=${dbres[0].count + 1} WHERE seq=${listSeq}`;
-    pool.query(statement, function(err,data){
+    let user=req.session.id;
+    pool.query("SELECT * FROM RECORD WHERE seq=?",[listSeq], function(err,data){
       if(err) console.log("오류발생",err);
-      console.log("done");
+      if(user===dbres[0].writer){
+        pageInfo.user='collect';
+        console.log("done");
+      }
+      res.send(pageInfo);
     });
-    res.send(pageInfo);
   });
 });
 server.post("/commentUpdate", function(req,res,next){
@@ -250,7 +269,9 @@ server.post("/commentRender", function(req,res,next){
     res.send(commentArr);
   });
 });
-
+server.get("/pageReply", function(req,res,next){
+  
+});
 
 server.post("/makeid",function(req,res,next){
   let checkId;
