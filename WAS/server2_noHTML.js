@@ -14,10 +14,10 @@ server.use( express.urlencoded({extended:true}) );
 
 
 /* req에 cookie를 파싱해주는 미들웨어 */
-server.use(cookieParser()); // 호출만 하면.. 알아서 파싱해줌
+server.use(cookieParser()); // cookieParser(secretKey, optionObj) 호출만 하면.. 알아서 파싱해줌
 
 /* 쿠키 기반의 세션을 처리해주는 미들웨어 */
-server.use(cookieSession({
+server.use(session({
   name:'session',
   //세션 암호화를 위한 키
   // keys: [/*secret key*/],
@@ -50,7 +50,7 @@ server.get("/list",function(req, res, next){
   let articles=JSON.parse(fs.readFileSync("articles.json").toString());
     // 템플릿을 렌더링(=스태틱HTML에 다이내믹 데이터를 박아넣는 동작 = HTML을 조립하는 과정)해서 응답한다.
     res.render("list.ejs",{
-    //템블릿에 박아넣을 데이터...
+    //템블릿에 넣을 데이터...
     "articles":articles,
 		sample1:"문유라"
     });
